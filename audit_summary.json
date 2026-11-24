@@ -1,0 +1,4263 @@
+{
+  "1_UBP_1002590_Jul2025.pdf": {
+    "filename": "1_UBP_1002590_Jul2025.pdf",
+    "source_pages": 11,
+    "excel_name": "UBP_1002590_1_UBP_1002590_Jul2025.xlsx",
+    "sheets": [
+      "Portfolio_Overview",
+      "Asset_Allocation",
+      "Currency_Breakdown",
+      "Holdings",
+      "Current_Accounts",
+      "Loans",
+      "Transactions",
+      "Net_Assets_Summary",
+      "Exchange_Rates",
+      "Monthly_Performance",
+      "Annual_Performance",
+      "Comments",
+      "Counts",
+      "Validation",
+      "Unmapped_Content",
+      "Raw_Page_Text"
+    ],
+    "sheet_stats": {
+      "Portfolio_Overview": {
+        "max_row": 11,
+        "max_col": 2
+      },
+      "Asset_Allocation": {
+        "max_row": 1,
+        "max_col": 6
+      },
+      "Currency_Breakdown": {
+        "max_row": 7,
+        "max_col": 9
+      },
+      "Holdings": {
+        "max_row": 13,
+        "max_col": 20
+      },
+      "Current_Accounts": {
+        "max_row": 2,
+        "max_col": 9
+      },
+      "Loans": {
+        "max_row": 2,
+        "max_col": 12
+      },
+      "Transactions": {
+        "max_row": 2,
+        "max_col": 10
+      },
+      "Net_Assets_Summary": {
+        "max_row": 6,
+        "max_col": 4
+      },
+      "Exchange_Rates": {
+        "max_row": 2,
+        "max_col": 5
+      },
+      "Monthly_Performance": {
+        "max_row": 15,
+        "max_col": 10
+      },
+      "Annual_Performance": {
+        "max_row": 13,
+        "max_col": 10
+      },
+      "Comments": {
+        "max_row": 4,
+        "max_col": 3
+      },
+      "Counts": {
+        "max_row": 12,
+        "max_col": 3
+      },
+      "Validation": {
+        "max_row": 11,
+        "max_col": 5
+      },
+      "Unmapped_Content": {
+        "max_row": 2,
+        "max_col": 4
+      },
+      "Raw_Page_Text": {
+        "max_row": 12,
+        "max_col": 7
+      }
+    },
+    "holdings": [
+      {
+        "Holding_ID": "HLD-001",
+        "Asset_Category": "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+        "Security_Name": "CS INVESTMENT FUNDS 1 SICAV - UBS (LUX) FINANCIAL BOND FUND SHS -(USD HEDGED)",
+        "ISIN_Secur_No": "LU2001707251",
+        "Units_Nominal": 93.27,
+        "Net_Average_Cost": 1086.48,
+        "Cost_Currency": "USD",
+        "Market_Price": 1019.99,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 95134.47,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 95134.47,
+        "Percentage_Total_Assets": 0.042,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-002",
+        "Asset_Category": "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+        "Security_Name": "FULLERTON FUNDS S2 - FULLERTON FIXED BLOC. MISC. TRANS TERM FUND 4 UNITS -A- FLOATING",
+        "ISIN_Secur_No": "SGXZ40236853",
+        "Units_Nominal": 500000,
+        "Net_Average_Cost": 1.01,
+        "Cost_Currency": "USD",
+        "Market_Price": 0.75747,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 378735,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 378735,
+        "Percentage_Total_Assets": 0.167,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-003",
+        "Asset_Category": "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - TCIM OFFSHORE SF SHS -A- SERIES -INITIAL-",
+        "ISIN_Secur_No": "127676268.000",
+        "Units_Nominal": 204.5226,
+        "Net_Average_Cost": 990.68,
+        "Cost_Currency": "USD",
+        "Market_Price": 1227.62,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 251077.53,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 251077.53,
+        "Percentage_Total_Assets": 0.1107,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-004",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ALPHA ALTERNATIVES EQUITY ABSOL.RETURN SF SHS -A-SER. 0324-",
+        "ISIN_Secur_No": "133885351.000",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1065.6,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 213120.88,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 213120.88,
+        "Percentage_Total_Assets": 0.094,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-005",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "SGA SPC -GLOB VOLATILITY STRAT FD SP RED PTG.SHS -E- SGAGVSFSP INITIAL SERIES",
+        "ISIN_Secur_No": "XD1356846166",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1147.61,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 229522.48,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 229522.48,
+        "Percentage_Total_Assets": 0.1012,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-006",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - WEL EUROPE LS FUND SF SHS -A- SERIES -0125-",
+        "ISIN_Secur_No": "141640160.000",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1235.26,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 123526.13,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 123526.13,
+        "Percentage_Total_Assets": 0.0545,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-007",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - TRI CHINA LS SF SHS -A- SERIES -0325-",
+        "ISIN_Secur_No": "143673613.000",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 917.31,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.04.25",
+        "Total_Market_Value": 91731.01,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 91731.01,
+        "Percentage_Total_Assets": 0.0405,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-008",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TARA MACRO SF SHS -A- SERIES -0425-",
+        "ISIN_Secur_No": "145148354.000",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1002.33,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 100233.5,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100233.5,
+        "Percentage_Total_Assets": 0.0442,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-009",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - WEL GLO GTH SF PARTICIPATING SHS -A- SERIES -0525-",
+        "ISIN_Secur_No": "145690387.000",
+        "Units_Nominal": 150,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1020.69,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 153104.1,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 153104.1,
+        "Percentage_Total_Assets": 0.0675,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-010",
+        "Asset_Category": "STRUCTURED PRODUCTS",
+        "Security_Name": "STANDARD CHARTERED 1.6767% (PR) REV CONV 25-23.06.26 (EXP.17.06.26) ALIBABA",
+        "ISIN_Secur_No": "XS2981244168",
+        "Units_Nominal": 800000,
+        "Net_Average_Cost": 100,
+        "Cost_Currency": "HKD",
+        "Market_Price": 97.59,
+        "Market_Price_Currency": "HKD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 780720,
+        "Market_Value_Currency": "HKD",
+        "Accrued_Interest": 2906.24,
+        "Accrued_Interest_USD": 370.3,
+        "Value_in_USD": 99475.87,
+        "Percentage_Total_Assets": 0.044,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-011",
+        "Asset_Category": "STRUCTURED PRODUCTS",
+        "Security_Name": "VONTOBEL 12M USD FCN AMD MC 09.07.25",
+        "ISIN_Secur_No": "CH1359020539",
+        "Units_Nominal": 200000,
+        "Net_Average_Cost": 100,
+        "Cost_Currency": "USD",
+        "Market_Price": 91.1,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 182200,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": 5229,
+        "Accrued_Interest_USD": 5229,
+        "Value_in_USD": 182200,
+        "Percentage_Total_Assets": 0.0827,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-012",
+        "Asset_Category": "STRUCTURED PRODUCTS",
+        "Security_Name": "BAR 6M USD FCN SPY DIA 24.10.2025",
+        "ISIN_Secur_No": "XS2998116383",
+        "Units_Nominal": 100000,
+        "Net_Average_Cost": 100,
+        "Cost_Currency": "USD",
+        "Market_Price": 101.5,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 101500,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": 1416.67,
+        "Accrued_Interest_USD": 1416.67,
+        "Value_in_USD": 101500,
+        "Percentage_Total_Assets": 0.0454,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      }
+    ],
+    "accounts": [
+      {
+        "Account_ID": "ACC-001",
+        "Currency": "USD",
+        "Amount": 241292.33,
+        "Account_Name": "CURRENT ACCOUNT NUMBER 0001",
+        "Account_Number": "0001",
+        "Market_Value": 241292.33,
+        "Value_in_USD": 241292.33,
+        "Percentage_Assets": 0.1064,
+        "Source_Page": 5
+      }
+    ],
+    "loans": [],
+    "currency_breakdown": [
+      {
+        "Asset_Class": "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+        "Total_000s_USD": 474,
+        "Total_Percentage": 0.209,
+        "USD_000s": 474,
+        "USD_Percentage": 0.209,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "BONDS/NOTES, BOND FUNDS & CERTIFICATES 474 20.90 474 20.90"
+      },
+      {
+        "Asset_Class": "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+        "Total_000s_USD": 251,
+        "Total_Percentage": 0.1107,
+        "USD_000s": 251,
+        "USD_Percentage": 0.1107,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "EQUITIES, EQUITY FUNDS & CERTIFICATES 251 11.07 251 11.07"
+      },
+      {
+        "Asset_Class": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Total_000s_USD": 911,
+        "Total_Percentage": 0.4018,
+        "USD_000s": 911,
+        "USD_Percentage": 0.4018,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "ALTERNATIVE INVESTMENTS & CERTIFICATES 911 40.18 911 40.18"
+      },
+      {
+        "Asset_Class": "STRUCTURED PRODUCTS",
+        "Total_000s_USD": 390,
+        "Total_Percentage": 0.1721,
+        "USD_000s": 290,
+        "USD_Percentage": 0.128,
+        "HKD_EUR_000s": 100,
+        "HKD_EUR_Percentage": 0.044,
+        "Source_Page": 2,
+        "Raw_Text": "STRUCTURED PRODUCTS 390 17.21 290 12.80 100 4.40"
+      },
+      {
+        "Asset_Class": "CURRENT ACCOUNTS",
+        "Total_000s_USD": 241,
+        "Total_Percentage": 0.1064,
+        "USD_000s": 241,
+        "USD_Percentage": 0.1064,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "CURRENT ACCOUNTS 241 10.64 241 10.64"
+      },
+      {
+        "Asset_Class": "NET ASSETS USD",
+        "Total_000s_USD": 2268,
+        "Total_Percentage": 1,
+        "USD_000s": 2168,
+        "USD_Percentage": 0.956,
+        "HKD_EUR_000s": 100,
+        "HKD_EUR_Percentage": 0.044,
+        "Source_Page": 2,
+        "Raw_Text": "NET ASSETS USD 2\u2019268 100.00 2\u2019168 95.60 100 4.40"
+      }
+    ],
+    "monthly_perf": [
+      {
+        "Period": "01.07.2024",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 2205057,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 7
+      },
+      {
+        "Period": "07.2024",
+        "Performance_Pct": -0.0033,
+        "Cumulative_Performance_Pct": -0.0033,
+        "End_of_Period_Assets": 2197796,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -7261,
+        "Net_Income": 34712,
+        "Return_on_Net_Income_Pct": 0.0157,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "08.2024",
+        "Performance_Pct": 0.005,
+        "Cumulative_Performance_Pct": 0.0017,
+        "End_of_Period_Assets": 2208858,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 11061,
+        "Net_Income": 5910,
+        "Return_on_Net_Income_Pct": 0.0026,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "09.2024",
+        "Performance_Pct": 0.0135,
+        "Cumulative_Performance_Pct": 0.0153,
+        "End_of_Period_Assets": 2238744,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 29886,
+        "Net_Income": 5415,
+        "Return_on_Net_Income_Pct": 0.0024,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "10.2024",
+        "Performance_Pct": 0.0068,
+        "Cumulative_Performance_Pct": 0.0222,
+        "End_of_Period_Assets": 2254035,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 15291,
+        "Net_Income": 12096,
+        "Return_on_Net_Income_Pct": 0.0054,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "11.2024",
+        "Performance_Pct": 0.005500000000000001,
+        "Cumulative_Performance_Pct": 0.0278,
+        "End_of_Period_Assets": 2266450,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 12415,
+        "Net_Income": 5271,
+        "Return_on_Net_Income_Pct": 0.0023,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "12.2024",
+        "Performance_Pct": 0.0035,
+        "Cumulative_Performance_Pct": 0.0315,
+        "End_of_Period_Assets": 2260746,
+        "Period_Deposits_Withdrawals": -13658,
+        "Change_in_Total_Assets": 7954,
+        "Net_Income": 7385,
+        "Return_on_Net_Income_Pct": 0.0032,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "01.2025",
+        "Performance_Pct": 0.0103,
+        "Cumulative_Performance_Pct": 0.0421,
+        "End_of_Period_Assets": 2284004,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 23257,
+        "Net_Income": 9345,
+        "Return_on_Net_Income_Pct": 0.004099999999999999,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "02.2025",
+        "Performance_Pct": 0.0032,
+        "Cumulative_Performance_Pct": 0.0454,
+        "End_of_Period_Assets": 2291213,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 7210,
+        "Net_Income": 4497,
+        "Return_on_Net_Income_Pct": 0.0019,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "03.2025",
+        "Performance_Pct": 0.0084,
+        "Cumulative_Performance_Pct": 0.0541,
+        "End_of_Period_Assets": 2310471,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 19258,
+        "Net_Income": 5173,
+        "Return_on_Net_Income_Pct": 0.0022,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "04.2025",
+        "Performance_Pct": -0.0077,
+        "Cumulative_Performance_Pct": 0.046,
+        "End_of_Period_Assets": 2292663,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -17807,
+        "Net_Income": 8298,
+        "Return_on_Net_Income_Pct": 0.0035,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "05.2025",
+        "Performance_Pct": -0.0017,
+        "Cumulative_Performance_Pct": 0.0443,
+        "End_of_Period_Assets": 2288860,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -3803,
+        "Net_Income": 3395,
+        "Return_on_Net_Income_Pct": 0.0014,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "06.2025",
+        "Performance_Pct": 0.0191,
+        "Cumulative_Performance_Pct": 0.0642,
+        "End_of_Period_Assets": 2267669,
+        "Period_Deposits_Withdrawals": -64470,
+        "Change_in_Total_Assets": 43279,
+        "Net_Income": 2932,
+        "Return_on_Net_Income_Pct": 0.0012,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": -78128,
+        "Change_in_Total_Assets": 140740,
+        "Net_Income": 104430,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 7
+      }
+    ],
+    "annual_perf": [
+      {
+        "Period": "20.12.2016",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 635000,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2016",
+        "Performance_Pct": -0.0017,
+        "Cumulative_Performance_Pct": -0.0017,
+        "End_of_Period_Assets": 633891,
+        "Period_Deposits_Withdrawals": 635000,
+        "Change_in_Total_Assets": -1109,
+        "Net_Income": 19,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2017",
+        "Performance_Pct": 0.0784,
+        "Cumulative_Performance_Pct": 0.0765,
+        "End_of_Period_Assets": 979351,
+        "Period_Deposits_Withdrawals": 276654,
+        "Change_in_Total_Assets": 68805,
+        "Net_Income": 38121,
+        "Return_on_Net_Income_Pct": 0.0446,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2018",
+        "Performance_Pct": -0.1088,
+        "Cumulative_Performance_Pct": -0.0406,
+        "End_of_Period_Assets": 1311961,
+        "Period_Deposits_Withdrawals": 496190,
+        "Change_in_Total_Assets": -163580,
+        "Net_Income": 47397,
+        "Return_on_Net_Income_Pct": 0.0336,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2019",
+        "Performance_Pct": 0.1779,
+        "Cumulative_Performance_Pct": 0.13,
+        "End_of_Period_Assets": 1741063,
+        "Period_Deposits_Withdrawals": 190672,
+        "Change_in_Total_Assets": 238134,
+        "Net_Income": 59959,
+        "Return_on_Net_Income_Pct": 0.0434,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2020",
+        "Performance_Pct": -0.0074,
+        "Cumulative_Performance_Pct": 0.1217,
+        "End_of_Period_Assets": 1707060,
+        "Period_Deposits_Withdrawals": -20940,
+        "Change_in_Total_Assets": -14165,
+        "Net_Income": 101884,
+        "Return_on_Net_Income_Pct": 0.05860000000000001,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2021",
+        "Performance_Pct": -0.07769999999999999,
+        "Cumulative_Performance_Pct": 0.0345,
+        "End_of_Period_Assets": 1759915,
+        "Period_Deposits_Withdrawals": 200043,
+        "Change_in_Total_Assets": -147188,
+        "Net_Income": 80578,
+        "Return_on_Net_Income_Pct": 0.0425,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2022",
+        "Performance_Pct": -0.0919,
+        "Cumulative_Performance_Pct": -0.0605,
+        "End_of_Period_Assets": 1516945,
+        "Period_Deposits_Withdrawals": -80582,
+        "Change_in_Total_Assets": -162388,
+        "Net_Income": 45356,
+        "Return_on_Net_Income_Pct": 0.0261,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2023",
+        "Performance_Pct": 0.0535,
+        "Cumulative_Performance_Pct": -0.0103,
+        "End_of_Period_Assets": 1584019,
+        "Period_Deposits_Withdrawals": -13532,
+        "Change_in_Total_Assets": 80606,
+        "Net_Income": 79063,
+        "Return_on_Net_Income_Pct": 0.0524,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2024",
+        "Performance_Pct": 0.0672,
+        "Cumulative_Performance_Pct": 0.0562,
+        "End_of_Period_Assets": 2260746,
+        "Period_Deposits_Withdrawals": 542470,
+        "Change_in_Total_Assets": 134257,
+        "Net_Income": 120813,
+        "Return_on_Net_Income_Pct": 0.0591,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "30.06.2025",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0.0148,
+        "End_of_Period_Assets": 33641,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 2161505,
+        "Change_in_Total_Assets": 104765,
+        "Net_Income": 606831,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 8
+      }
+    ],
+    "net_assets_summary": {
+      "Assets": 2260653.31,
+      "Accrued Interest on Securities": 7015.96,
+      "Net Accrued Interest on Deposits and Loans": 0,
+      "Total Assets": 2267669.27,
+      "Commitments": 0
+    },
+    "exchange_rates": [
+      {
+        "Base_Currency": "USD",
+        "Target_Currency": "HKD",
+        "Exchange_Rate": 7.84833538,
+        "Source_Text": "1 USD 7.84833538 HKD",
+        "Source_Page": 6
+      }
+    ],
+    "unmapped": [
+      {
+        "Page_Number": "N/A",
+        "Bounding_Box": "N/A",
+        "Raw_Content": "No unmapped content. All source content classified and parsed.",
+        "Audit_Reason": "ZERO_LOSS_VERIFIED"
+      }
+    ],
+    "validation_checks": [
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Page Coverage",
+        "Message": "All source pages accounted for (11 of 11 pages processed).",
+        "Details": "{'processed_pages': 11, 'total_pages': 11}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Portfolio Identifier",
+        "Message": "Portfolio number successfully extracted: 1002590.",
+        "Details": "{'portfolio_number': '1002590'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Valuation Date",
+        "Message": "Valuation date verified: 30.06.2025.",
+        "Details": "{'valuation_date': '30.06.2025'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Holdings Count",
+        "Message": "Extracted 12 security holdings records across statements.",
+        "Details": "{'holdings_count': 12}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Security Identifiers",
+        "Message": "All extracted holdings have valid ISIN / security numbers.",
+        "Details": "{'missing_count': 0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Subtotal Reconciliation",
+        "Message": "All security category subtotals match the source statement exactly.",
+        "Details": "{'status': 'MATCH'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Financial Reconciliation",
+        "Check_Name": "Net Assets Balance Equation",
+        "Message": "Assets (2260653.31) + Accrued Int (7015.96) + Loan Accrued (0) = Total Assets (2267669.27).",
+        "Details": "{'calculated': 2267669.27, 'statement': 2267669.27}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Deposits/Withdrawals Total",
+        "Message": "Monthly deposits/withdrawals sum (-78128) matches Total row (-78128).",
+        "Details": "{'calculated': -78128.0, 'total_row': -78128.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Net Income Total",
+        "Message": "Monthly net income sum (104429) matches Total row (104430) within standard integer rounding tolerance (diff=1).",
+        "Details": "{'calculated': 104429.0, 'total_row': 104430.0, 'diff': 1.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Extraction Quality",
+        "Check_Name": "Unmapped Content",
+        "Message": "Zero unmapped items. Complete deterministic mapping of all financial data.",
+        "Details": "{'unmapped_count': 0}"
+      }
+    ]
+  },
+  "2_UBP_1002590_Oct2025.pdf": {
+    "filename": "2_UBP_1002590_Oct2025.pdf",
+    "source_pages": 11,
+    "excel_name": "UBP_1002590_2_UBP_1002590_Oct2025.xlsx",
+    "sheets": [
+      "Portfolio_Overview",
+      "Asset_Allocation",
+      "Currency_Breakdown",
+      "Holdings",
+      "Current_Accounts",
+      "Loans",
+      "Transactions",
+      "Net_Assets_Summary",
+      "Exchange_Rates",
+      "Monthly_Performance",
+      "Annual_Performance",
+      "Comments",
+      "Counts",
+      "Validation",
+      "Unmapped_Content",
+      "Raw_Page_Text"
+    ],
+    "sheet_stats": {
+      "Portfolio_Overview": {
+        "max_row": 11,
+        "max_col": 2
+      },
+      "Asset_Allocation": {
+        "max_row": 1,
+        "max_col": 6
+      },
+      "Currency_Breakdown": {
+        "max_row": 7,
+        "max_col": 9
+      },
+      "Holdings": {
+        "max_row": 17,
+        "max_col": 20
+      },
+      "Current_Accounts": {
+        "max_row": 2,
+        "max_col": 9
+      },
+      "Loans": {
+        "max_row": 2,
+        "max_col": 12
+      },
+      "Transactions": {
+        "max_row": 2,
+        "max_col": 10
+      },
+      "Net_Assets_Summary": {
+        "max_row": 6,
+        "max_col": 4
+      },
+      "Exchange_Rates": {
+        "max_row": 2,
+        "max_col": 5
+      },
+      "Monthly_Performance": {
+        "max_row": 15,
+        "max_col": 10
+      },
+      "Annual_Performance": {
+        "max_row": 13,
+        "max_col": 10
+      },
+      "Comments": {
+        "max_row": 4,
+        "max_col": 3
+      },
+      "Counts": {
+        "max_row": 12,
+        "max_col": 3
+      },
+      "Validation": {
+        "max_row": 11,
+        "max_col": 5
+      },
+      "Unmapped_Content": {
+        "max_row": 2,
+        "max_col": 4
+      },
+      "Raw_Page_Text": {
+        "max_row": 12,
+        "max_col": 7
+      }
+    },
+    "holdings": [
+      {
+        "Holding_ID": "HLD-001",
+        "Asset_Category": "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - TCIM OFFSHORE SF SHS -A- SERIES -INITIAL-",
+        "ISIN_Secur_No": "127676268.000",
+        "Units_Nominal": 204.5226,
+        "Net_Average_Cost": 990.68,
+        "Cost_Currency": "USD",
+        "Market_Price": 1250.92,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 255843.15,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 255843.15,
+        "Percentage_Total_Assets": 0.1122,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-002",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ST TECH FUND SF PARTICIPATING SHS -A- INITIAL SERIES USD",
+        "ISIN_Secur_No": "126321837.000",
+        "Units_Nominal": 107.1942,
+        "Net_Average_Cost": 1000.6,
+        "Cost_Currency": "USD",
+        "Market_Price": 1210.4,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 129748.63,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 129748.63,
+        "Percentage_Total_Assets": 0.05690000000000001,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-003",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - GNP G2 SF SHS -A- SERIES -0623-",
+        "ISIN_Secur_No": "128006689.000",
+        "Units_Nominal": 206.1888,
+        "Net_Average_Cost": 1000,
+        "Cost_Currency": "USD",
+        "Market_Price": 1333.96,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 275049.01,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 275049.01,
+        "Percentage_Total_Assets": 0.1206,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-004",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ALPHA ALTERNATIVES EQUITY ABSOL.RETURN SF SHS -A-SER. 0324-",
+        "ISIN_Secur_No": "133885351.000",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1081.66,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 216333.44,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 216333.44,
+        "Percentage_Total_Assets": 0.0949,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-005",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "SGA SPC -GLOB VOLATILITY STRAT FD SP RED PTG.SHS -E- SGAGVSFSP INITIAL SERIES",
+        "ISIN_Secur_No": "XD1356846166",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1193.39,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.07.25",
+        "Total_Market_Value": 238678.28,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 238678.28,
+        "Percentage_Total_Assets": 0.1047,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-006",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - WEL EUROPE LS FUND SF INVEST. FUNDS SUBSCRIPTION (AM PARTICIPATING SHS",
+        "ISIN_Secur_No": "SGXZ15087745",
+        "Units_Nominal": 125000,
+        "Net_Average_Cost": 101.09,
+        "Cost_Currency": "USD",
+        "Market_Price": 100,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 125000,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 125000,
+        "Percentage_Total_Assets": 0.0548,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-007",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - WEL EUROPE LS FUND SF SHS -A- SERIES -0125-",
+        "ISIN_Secur_No": "141640160.000",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1315.28,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 131528.88,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 131528.88,
+        "Percentage_Total_Assets": 0.05769999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-008",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TAFEX SF PARTICIPATING SHS INVEST. FUNDS SUBSCRIPTION (AM -A-",
+        "ISIN_Secur_No": "SGXZ15514029",
+        "Units_Nominal": 100000,
+        "Net_Average_Cost": 100,
+        "Cost_Currency": "USD",
+        "Market_Price": 100,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 100000,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100000,
+        "Percentage_Total_Assets": 0.04389999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-009",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - TRI CHINA LS SF SHS -A- SERIES -0325-",
+        "ISIN_Secur_No": "143673613.000",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1009.16,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 100916.14,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100916.14,
+        "Percentage_Total_Assets": 0.0443,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-010",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TARA MACRO SF SHS -A- SERIES -0425-",
+        "ISIN_Secur_No": "145148354.000",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1020.38,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 102038.5,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 102038.5,
+        "Percentage_Total_Assets": 0.04480000000000001,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-011",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - WEL GLO GTH SF PARTICIPATING SHS -A- SERIES -0525-",
+        "ISIN_Secur_No": "145690387.000",
+        "Units_Nominal": 150,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1028.98,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 154347.27,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 154347.27,
+        "Percentage_Total_Assets": 0.0677,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-012",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ARV ARBITRAGE FUND SF SHS -A- SERIES -0825-",
+        "ISIN_Secur_No": "XD1479481271",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1000.35,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.08.25",
+        "Total_Market_Value": 100035.12,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100035.12,
+        "Percentage_Total_Assets": 0.04389999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-013",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - CTN SF PARTICIPATING SHS -A- INVEST. FUNDS SUBSCRIPTION (AM",
+        "ISIN_Secur_No": "SGXZ12523296",
+        "Units_Nominal": 150000,
+        "Net_Average_Cost": 101.09,
+        "Cost_Currency": "USD",
+        "Market_Price": 100,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 150000,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 150000,
+        "Percentage_Total_Assets": 0.0658,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-014",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - SX SF PARTICIPATING SHS -A- INVEST. FUNDS SUBSCRIPTION (AM",
+        "ISIN_Secur_No": "SGXZ41190489",
+        "Units_Nominal": 100000,
+        "Net_Average_Cost": 101.09,
+        "Cost_Currency": "USD",
+        "Market_Price": 100,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 100000,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100000,
+        "Percentage_Total_Assets": 0.04389999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-015",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - STRATUM CORE SF PARTICIPATING SHS -A- SERIES -0825-",
+        "ISIN_Secur_No": "XD1484291624",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1000,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "01.08.25",
+        "Total_Market_Value": 100000,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100000,
+        "Percentage_Total_Assets": 0.04389999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-016",
+        "Asset_Category": "STRUCTURED PRODUCTS",
+        "Security_Name": "STANDARD CHARTERED 1.6767% (PR) REV CONV 25-23.06.26 (EXP.17.06.26) ALIBABA",
+        "ISIN_Secur_No": "XS2981244168",
+        "Units_Nominal": 800000,
+        "Net_Average_Cost": 100,
+        "Cost_Currency": "HKD",
+        "Market_Price": 96.86,
+        "Market_Price_Currency": "HKD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 774880,
+        "Market_Value_Currency": "HKD",
+        "Accrued_Interest": 8718.67,
+        "Accrued_Interest_USD": 1120.48,
+        "Value_in_USD": 99583.7,
+        "Percentage_Total_Assets": 0.0442,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      }
+    ],
+    "accounts": [
+      {
+        "Account_ID": "ACC-001",
+        "Currency": "USD",
+        "Amount": 128.76,
+        "Account_Name": "CURRENT ACCOUNT NUMBER 0001",
+        "Account_Number": "0001",
+        "Market_Value": 128.76,
+        "Value_in_USD": 128.76,
+        "Percentage_Assets": 0.0001,
+        "Source_Page": 5
+      }
+    ],
+    "loans": [
+      {
+        "Loan_ID": "LOAN-001",
+        "Currency": "USD",
+        "Original_Amount": -100502.87,
+        "Description": "FIXED LOAN FROM 01.10.25 TR0565609.001",
+        "Loan_Reference": "TR0565609.001",
+        "Maturity_Date": "08.10.25",
+        "Interest_Rate_Pct": 0.053,
+        "Market_Value": -100502.87,
+        "Accrued_Interest": null,
+        "USD_Equivalent": -100502.87,
+        "Percentage_Assets": -0.0441,
+        "Source_Page": 5
+      }
+    ],
+    "currency_breakdown": [
+      {
+        "Asset_Class": "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+        "Total_000s_USD": 256,
+        "Total_Percentage": 0.1122,
+        "USD_000s": 256,
+        "USD_Percentage": 0.1122,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "EQUITIES, EQUITY FUNDS & CERTIFICATES 256 11.22 256 11.22"
+      },
+      {
+        "Asset_Class": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Total_000s_USD": 2024,
+        "Total_Percentage": 0.8876000000000001,
+        "USD_000s": 2024,
+        "USD_Percentage": 0.8876000000000001,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "ALTERNATIVE INVESTMENTS & CERTIFICATES 2\u2019024 88.76 2\u2019024 88.76"
+      },
+      {
+        "Asset_Class": "STRUCTURED PRODUCTS",
+        "Total_000s_USD": 101,
+        "Total_Percentage": 0.0442,
+        "USD_000s": 101,
+        "USD_Percentage": 0.0442,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "STRUCTURED PRODUCTS 101 4.42 101 4.42"
+      },
+      {
+        "Asset_Class": "CURRENT ACCOUNTS",
+        "Total_000s_USD": 0,
+        "Total_Percentage": 0.0001,
+        "USD_000s": 0,
+        "USD_Percentage": 0.0001,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "CURRENT ACCOUNTS 0 0.01 0 0.01"
+      },
+      {
+        "Asset_Class": "LOANS",
+        "Total_000s_USD": -101,
+        "Total_Percentage": -0.0441,
+        "USD_000s": -101,
+        "USD_Percentage": -0.0441,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "LOANS 101- 4.41- 101- 4.41-"
+      },
+      {
+        "Asset_Class": "NET ASSETS USD",
+        "Total_000s_USD": 2280,
+        "Total_Percentage": 1,
+        "USD_000s": 2179,
+        "USD_Percentage": 0.9558,
+        "HKD_EUR_000s": 101,
+        "HKD_EUR_Percentage": 0.0442,
+        "Source_Page": 2,
+        "Raw_Text": "NET ASSETS USD 2\u2019280 100.00 2\u2019179 95.58 101 4.42"
+      }
+    ],
+    "monthly_perf": [
+      {
+        "Period": "01.10.2024",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 2238744,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 7
+      },
+      {
+        "Period": "10.2024",
+        "Performance_Pct": 0.0068,
+        "Cumulative_Performance_Pct": 0.0068,
+        "End_of_Period_Assets": 2254035,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 15291,
+        "Net_Income": 12096,
+        "Return_on_Net_Income_Pct": 0.0054,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "11.2024",
+        "Performance_Pct": 0.005500000000000001,
+        "Cumulative_Performance_Pct": 0.0124,
+        "End_of_Period_Assets": 2266450,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 12415,
+        "Net_Income": 5271,
+        "Return_on_Net_Income_Pct": 0.0023,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "12.2024",
+        "Performance_Pct": 0.0035,
+        "Cumulative_Performance_Pct": 0.0159,
+        "End_of_Period_Assets": 2260746,
+        "Period_Deposits_Withdrawals": -13658,
+        "Change_in_Total_Assets": 7954,
+        "Net_Income": 7385,
+        "Return_on_Net_Income_Pct": 0.0032,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "01.2025",
+        "Performance_Pct": 0.0103,
+        "Cumulative_Performance_Pct": 0.0264,
+        "End_of_Period_Assets": 2284004,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 23257,
+        "Net_Income": 9345,
+        "Return_on_Net_Income_Pct": 0.004099999999999999,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "02.2025",
+        "Performance_Pct": 0.0032,
+        "Cumulative_Performance_Pct": 0.0296,
+        "End_of_Period_Assets": 2291213,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 7210,
+        "Net_Income": 4497,
+        "Return_on_Net_Income_Pct": 0.0019,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "03.2025",
+        "Performance_Pct": 0.0084,
+        "Cumulative_Performance_Pct": 0.0383,
+        "End_of_Period_Assets": 2310471,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 19258,
+        "Net_Income": 5173,
+        "Return_on_Net_Income_Pct": 0.0022,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "04.2025",
+        "Performance_Pct": -0.0077,
+        "Cumulative_Performance_Pct": 0.0303,
+        "End_of_Period_Assets": 2292663,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -17807,
+        "Net_Income": 8298,
+        "Return_on_Net_Income_Pct": 0.0035,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "05.2025",
+        "Performance_Pct": -0.0017,
+        "Cumulative_Performance_Pct": 0.0286,
+        "End_of_Period_Assets": 2288860,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -3803,
+        "Net_Income": 3395,
+        "Return_on_Net_Income_Pct": 0.0014,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "06.2025",
+        "Performance_Pct": 0.0191,
+        "Cumulative_Performance_Pct": 0.0482,
+        "End_of_Period_Assets": 2267669,
+        "Period_Deposits_Withdrawals": -64470,
+        "Change_in_Total_Assets": 43279,
+        "Net_Income": 2932,
+        "Return_on_Net_Income_Pct": 0.0012,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "07.2025",
+        "Performance_Pct": 0.0027,
+        "Cumulative_Performance_Pct": 0.05110000000000001,
+        "End_of_Period_Assets": 2273967,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 6298,
+        "Net_Income": 7177,
+        "Return_on_Net_Income_Pct": 0.0031,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "08.2025",
+        "Performance_Pct": 0.0179,
+        "Cumulative_Performance_Pct": 0.0699,
+        "End_of_Period_Assets": 2269920,
+        "Period_Deposits_Withdrawals": -44056,
+        "Change_in_Total_Assets": 39909,
+        "Net_Income": 721,
+        "Return_on_Net_Income_Pct": 0.0003,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "09.2025",
+        "Performance_Pct": 0.0044,
+        "Cumulative_Performance_Pct": 0.0746,
+        "End_of_Period_Assets": 2279848,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 9928,
+        "Net_Income": 685,
+        "Return_on_Net_Income_Pct": 0.0003,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": -122184,
+        "Change_in_Total_Assets": 163189,
+        "Net_Income": 66976,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 7
+      }
+    ],
+    "annual_perf": [
+      {
+        "Period": "20.12.2016",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 635000,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2016",
+        "Performance_Pct": -0.0017,
+        "Cumulative_Performance_Pct": -0.0017,
+        "End_of_Period_Assets": 633891,
+        "Period_Deposits_Withdrawals": 635000,
+        "Change_in_Total_Assets": -1109,
+        "Net_Income": 19,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2017",
+        "Performance_Pct": 0.0784,
+        "Cumulative_Performance_Pct": 0.0765,
+        "End_of_Period_Assets": 979351,
+        "Period_Deposits_Withdrawals": 276654,
+        "Change_in_Total_Assets": 68805,
+        "Net_Income": 38121,
+        "Return_on_Net_Income_Pct": 0.0446,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2018",
+        "Performance_Pct": -0.1088,
+        "Cumulative_Performance_Pct": -0.0406,
+        "End_of_Period_Assets": 1311961,
+        "Period_Deposits_Withdrawals": 496190,
+        "Change_in_Total_Assets": -163580,
+        "Net_Income": 47397,
+        "Return_on_Net_Income_Pct": 0.0336,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2019",
+        "Performance_Pct": 0.1779,
+        "Cumulative_Performance_Pct": 0.13,
+        "End_of_Period_Assets": 1741063,
+        "Period_Deposits_Withdrawals": 190672,
+        "Change_in_Total_Assets": 238134,
+        "Net_Income": 59959,
+        "Return_on_Net_Income_Pct": 0.0434,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2020",
+        "Performance_Pct": -0.0074,
+        "Cumulative_Performance_Pct": 0.1217,
+        "End_of_Period_Assets": 1707060,
+        "Period_Deposits_Withdrawals": -20940,
+        "Change_in_Total_Assets": -14165,
+        "Net_Income": 101884,
+        "Return_on_Net_Income_Pct": 0.05860000000000001,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2021",
+        "Performance_Pct": -0.07769999999999999,
+        "Cumulative_Performance_Pct": 0.0345,
+        "End_of_Period_Assets": 1759915,
+        "Period_Deposits_Withdrawals": 200043,
+        "Change_in_Total_Assets": -147188,
+        "Net_Income": 80578,
+        "Return_on_Net_Income_Pct": 0.0425,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2022",
+        "Performance_Pct": -0.0919,
+        "Cumulative_Performance_Pct": -0.0605,
+        "End_of_Period_Assets": 1516945,
+        "Period_Deposits_Withdrawals": -80582,
+        "Change_in_Total_Assets": -162388,
+        "Net_Income": 45356,
+        "Return_on_Net_Income_Pct": 0.0261,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2023",
+        "Performance_Pct": 0.0535,
+        "Cumulative_Performance_Pct": -0.0103,
+        "End_of_Period_Assets": 1584019,
+        "Period_Deposits_Withdrawals": -13532,
+        "Change_in_Total_Assets": 80606,
+        "Net_Income": 79063,
+        "Return_on_Net_Income_Pct": 0.0524,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2024",
+        "Performance_Pct": 0.0672,
+        "Cumulative_Performance_Pct": 0.0562,
+        "End_of_Period_Assets": 2260746,
+        "Period_Deposits_Withdrawals": 542470,
+        "Change_in_Total_Assets": 134257,
+        "Net_Income": 120813,
+        "Return_on_Net_Income_Pct": 0.0591,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "30.09.2025",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0.0189,
+        "End_of_Period_Assets": 42224,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 2117449,
+        "Change_in_Total_Assets": 160901,
+        "Net_Income": 615414,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 8
+      }
+    ],
+    "net_assets_summary": {
+      "Assets": 2278728.01,
+      "Accrued Interest on Securities": 1120.48,
+      "Net Accrued Interest on Deposits and Loans": 0,
+      "Total Assets": 2279848.49,
+      "Commitments": 0
+    },
+    "exchange_rates": [
+      {
+        "Base_Currency": "USD",
+        "Target_Currency": "HKD",
+        "Exchange_Rate": 7.78119349,
+        "Source_Text": "1 USD 7.78119349 HKD",
+        "Source_Page": 6
+      }
+    ],
+    "unmapped": [
+      {
+        "Page_Number": "N/A",
+        "Bounding_Box": "N/A",
+        "Raw_Content": "No unmapped content. All source content classified and parsed.",
+        "Audit_Reason": "ZERO_LOSS_VERIFIED"
+      }
+    ],
+    "validation_checks": [
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Page Coverage",
+        "Message": "All source pages accounted for (11 of 11 pages processed).",
+        "Details": "{'processed_pages': 11, 'total_pages': 11}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Portfolio Identifier",
+        "Message": "Portfolio number successfully extracted: 1002590.",
+        "Details": "{'portfolio_number': '1002590'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Valuation Date",
+        "Message": "Valuation date verified: 30.09.2025.",
+        "Details": "{'valuation_date': '30.09.2025'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Holdings Count",
+        "Message": "Extracted 16 security holdings records across statements.",
+        "Details": "{'holdings_count': 16}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Security Identifiers",
+        "Message": "All extracted holdings have valid ISIN / security numbers.",
+        "Details": "{'missing_count': 0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Subtotal Reconciliation",
+        "Message": "All security category subtotals match the source statement exactly.",
+        "Details": "{'status': 'MATCH'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Financial Reconciliation",
+        "Check_Name": "Net Assets Balance Equation",
+        "Message": "Assets (2278728.01) + Accrued Int (1120.48) + Loan Accrued (0) = Total Assets (2279848.49).",
+        "Details": "{'calculated': 2279848.49, 'statement': 2279848.49}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Deposits/Withdrawals Total",
+        "Message": "Monthly deposits/withdrawals sum (-122184) matches Total row (-122184).",
+        "Details": "{'calculated': -122184.0, 'total_row': -122184.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Net Income Total",
+        "Message": "Monthly net income sum (66975) matches Total row (66976) within standard integer rounding tolerance (diff=1).",
+        "Details": "{'calculated': 66975.0, 'total_row': 66976.0, 'diff': 1.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Extraction Quality",
+        "Check_Name": "Unmapped Content",
+        "Message": "Zero unmapped items. Complete deterministic mapping of all financial data.",
+        "Details": "{'unmapped_count': 0}"
+      }
+    ]
+  },
+  "3_UBP_1002590_Jan2026.pdf": {
+    "filename": "3_UBP_1002590_Jan2026.pdf",
+    "source_pages": 12,
+    "excel_name": "UBP_1002590_3_UBP_1002590_Jan2026.xlsx",
+    "sheets": [
+      "Portfolio_Overview",
+      "Asset_Allocation",
+      "Currency_Breakdown",
+      "Holdings",
+      "Current_Accounts",
+      "Loans",
+      "Transactions",
+      "Net_Assets_Summary",
+      "Exchange_Rates",
+      "Monthly_Performance",
+      "Annual_Performance",
+      "Comments",
+      "Counts",
+      "Validation",
+      "Unmapped_Content",
+      "Raw_Page_Text"
+    ],
+    "sheet_stats": {
+      "Portfolio_Overview": {
+        "max_row": 11,
+        "max_col": 2
+      },
+      "Asset_Allocation": {
+        "max_row": 1,
+        "max_col": 6
+      },
+      "Currency_Breakdown": {
+        "max_row": 7,
+        "max_col": 9
+      },
+      "Holdings": {
+        "max_row": 18,
+        "max_col": 20
+      },
+      "Current_Accounts": {
+        "max_row": 3,
+        "max_col": 9
+      },
+      "Loans": {
+        "max_row": 3,
+        "max_col": 12
+      },
+      "Transactions": {
+        "max_row": 2,
+        "max_col": 10
+      },
+      "Net_Assets_Summary": {
+        "max_row": 6,
+        "max_col": 4
+      },
+      "Exchange_Rates": {
+        "max_row": 2,
+        "max_col": 5
+      },
+      "Monthly_Performance": {
+        "max_row": 15,
+        "max_col": 10
+      },
+      "Annual_Performance": {
+        "max_row": 13,
+        "max_col": 10
+      },
+      "Comments": {
+        "max_row": 4,
+        "max_col": 3
+      },
+      "Counts": {
+        "max_row": 12,
+        "max_col": 3
+      },
+      "Validation": {
+        "max_row": 11,
+        "max_col": 5
+      },
+      "Unmapped_Content": {
+        "max_row": 2,
+        "max_col": 4
+      },
+      "Raw_Page_Text": {
+        "max_row": 13,
+        "max_col": 7
+      }
+    },
+    "holdings": [
+      {
+        "Holding_ID": "HLD-001",
+        "Asset_Category": "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - TCIM OFFSHORE SF SHS -A- SERIES -INITIAL-",
+        "ISIN_Secur_No": "127676268.000",
+        "Units_Nominal": 204.5226,
+        "Net_Average_Cost": 990.68,
+        "Cost_Currency": "USD",
+        "Market_Price": 1256.85,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 257054.6,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 257054.6,
+        "Percentage_Total_Assets": 0.09970000000000001,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-002",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ST TECH FUND SF PARTICIPATING SHS -A- INITIAL SERIES USD",
+        "ISIN_Secur_No": "XFCS00X6RSF8",
+        "Units_Nominal": 107.1942,
+        "Net_Average_Cost": 1000.6,
+        "Cost_Currency": "USD",
+        "Market_Price": 1332.22,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 142807.09,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 142807.09,
+        "Percentage_Total_Assets": 0.0554,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-003",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - GNP G2 SF SHS -A- SERIES -0623-",
+        "ISIN_Secur_No": "XFCS00X6RSN2",
+        "Units_Nominal": 206.1888,
+        "Net_Average_Cost": 1000,
+        "Cost_Currency": "USD",
+        "Market_Price": 1376.55,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 283830.94,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 283830.94,
+        "Percentage_Total_Assets": 0.1101,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-004",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ALPHA ALTERNATIVES EQUITY ABSOL.RETURN SF SHS -A-SER. 0324-",
+        "ISIN_Secur_No": "XFCS00X6RK62",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1104.75,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 220951.86,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 220951.86,
+        "Percentage_Total_Assets": 0.0857,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-005",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "SGA SPC -GLOB VOLATILITY STRAT FD SP RED PTG.SHS -E- SGAGVSFSP INITIAL SERIES",
+        "ISIN_Secur_No": "XD1356846166",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1226.04,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.10.25",
+        "Total_Market_Value": 245209.42,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 245209.42,
+        "Percentage_Total_Assets": 0.0951,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-006",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - WEL EUROPE LS FUND SF SHS -A- SERIES -0125-",
+        "ISIN_Secur_No": "XFCS00X6RNW4",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1368.47,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 136847.15,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 136847.15,
+        "Percentage_Total_Assets": 0.05309999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-007",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - TRI CHINA LS SF SHS -A- SERIES -0325-",
+        "ISIN_Secur_No": "XFCS00X6RPC1",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1061.57,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 106157.95,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 106157.95,
+        "Percentage_Total_Assets": 0.0412,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-008",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TARA MACRO SF SHS -A- SERIES -0425-",
+        "ISIN_Secur_No": "XFCS00X6RK21",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1036.19,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 103619.81,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 103619.81,
+        "Percentage_Total_Assets": 0.04019999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-009",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - WEL GLO GTH SF PARTICIPATING SHS -A- SERIES -0525-",
+        "ISIN_Secur_No": "XFCS00X6RP34",
+        "Units_Nominal": 150,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 998.82,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 149824.23,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 149824.23,
+        "Percentage_Total_Assets": 0.0581,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-010",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ARV ARBITRAGE FUND SF SHS -A- SERIES -0825-",
+        "ISIN_Secur_No": "XD1479481271",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1016.64,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 101664.28,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 101664.28,
+        "Percentage_Total_Assets": 0.0394,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-011",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - STRATUM CORE SF PARTICIPATING SHS -A- SERIES -0825-",
+        "ISIN_Secur_No": "XD1484291624",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1054.21,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.10.25",
+        "Total_Market_Value": 105421.55,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 105421.55,
+        "Percentage_Total_Assets": 0.0409,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-012",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - WEL EUROPE LS FUND SF SHS -A- SERIES -0925-",
+        "ISIN_Secur_No": "XD1493735058",
+        "Units_Nominal": 125,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1039.38,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 129923.16,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 129923.16,
+        "Percentage_Total_Assets": 0.0504,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-013",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - CTN SF PARTICIPATING SHS -A- SERIES -0925-",
+        "ISIN_Secur_No": "XD1494182474",
+        "Units_Nominal": 150,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1022.11,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 153317.19,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 153317.19,
+        "Percentage_Total_Assets": 0.0595,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-014",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - SX SF PARTICIPATING SHS -A- SERIES -0925-",
+        "ISIN_Secur_No": "XD1494895042",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1010.9,
+        "Cost_Currency": "USD",
+        "Market_Price": 1028.52,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.11.25",
+        "Total_Market_Value": 102852.46,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 102852.46,
+        "Percentage_Total_Assets": 0.0399,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-015",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TAFEX SF PARTICIPATING SHS -A- SERIES -1025-",
+        "ISIN_Secur_No": "XD1503813762",
+        "Units_Nominal": 100,
+        "Net_Average_Cost": 1000,
+        "Cost_Currency": "USD",
+        "Market_Price": 1001.04,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.10.25",
+        "Total_Market_Value": 100104.46,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100104.46,
+        "Percentage_Total_Assets": 0.0388,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-016",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - SIGMA CORE SF PARTICIPATING SHS -A- SERIES -1125-",
+        "ISIN_Secur_No": "XD1512606108",
+        "Units_Nominal": 200,
+        "Net_Average_Cost": 1007.63,
+        "Cost_Currency": "USD",
+        "Market_Price": 1000,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "01.11.25",
+        "Total_Market_Value": 200000,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 200000,
+        "Percentage_Total_Assets": 0.0776,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-017",
+        "Asset_Category": "STRUCTURED PRODUCTS",
+        "Security_Name": "STANDARD CHARTERED 1.6767% (PR) REV CONV 25-23.06.26 (EXP.17.06.26) ALIBABA",
+        "ISIN_Secur_No": "XS2981244168",
+        "Units_Nominal": 800000,
+        "Net_Average_Cost": 100,
+        "Cost_Currency": "HKD",
+        "Market_Price": 89.34,
+        "Market_Price_Currency": "HKD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 714720,
+        "Market_Value_Currency": "HKD",
+        "Accrued_Interest": 2011.97,
+        "Accrued_Interest_USD": 258.65,
+        "Value_in_USD": 91881.46,
+        "Percentage_Total_Assets": 0.0357,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 5
+      }
+    ],
+    "accounts": [
+      {
+        "Account_ID": "ACC-001",
+        "Currency": "HKD",
+        "Amount": 26827.2,
+        "Account_Name": "CURRENT ACCOUNT NUMBER 0003",
+        "Account_Number": "0003",
+        "Market_Value": 26827.2,
+        "Value_in_USD": 3448.8,
+        "Percentage_Assets": 0.0013,
+        "Source_Page": 6
+      },
+      {
+        "Account_ID": "ACC-002",
+        "Currency": "USD",
+        "Amount": 247821.91,
+        "Account_Name": "CURRENT ACCOUNT NUMBER 0001",
+        "Account_Number": "0001",
+        "Market_Value": 247821.91,
+        "Value_in_USD": 247821.91,
+        "Percentage_Assets": 0.09609999999999999,
+        "Source_Page": 6
+      }
+    ],
+    "loans": [
+      {
+        "Loan_ID": "LOAN-001",
+        "Currency": "USD",
+        "Original_Amount": -100580.25,
+        "Description": "FIXED LOAN FROM 15.10.25 TR0568980.001",
+        "Loan_Reference": "TR0568980.001",
+        "Maturity_Date": "15.01.26",
+        "Interest_Rate_Pct": 0.0515,
+        "Market_Value": -100580.25,
+        "Accrued_Interest": -1107.92,
+        "USD_Equivalent": -100580.25,
+        "Percentage_Assets": -0.0395,
+        "Source_Page": 6
+      },
+      {
+        "Loan_ID": "LOAN-002",
+        "Currency": "USD",
+        "Original_Amount": -202457.5,
+        "Description": "FIXED LOAN FROM 17.11.25 TR0577451.001",
+        "Loan_Reference": "TR0577451.001",
+        "Maturity_Date": "17.02.26",
+        "Interest_Rate_Pct": 0.0508,
+        "Market_Value": -202457.5,
+        "Accrued_Interest": -1257.04,
+        "USD_Equivalent": -202457.5,
+        "Percentage_Assets": -0.079,
+        "Source_Page": 6
+      }
+    ],
+    "currency_breakdown": [
+      {
+        "Asset_Class": "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+        "Total_000s_USD": 257,
+        "Total_Percentage": 0.09970000000000001,
+        "USD_000s": 257,
+        "USD_Percentage": 0.09970000000000001,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "EQUITIES, EQUITY FUNDS & CERTIFICATES 257 9.97 257 9.97"
+      },
+      {
+        "Asset_Class": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Total_000s_USD": 2283,
+        "Total_Percentage": 0.8855,
+        "USD_000s": 2283,
+        "USD_Percentage": 0.8855,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "ALTERNATIVE INVESTMENTS & CERTIFICATES 2\u2019283 88.55 2\u2019283 88.55"
+      },
+      {
+        "Asset_Class": "STRUCTURED PRODUCTS",
+        "Total_000s_USD": 92,
+        "Total_Percentage": 0.0357,
+        "USD_000s": 92,
+        "USD_Percentage": 0.0357,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "STRUCTURED PRODUCTS 92 3.57 92 3.57"
+      },
+      {
+        "Asset_Class": "CURRENT ACCOUNTS",
+        "Total_000s_USD": 251,
+        "Total_Percentage": 0.0975,
+        "USD_000s": 248,
+        "USD_Percentage": 0.09609999999999999,
+        "HKD_EUR_000s": 3,
+        "HKD_EUR_Percentage": 0.0013,
+        "Source_Page": 2,
+        "Raw_Text": "CURRENT ACCOUNTS 251 9.75 248 9.61 3 0.13"
+      },
+      {
+        "Asset_Class": "LOANS",
+        "Total_000s_USD": -305,
+        "Total_Percentage": -0.1185,
+        "USD_000s": -305,
+        "USD_Percentage": -0.1185,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "LOANS 305- 11.85- 305- 11.85-"
+      },
+      {
+        "Asset_Class": "NET ASSETS USD",
+        "Total_000s_USD": 2578,
+        "Total_Percentage": 1,
+        "USD_000s": 2482,
+        "USD_Percentage": 0.9629000000000001,
+        "HKD_EUR_000s": 96,
+        "HKD_EUR_Percentage": 0.0371,
+        "Source_Page": 2,
+        "Raw_Text": "NET ASSETS USD 2\u2019578 100.00 2\u2019482 96.29 96 3.71"
+      }
+    ],
+    "monthly_perf": [
+      {
+        "Period": "01.01.2025",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 2260746,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "01.2025",
+        "Performance_Pct": 0.0103,
+        "Cumulative_Performance_Pct": 0.0103,
+        "End_of_Period_Assets": 2284004,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 23257,
+        "Net_Income": 9345,
+        "Return_on_Net_Income_Pct": 0.004099999999999999,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "02.2025",
+        "Performance_Pct": 0.0032,
+        "Cumulative_Performance_Pct": 0.0135,
+        "End_of_Period_Assets": 2291213,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 7210,
+        "Net_Income": 4497,
+        "Return_on_Net_Income_Pct": 0.0019,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "03.2025",
+        "Performance_Pct": 0.0084,
+        "Cumulative_Performance_Pct": 0.022,
+        "End_of_Period_Assets": 2310471,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 19258,
+        "Net_Income": 5173,
+        "Return_on_Net_Income_Pct": 0.0022,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "04.2025",
+        "Performance_Pct": -0.0077,
+        "Cumulative_Performance_Pct": 0.0141,
+        "End_of_Period_Assets": 2292663,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -17807,
+        "Net_Income": 8298,
+        "Return_on_Net_Income_Pct": 0.0035,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "05.2025",
+        "Performance_Pct": -0.0017,
+        "Cumulative_Performance_Pct": 0.0124,
+        "End_of_Period_Assets": 2288860,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -3803,
+        "Net_Income": 3395,
+        "Return_on_Net_Income_Pct": 0.0014,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "06.2025",
+        "Performance_Pct": 0.0191,
+        "Cumulative_Performance_Pct": 0.0317,
+        "End_of_Period_Assets": 2267669,
+        "Period_Deposits_Withdrawals": -64470,
+        "Change_in_Total_Assets": 43279,
+        "Net_Income": 2932,
+        "Return_on_Net_Income_Pct": 0.0012,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "07.2025",
+        "Performance_Pct": 0.0027,
+        "Cumulative_Performance_Pct": 0.0346,
+        "End_of_Period_Assets": 2273967,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 6298,
+        "Net_Income": 7177,
+        "Return_on_Net_Income_Pct": 0.0031,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "08.2025",
+        "Performance_Pct": 0.0179,
+        "Cumulative_Performance_Pct": 0.05309999999999999,
+        "End_of_Period_Assets": 2269920,
+        "Period_Deposits_Withdrawals": -44056,
+        "Change_in_Total_Assets": 39909,
+        "Net_Income": 721,
+        "Return_on_Net_Income_Pct": 0.0003,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "09.2025",
+        "Performance_Pct": 0.0044,
+        "Cumulative_Performance_Pct": 0.05769999999999999,
+        "End_of_Period_Assets": 2279848,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 9928,
+        "Net_Income": 685,
+        "Return_on_Net_Income_Pct": 0.0003,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "10.2025",
+        "Performance_Pct": 0.009300000000000001,
+        "Cumulative_Performance_Pct": 0.0676,
+        "End_of_Period_Assets": 2300994,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 21145,
+        "Net_Income": -8,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "11.2025",
+        "Performance_Pct": 0.0024,
+        "Cumulative_Performance_Pct": 0.0701,
+        "End_of_Period_Assets": 2306584,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 5590,
+        "Net_Income": -408,
+        "Return_on_Net_Income_Pct": -0.0001,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "12.2025",
+        "Performance_Pct": 0.0088,
+        "Cumulative_Performance_Pct": 0.0796,
+        "End_of_Period_Assets": 2577594,
+        "Period_Deposits_Withdrawals": 250000,
+        "Change_in_Total_Assets": 21010,
+        "Net_Income": -497,
+        "Return_on_Net_Income_Pct": -0.0002,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 8
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 141474,
+        "Change_in_Total_Assets": 175275,
+        "Net_Income": 41311,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 8
+      }
+    ],
+    "annual_perf": [
+      {
+        "Period": "20.12.2016",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 635000,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2016",
+        "Performance_Pct": -0.0017,
+        "Cumulative_Performance_Pct": -0.0017,
+        "End_of_Period_Assets": 633891,
+        "Period_Deposits_Withdrawals": 635000,
+        "Change_in_Total_Assets": -1109,
+        "Net_Income": 19,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2017",
+        "Performance_Pct": 0.0784,
+        "Cumulative_Performance_Pct": 0.0765,
+        "End_of_Period_Assets": 979351,
+        "Period_Deposits_Withdrawals": 276654,
+        "Change_in_Total_Assets": 68805,
+        "Net_Income": 38121,
+        "Return_on_Net_Income_Pct": 0.0446,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2018",
+        "Performance_Pct": -0.1088,
+        "Cumulative_Performance_Pct": -0.0406,
+        "End_of_Period_Assets": 1311961,
+        "Period_Deposits_Withdrawals": 496190,
+        "Change_in_Total_Assets": -163580,
+        "Net_Income": 47397,
+        "Return_on_Net_Income_Pct": 0.0336,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2019",
+        "Performance_Pct": 0.1779,
+        "Cumulative_Performance_Pct": 0.13,
+        "End_of_Period_Assets": 1741063,
+        "Period_Deposits_Withdrawals": 190672,
+        "Change_in_Total_Assets": 238134,
+        "Net_Income": 59959,
+        "Return_on_Net_Income_Pct": 0.0434,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2020",
+        "Performance_Pct": -0.0074,
+        "Cumulative_Performance_Pct": 0.1217,
+        "End_of_Period_Assets": 1707060,
+        "Period_Deposits_Withdrawals": -20940,
+        "Change_in_Total_Assets": -14165,
+        "Net_Income": 101884,
+        "Return_on_Net_Income_Pct": 0.05860000000000001,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2021",
+        "Performance_Pct": -0.07769999999999999,
+        "Cumulative_Performance_Pct": 0.0345,
+        "End_of_Period_Assets": 1759915,
+        "Period_Deposits_Withdrawals": 200043,
+        "Change_in_Total_Assets": -147188,
+        "Net_Income": 80578,
+        "Return_on_Net_Income_Pct": 0.0425,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2022",
+        "Performance_Pct": -0.0919,
+        "Cumulative_Performance_Pct": -0.0605,
+        "End_of_Period_Assets": 1516945,
+        "Period_Deposits_Withdrawals": -80582,
+        "Change_in_Total_Assets": -162388,
+        "Net_Income": 45356,
+        "Return_on_Net_Income_Pct": 0.0261,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2023",
+        "Performance_Pct": 0.0535,
+        "Cumulative_Performance_Pct": -0.0103,
+        "End_of_Period_Assets": 1584019,
+        "Period_Deposits_Withdrawals": -13532,
+        "Change_in_Total_Assets": 80606,
+        "Net_Income": 79063,
+        "Return_on_Net_Income_Pct": 0.0524,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "2024",
+        "Performance_Pct": 0.0672,
+        "Cumulative_Performance_Pct": 0.0562,
+        "End_of_Period_Assets": 2260746,
+        "Period_Deposits_Withdrawals": 542470,
+        "Change_in_Total_Assets": 134257,
+        "Net_Income": 120813,
+        "Return_on_Net_Income_Pct": 0.0591,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "31.12.2025",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0.0186,
+        "End_of_Period_Assets": 41311,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 9
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 2367449,
+        "Change_in_Total_Assets": 208647,
+        "Net_Income": 614501,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 9
+      }
+    ],
+    "net_assets_summary": {
+      "Assets": 2579700.57,
+      "Accrued Interest on Securities": 258.65,
+      "Net Accrued Interest on Deposits and Loans": -2364.96,
+      "Total Assets": 2577594.26,
+      "Commitments": 0
+    },
+    "exchange_rates": [
+      {
+        "Base_Currency": "USD",
+        "Target_Currency": "HKD",
+        "Exchange_Rate": 7.77871825,
+        "Source_Text": "1 USD 7.77871825 HKD",
+        "Source_Page": 7
+      }
+    ],
+    "unmapped": [
+      {
+        "Page_Number": "N/A",
+        "Bounding_Box": "N/A",
+        "Raw_Content": "No unmapped content. All source content classified and parsed.",
+        "Audit_Reason": "ZERO_LOSS_VERIFIED"
+      }
+    ],
+    "validation_checks": [
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Page Coverage",
+        "Message": "All source pages accounted for (12 of 12 pages processed).",
+        "Details": "{'processed_pages': 12, 'total_pages': 12}"
+      },
+      {
+        "Level": "WARNING",
+        "Category": "Data Completeness",
+        "Check_Name": "Portfolio Identifier",
+        "Message": "Portfolio number could not be fully extracted from document text (detected from filename: 1002590).",
+        "Details": "{'portfolio_number': '1002590', 'source': 'filename_fallback'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Valuation Date",
+        "Message": "Valuation date verified: 31.12.2025.",
+        "Details": "{'valuation_date': '31.12.2025'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Holdings Count",
+        "Message": "Extracted 17 security holdings records across statements.",
+        "Details": "{'holdings_count': 17}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Security Identifiers",
+        "Message": "All extracted holdings have valid ISIN / security numbers.",
+        "Details": "{'missing_count': 0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Subtotal Reconciliation",
+        "Message": "All security category subtotals match the source statement exactly.",
+        "Details": "{'status': 'MATCH'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Financial Reconciliation",
+        "Check_Name": "Net Assets Balance Equation",
+        "Message": "Assets (2579700.57) + Accrued Int (258.65) + Loan Accrued (-2364.96) = Total Assets (2577594.26).",
+        "Details": "{'calculated': 2577594.26, 'statement': 2577594.26}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Deposits/Withdrawals Total",
+        "Message": "Monthly deposits/withdrawals sum (141474) matches Total row (141474).",
+        "Details": "{'calculated': 141474.0, 'total_row': 141474.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Net Income Total",
+        "Message": "Monthly net income sum (41310) matches Total row (41311) within standard integer rounding tolerance (diff=1).",
+        "Details": "{'calculated': 41310.0, 'total_row': 41311.0, 'diff': 1.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Extraction Quality",
+        "Check_Name": "Unmapped Content",
+        "Message": "Zero unmapped items. Complete deterministic mapping of all financial data.",
+        "Details": "{'unmapped_count': 0}"
+      }
+    ]
+  },
+  "4_UBP_1002591_Jul2025.pdf": {
+    "filename": "4_UBP_1002591_Jul2025.pdf",
+    "source_pages": 11,
+    "excel_name": "UBP_1002591_4_UBP_1002591_Jul2025.xlsx",
+    "sheets": [
+      "Portfolio_Overview",
+      "Asset_Allocation",
+      "Currency_Breakdown",
+      "Holdings",
+      "Current_Accounts",
+      "Loans",
+      "Transactions",
+      "Net_Assets_Summary",
+      "Exchange_Rates",
+      "Monthly_Performance",
+      "Annual_Performance",
+      "Comments",
+      "Counts",
+      "Validation",
+      "Unmapped_Content",
+      "Raw_Page_Text"
+    ],
+    "sheet_stats": {
+      "Portfolio_Overview": {
+        "max_row": 11,
+        "max_col": 2
+      },
+      "Asset_Allocation": {
+        "max_row": 1,
+        "max_col": 6
+      },
+      "Currency_Breakdown": {
+        "max_row": 5,
+        "max_col": 9
+      },
+      "Holdings": {
+        "max_row": 10,
+        "max_col": 20
+      },
+      "Current_Accounts": {
+        "max_row": 2,
+        "max_col": 9
+      },
+      "Loans": {
+        "max_row": 2,
+        "max_col": 12
+      },
+      "Transactions": {
+        "max_row": 2,
+        "max_col": 10
+      },
+      "Net_Assets_Summary": {
+        "max_row": 6,
+        "max_col": 4
+      },
+      "Exchange_Rates": {
+        "max_row": 2,
+        "max_col": 5
+      },
+      "Monthly_Performance": {
+        "max_row": 15,
+        "max_col": 10
+      },
+      "Annual_Performance": {
+        "max_row": 10,
+        "max_col": 10
+      },
+      "Comments": {
+        "max_row": 4,
+        "max_col": 3
+      },
+      "Counts": {
+        "max_row": 12,
+        "max_col": 3
+      },
+      "Validation": {
+        "max_row": 11,
+        "max_col": 5
+      },
+      "Unmapped_Content": {
+        "max_row": 2,
+        "max_col": 4
+      },
+      "Raw_Page_Text": {
+        "max_row": 12,
+        "max_col": 7
+      }
+    },
+    "holdings": [
+      {
+        "Holding_ID": "HLD-001",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "RS PRIVATE DEBT ICAV - RS PRIVATE DEBT",
+        "ISIN_Secur_No": "IE00BD9PL588",
+        "Units_Nominal": 156.05,
+        "Net_Average_Cost": 113.33,
+        "Cost_Currency": "EUR",
+        "Market_Price": 74.69,
+        "Market_Price_Currency": "EUR",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 11655.4,
+        "Market_Value_Currency": "EUR",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 13698.08,
+        "Percentage_Total_Assets": 0.016,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-002",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "GOVERNMENT PROPERTIES INVESTMENTS II",
+        "ISIN_Secur_No": "XD0487338556",
+        "Units_Nominal": 250000,
+        "Net_Average_Cost": 0.78972,
+        "Cost_Currency": "USD",
+        "Market_Price": 0.89308,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 223272.25,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 223272.25,
+        "Percentage_Total_Assets": 0.2601,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-003",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "RS PRIVATE DEBT ICAV - RS PRIVATE DEBT",
+        "ISIN_Secur_No": "IE00BMY47228",
+        "Units_Nominal": 150000,
+        "Net_Average_Cost": 1,
+        "Cost_Currency": "USD",
+        "Market_Price": 0,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 0,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 0,
+        "Percentage_Total_Assets": null,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-004",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "RS PRIVATE DEBT ICAV - RS PRIVATE DEBT",
+        "ISIN_Secur_No": "IE00BMY47228",
+        "Units_Nominal": 878.56,
+        "Net_Average_Cost": 98.49,
+        "Cost_Currency": "USD",
+        "Market_Price": 113.98,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 100145.91,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100145.91,
+        "Percentage_Total_Assets": 0.1167,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-005",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TA ASIAN MULTI-FINANCE FUND - ASIAN TRADE FINANCE FUND UNITS ASIAN RECOVERY",
+        "ISIN_Secur_No": "XD1148483633",
+        "Units_Nominal": 1176.409,
+        "Net_Average_Cost": 116.65,
+        "Cost_Currency": "USD",
+        "Market_Price": 34.82,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.05.25",
+        "Total_Market_Value": 40962.56,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 40962.56,
+        "Percentage_Total_Assets": 0.04769999999999999,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-006",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TA ASIAN MULTI-FINANCE FUND - ASIAN TRADE FINANCE FUND UNITS -1C- ASIAN",
+        "ISIN_Secur_No": "XD1148514551",
+        "Units_Nominal": 68.94,
+        "Net_Average_Cost": 116.65,
+        "Cost_Currency": "USD",
+        "Market_Price": 74.85,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.05.25",
+        "Total_Market_Value": 5160.16,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 5160.16,
+        "Percentage_Total_Assets": 0.006,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-007",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TA ASIAN MULTI-FINANCE FUND - ASIAN IN LIQUIDATION TRADE FINANCE FUND UNITS -1D- ASI",
+        "ISIN_Secur_No": "XD1148516028",
+        "Units_Nominal": 308.321,
+        "Net_Average_Cost": 116.65,
+        "Cost_Currency": "USD",
+        "Market_Price": 74.85,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "30.05.25",
+        "Total_Market_Value": 23077.83,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 23077.83,
+        "Percentage_Total_Assets": 0.0269,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-008",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - ST TECH FUND SF PARTICIPATING SHS -A- INITIAL SERIES USD",
+        "ISIN_Secur_No": "126321837.000",
+        "Units_Nominal": 107.1942,
+        "Net_Average_Cost": 1000.6,
+        "Cost_Currency": "USD",
+        "Market_Price": 1040.18,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 111501.66,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 111501.66,
+        "Percentage_Total_Assets": 0.1299,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-009",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TGAF VCC - TGAF - GNP G2 SF SHS -A- SERIES -0623-",
+        "ISIN_Secur_No": "128006689.000",
+        "Units_Nominal": 206.1888,
+        "Net_Average_Cost": 1000,
+        "Cost_Currency": "USD",
+        "Market_Price": 1287.3,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "31.05.25",
+        "Total_Market_Value": 265427.83,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 265427.83,
+        "Percentage_Total_Assets": 0.3092,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      }
+    ],
+    "accounts": [
+      {
+        "Account_ID": "ACC-001",
+        "Currency": "USD",
+        "Amount": 75220.23,
+        "Account_Name": "CURRENT ACCOUNT NUMBER 0001",
+        "Account_Number": "0001",
+        "Market_Value": 75220.23,
+        "Value_in_USD": 75220.23,
+        "Percentage_Assets": 0.0876,
+        "Source_Page": 5
+      }
+    ],
+    "loans": [],
+    "currency_breakdown": [
+      {
+        "Asset_Class": "PRIVATE EQUITY",
+        "Total_000s_USD": 337,
+        "Total_Percentage": 0.3927,
+        "USD_000s": 323,
+        "USD_Percentage": 0.3767,
+        "HKD_EUR_000s": 14,
+        "HKD_EUR_Percentage": 0.016,
+        "Source_Page": 2,
+        "Raw_Text": "PRIVATE EQUITY 337 39.27 323 37.67 14 1.60"
+      },
+      {
+        "Asset_Class": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Total_000s_USD": 446,
+        "Total_Percentage": 0.5196999999999999,
+        "USD_000s": 446,
+        "USD_Percentage": 0.5196999999999999,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "ALTERNATIVE INVESTMENTS & CERTIFICATES 446 51.97 446 51.97"
+      },
+      {
+        "Asset_Class": "CURRENT ACCOUNTS",
+        "Total_000s_USD": 75,
+        "Total_Percentage": 0.0876,
+        "USD_000s": 75,
+        "USD_Percentage": 0.0876,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "CURRENT ACCOUNTS 75 8.76 75 8.76"
+      },
+      {
+        "Asset_Class": "NET ASSETS USD",
+        "Total_000s_USD": 858,
+        "Total_Percentage": 1,
+        "USD_000s": 845,
+        "USD_Percentage": 0.9840000000000001,
+        "HKD_EUR_000s": 14,
+        "HKD_EUR_Percentage": 0.016,
+        "Source_Page": 2,
+        "Raw_Text": "NET ASSETS USD 858 100.00 845 98.40 14 1.60"
+      }
+    ],
+    "monthly_perf": [
+      {
+        "Period": "01.07.2024",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 853476,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 7
+      },
+      {
+        "Period": "07.2024",
+        "Performance_Pct": -0.0034,
+        "Cumulative_Performance_Pct": -0.0034,
+        "End_of_Period_Assets": 850545,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -2931,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "08.2024",
+        "Performance_Pct": 0.0037,
+        "Cumulative_Performance_Pct": 0.0002,
+        "End_of_Period_Assets": 853649,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 3105,
+        "Net_Income": 2809,
+        "Return_on_Net_Income_Pct": 0.0033,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "09.2024",
+        "Performance_Pct": 0.0031,
+        "Cumulative_Performance_Pct": 0.0033,
+        "End_of_Period_Assets": 856274,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 2625,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "10.2024",
+        "Performance_Pct": 0.0042,
+        "Cumulative_Performance_Pct": 0.0075,
+        "End_of_Period_Assets": 859884,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 3610,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "11.2024",
+        "Performance_Pct": 0.0029,
+        "Cumulative_Performance_Pct": 0.0104,
+        "End_of_Period_Assets": 862385,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 2500,
+        "Net_Income": 3785,
+        "Return_on_Net_Income_Pct": 0.0044,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "12.2024",
+        "Performance_Pct": 0.0192,
+        "Cumulative_Performance_Pct": 0.0299,
+        "End_of_Period_Assets": 878955,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 16570,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "01.2025",
+        "Performance_Pct": -0.0201,
+        "Cumulative_Performance_Pct": 0.0091,
+        "End_of_Period_Assets": 861257,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -17698,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "02.2025",
+        "Performance_Pct": 0.0027,
+        "Cumulative_Performance_Pct": 0.0119,
+        "End_of_Period_Assets": 863624,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 2367,
+        "Net_Income": 3858,
+        "Return_on_Net_Income_Pct": 0.0044,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "03.2025",
+        "Performance_Pct": -0.0011,
+        "Cumulative_Performance_Pct": 0.0108,
+        "End_of_Period_Assets": 862657,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -967,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "04.2025",
+        "Performance_Pct": -0.0002,
+        "Cumulative_Performance_Pct": 0.0106,
+        "End_of_Period_Assets": 862526,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -131,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "05.2025",
+        "Performance_Pct": -0.0003,
+        "Cumulative_Performance_Pct": 0.0103,
+        "End_of_Period_Assets": 862309,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -218,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "06.2025",
+        "Performance_Pct": -0.004500000000000001,
+        "Cumulative_Performance_Pct": 0.0058,
+        "End_of_Period_Assets": 858467,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -3842,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 4990,
+        "Net_Income": 10453,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 7
+      }
+    ],
+    "annual_perf": [
+      {
+        "Period": "19.09.2019",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 309266,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2019",
+        "Performance_Pct": 0.0383,
+        "Cumulative_Performance_Pct": 0.0383,
+        "End_of_Period_Assets": 321098,
+        "Period_Deposits_Withdrawals": 309266,
+        "Change_in_Total_Assets": 12129,
+        "Net_Income": -1107,
+        "Return_on_Net_Income_Pct": -0.0035,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2020",
+        "Performance_Pct": 0.2546,
+        "Cumulative_Performance_Pct": 0.3027,
+        "End_of_Period_Assets": 635745,
+        "Period_Deposits_Withdrawals": 208775,
+        "Change_in_Total_Assets": 46975,
+        "Net_Income": 4853,
+        "Return_on_Net_Income_Pct": 0.0124,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2021",
+        "Performance_Pct": -0.0919,
+        "Cumulative_Performance_Pct": 0.183,
+        "End_of_Period_Assets": 746002,
+        "Period_Deposits_Withdrawals": 191861,
+        "Change_in_Total_Assets": -81604,
+        "Net_Income": 17841,
+        "Return_on_Net_Income_Pct": 0.0222,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2022",
+        "Performance_Pct": -0.4036,
+        "Cumulative_Performance_Pct": -0.2944,
+        "End_of_Period_Assets": 568044,
+        "Period_Deposits_Withdrawals": 130810,
+        "Change_in_Total_Assets": -308768,
+        "Net_Income": -5806,
+        "Return_on_Net_Income_Pct": -0.0072,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2023",
+        "Performance_Pct": 0.0901,
+        "Cumulative_Performance_Pct": -0.2309,
+        "End_of_Period_Assets": 619217,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 51172,
+        "Net_Income": -16388,
+        "Return_on_Net_Income_Pct": -0.0288,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2024",
+        "Performance_Pct": 0.0033,
+        "Cumulative_Performance_Pct": -0.2283,
+        "End_of_Period_Assets": 878955,
+        "Period_Deposits_Withdrawals": 245716,
+        "Change_in_Total_Assets": 11892,
+        "Net_Income": 10920,
+        "Return_on_Net_Income_Pct": 0.0138,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "30.06.2025",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0.0043,
+        "End_of_Period_Assets": 3858,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 1086427,
+        "Change_in_Total_Assets": -288692,
+        "Net_Income": 14172,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 8
+      }
+    ],
+    "net_assets_summary": {
+      "Assets": 858466.51,
+      "Accrued Interest on Securities": 0,
+      "Net Accrued Interest on Deposits and Loans": 0,
+      "Total Assets": 858466.51,
+      "Commitments": 0
+    },
+    "exchange_rates": [
+      {
+        "Base_Currency": "EUR",
+        "Target_Currency": "USD",
+        "Exchange_Rate": 1.1752553,
+        "Source_Text": "1 EUR 1.1752553 USD",
+        "Source_Page": 6
+      }
+    ],
+    "unmapped": [
+      {
+        "Page_Number": "N/A",
+        "Bounding_Box": "N/A",
+        "Raw_Content": "No unmapped content. All source content classified and parsed.",
+        "Audit_Reason": "ZERO_LOSS_VERIFIED"
+      }
+    ],
+    "validation_checks": [
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Page Coverage",
+        "Message": "All source pages accounted for (11 of 11 pages processed).",
+        "Details": "{'processed_pages': 11, 'total_pages': 11}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Portfolio Identifier",
+        "Message": "Portfolio number successfully extracted: 1002591.",
+        "Details": "{'portfolio_number': '1002591'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Valuation Date",
+        "Message": "Valuation date verified: 30.06.2025.",
+        "Details": "{'valuation_date': '30.06.2025'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Holdings Count",
+        "Message": "Extracted 9 security holdings records across statements.",
+        "Details": "{'holdings_count': 9}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Security Identifiers",
+        "Message": "All extracted holdings have valid ISIN / security numbers.",
+        "Details": "{'missing_count': 0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Subtotal Reconciliation",
+        "Message": "All security category subtotals match the source statement exactly.",
+        "Details": "{'status': 'MATCH'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Financial Reconciliation",
+        "Check_Name": "Net Assets Balance Equation",
+        "Message": "Assets (858466.51) + Accrued Int (0) + Loan Accrued (0) = Total Assets (858466.51).",
+        "Details": "{'calculated': 858466.51, 'statement': 858466.51}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Deposits/Withdrawals Total",
+        "Message": "Monthly deposits/withdrawals sum (0) matches Total row (0).",
+        "Details": "{'calculated': 0.0, 'total_row': 0.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Net Income Total",
+        "Message": "Monthly net income sum (10452) matches Total row (10453) within standard integer rounding tolerance (diff=1).",
+        "Details": "{'calculated': 10452.0, 'total_row': 10453.0, 'diff': 1.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Extraction Quality",
+        "Check_Name": "Unmapped Content",
+        "Message": "Zero unmapped items. Complete deterministic mapping of all financial data.",
+        "Details": "{'unmapped_count': 0}"
+      }
+    ]
+  },
+  "5_UBP_1002591_Oct2025.pdf": {
+    "filename": "5_UBP_1002591_Oct2025.pdf",
+    "source_pages": 11,
+    "excel_name": "UBP_1002591_5_UBP_1002591_Oct2025.xlsx",
+    "sheets": [
+      "Portfolio_Overview",
+      "Asset_Allocation",
+      "Currency_Breakdown",
+      "Holdings",
+      "Current_Accounts",
+      "Loans",
+      "Transactions",
+      "Net_Assets_Summary",
+      "Exchange_Rates",
+      "Monthly_Performance",
+      "Annual_Performance",
+      "Comments",
+      "Counts",
+      "Validation",
+      "Unmapped_Content",
+      "Raw_Page_Text"
+    ],
+    "sheet_stats": {
+      "Portfolio_Overview": {
+        "max_row": 11,
+        "max_col": 2
+      },
+      "Asset_Allocation": {
+        "max_row": 1,
+        "max_col": 6
+      },
+      "Currency_Breakdown": {
+        "max_row": 6,
+        "max_col": 9
+      },
+      "Holdings": {
+        "max_row": 10,
+        "max_col": 20
+      },
+      "Current_Accounts": {
+        "max_row": 2,
+        "max_col": 9
+      },
+      "Loans": {
+        "max_row": 2,
+        "max_col": 12
+      },
+      "Transactions": {
+        "max_row": 2,
+        "max_col": 10
+      },
+      "Net_Assets_Summary": {
+        "max_row": 6,
+        "max_col": 4
+      },
+      "Exchange_Rates": {
+        "max_row": 2,
+        "max_col": 5
+      },
+      "Monthly_Performance": {
+        "max_row": 15,
+        "max_col": 10
+      },
+      "Annual_Performance": {
+        "max_row": 10,
+        "max_col": 10
+      },
+      "Comments": {
+        "max_row": 4,
+        "max_col": 3
+      },
+      "Counts": {
+        "max_row": 12,
+        "max_col": 3
+      },
+      "Validation": {
+        "max_row": 11,
+        "max_col": 5
+      },
+      "Unmapped_Content": {
+        "max_row": 2,
+        "max_col": 4
+      },
+      "Raw_Page_Text": {
+        "max_row": 12,
+        "max_col": 7
+      }
+    },
+    "holdings": [
+      {
+        "Holding_ID": "HLD-001",
+        "Asset_Category": "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+        "Security_Name": "CS INVESTMENT FUNDS 1 SICAV - UBS (LUX) FINANCIAL BOND FUND SHS -(USD HEDGED)",
+        "ISIN_Secur_No": "LU2001707251",
+        "Units_Nominal": 93.27,
+        "Net_Average_Cost": 1086.48,
+        "Cost_Currency": "USD",
+        "Market_Price": 1057.63,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 98645.15,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 98645.15,
+        "Percentage_Total_Assets": 0.1072,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-002",
+        "Asset_Category": "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+        "Security_Name": "FULLERTON FUNDS S2 - FULLERTON FIXED BLOC. MISC. TRANS TERM FUND 4 UNITS -A- FLOATING",
+        "ISIN_Secur_No": "SGXZ40236853",
+        "Units_Nominal": 500000,
+        "Net_Average_Cost": 1.01,
+        "Cost_Currency": "USD",
+        "Market_Price": 0.74934,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 374670,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 374670,
+        "Percentage_Total_Assets": 0.4073,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-003",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "RS PRIVATE DEBT ICAV - RS PRIVATE DEBT",
+        "ISIN_Secur_No": "IE00BD9PL588",
+        "Units_Nominal": 156.05,
+        "Net_Average_Cost": 113.33,
+        "Cost_Currency": "EUR",
+        "Market_Price": 74.58,
+        "Market_Price_Currency": "EUR",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 11639.55,
+        "Market_Value_Currency": "EUR",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 13652.06,
+        "Percentage_Total_Assets": 0.0148,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-004",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "GOVERNMENT PROPERTIES INVESTMENTS II",
+        "ISIN_Secur_No": "XD0487338556",
+        "Units_Nominal": 250000,
+        "Net_Average_Cost": 0.78064,
+        "Cost_Currency": "USD",
+        "Market_Price": 0.89678,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 224196,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 224196,
+        "Percentage_Total_Assets": 0.2437,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-005",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "RS PRIVATE DEBT ICAV - RS PRIVATE DEBT",
+        "ISIN_Secur_No": "IE00BMY47228",
+        "Units_Nominal": 150000,
+        "Net_Average_Cost": 1,
+        "Cost_Currency": "USD",
+        "Market_Price": 0,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 0,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 0,
+        "Percentage_Total_Assets": null,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-006",
+        "Asset_Category": "PRIVATE EQUITY",
+        "Security_Name": "RS PRIVATE DEBT ICAV - RS PRIVATE DEBT",
+        "ISIN_Secur_No": "IE00BMY47228",
+        "Units_Nominal": 864.25,
+        "Net_Average_Cost": 98.49,
+        "Cost_Currency": "USD",
+        "Market_Price": 116.35,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": null,
+        "Total_Market_Value": 100557.65,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 100557.65,
+        "Percentage_Total_Assets": 0.1093,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-007",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TA ASIAN MULTI-FINANCE FUND-ASIAN TR FIN FND UNIT ASIAN RECOV SPVI-SPV2-SER 10 21",
+        "ISIN_Secur_No": "XD1148483633",
+        "Units_Nominal": 1165.141,
+        "Net_Average_Cost": 116.65,
+        "Cost_Currency": "USD",
+        "Market_Price": 34.71,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "29.08.25",
+        "Total_Market_Value": 40442.04,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 40442.04,
+        "Percentage_Total_Assets": 0.044,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 3
+      },
+      {
+        "Holding_ID": "HLD-008",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TA ASIAN MULTI-FINANCE FUND - ASIAN TRADE FINANCE FUND UNITS -1C- ASIAN",
+        "ISIN_Secur_No": "XD1148514551",
+        "Units_Nominal": 52.994,
+        "Net_Average_Cost": 116.65,
+        "Cost_Currency": "USD",
+        "Market_Price": 74.76,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "29.08.25",
+        "Total_Market_Value": 3961.83,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 3961.83,
+        "Percentage_Total_Assets": 0.0043,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      },
+      {
+        "Holding_ID": "HLD-009",
+        "Asset_Category": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Security_Name": "TA ASIAN MULTI-FINANCE FUND - ASIAN IN LIQUIDATION TRADE FINANCE FUND UNITS -1D- ASI",
+        "ISIN_Secur_No": "XD1148516028",
+        "Units_Nominal": 308.321,
+        "Net_Average_Cost": 116.65,
+        "Cost_Currency": "USD",
+        "Market_Price": 74.76,
+        "Market_Price_Currency": "USD",
+        "Market_Price_Date": "29.08.25",
+        "Total_Market_Value": 23050.08,
+        "Market_Value_Currency": "USD",
+        "Accrued_Interest": null,
+        "Accrued_Interest_USD": null,
+        "Value_in_USD": 23050.08,
+        "Percentage_Total_Assets": 0.0251,
+        "Yield": null,
+        "Duration": null,
+        "Rating": null,
+        "Source_Page": 4
+      }
+    ],
+    "accounts": [
+      {
+        "Account_ID": "ACC-001",
+        "Currency": "USD",
+        "Amount": 40619.93,
+        "Account_Name": "CURRENT ACCOUNT NUMBER 0001",
+        "Account_Number": "0001",
+        "Market_Value": 40619.93,
+        "Value_in_USD": 40619.93,
+        "Percentage_Assets": 0.0442,
+        "Source_Page": 5
+      }
+    ],
+    "loans": [],
+    "currency_breakdown": [
+      {
+        "Asset_Class": "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+        "Total_000s_USD": 473,
+        "Total_Percentage": 0.5146000000000001,
+        "USD_000s": 473,
+        "USD_Percentage": 0.5146000000000001,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "BONDS/NOTES, BOND FUNDS & CERTIFICATES 473 51.46 473 51.46"
+      },
+      {
+        "Asset_Class": "PRIVATE EQUITY",
+        "Total_000s_USD": 338,
+        "Total_Percentage": 0.3679,
+        "USD_000s": 325,
+        "USD_Percentage": 0.3531,
+        "HKD_EUR_000s": 14,
+        "HKD_EUR_Percentage": 0.0148,
+        "Source_Page": 2,
+        "Raw_Text": "PRIVATE EQUITY 338 36.79 325 35.31 14 1.48"
+      },
+      {
+        "Asset_Class": "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+        "Total_000s_USD": 67,
+        "Total_Percentage": 0.0733,
+        "USD_000s": 67,
+        "USD_Percentage": 0.0733,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "ALTERNATIVE INVESTMENTS & CERTIFICATES 67 7.33 67 7.33"
+      },
+      {
+        "Asset_Class": "CURRENT ACCOUNTS",
+        "Total_000s_USD": 41,
+        "Total_Percentage": 0.0442,
+        "USD_000s": 41,
+        "USD_Percentage": 0.0442,
+        "HKD_EUR_000s": null,
+        "HKD_EUR_Percentage": null,
+        "Source_Page": 2,
+        "Raw_Text": "CURRENT ACCOUNTS 41 4.42 41 4.42"
+      },
+      {
+        "Asset_Class": "NET ASSETS USD",
+        "Total_000s_USD": 920,
+        "Total_Percentage": 1,
+        "USD_000s": 906,
+        "USD_Percentage": 0.9852,
+        "HKD_EUR_000s": 14,
+        "HKD_EUR_Percentage": 0.0148,
+        "Source_Page": 2,
+        "Raw_Text": "NET ASSETS USD 920 100.00 906 98.52 14 1.48"
+      }
+    ],
+    "monthly_perf": [
+      {
+        "Period": "01.10.2024",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 856274,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 7
+      },
+      {
+        "Period": "10.2024",
+        "Performance_Pct": 0.0042,
+        "Cumulative_Performance_Pct": 0.0042,
+        "End_of_Period_Assets": 859884,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 3610,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "11.2024",
+        "Performance_Pct": 0.0029,
+        "Cumulative_Performance_Pct": 0.0071,
+        "End_of_Period_Assets": 862385,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 2500,
+        "Net_Income": 3785,
+        "Return_on_Net_Income_Pct": 0.0044,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "12.2024",
+        "Performance_Pct": 0.0192,
+        "Cumulative_Performance_Pct": 0.0265,
+        "End_of_Period_Assets": 878955,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 16570,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "01.2025",
+        "Performance_Pct": -0.0201,
+        "Cumulative_Performance_Pct": 0.0058,
+        "End_of_Period_Assets": 861257,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -17698,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "02.2025",
+        "Performance_Pct": 0.0027,
+        "Cumulative_Performance_Pct": 0.0086,
+        "End_of_Period_Assets": 863624,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 2367,
+        "Net_Income": 3858,
+        "Return_on_Net_Income_Pct": 0.0044,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "03.2025",
+        "Performance_Pct": -0.0011,
+        "Cumulative_Performance_Pct": 0.0075,
+        "End_of_Period_Assets": 862657,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -967,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "04.2025",
+        "Performance_Pct": -0.0002,
+        "Cumulative_Performance_Pct": 0.0073,
+        "End_of_Period_Assets": 862526,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -131,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "05.2025",
+        "Performance_Pct": -0.0003,
+        "Cumulative_Performance_Pct": 0.006999999999999999,
+        "End_of_Period_Assets": 862309,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -218,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "06.2025",
+        "Performance_Pct": -0.004500000000000001,
+        "Cumulative_Performance_Pct": 0.0026,
+        "End_of_Period_Assets": 858467,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": -3842,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "07.2025",
+        "Performance_Pct": 0.0139,
+        "Cumulative_Performance_Pct": 0.0165,
+        "End_of_Period_Assets": 870382,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 11916,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "08.2025",
+        "Performance_Pct": 0.001,
+        "Cumulative_Performance_Pct": 0.0175,
+        "End_of_Period_Assets": 915377,
+        "Period_Deposits_Withdrawals": 44056,
+        "Change_in_Total_Assets": 1038,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "09.2025",
+        "Performance_Pct": 0.0048,
+        "Cumulative_Performance_Pct": 0.0224,
+        "End_of_Period_Assets": 919795,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 4418,
+        "Net_Income": 0,
+        "Return_on_Net_Income_Pct": 0,
+        "Row_Type": "MONTHLY",
+        "Source_Page": 7
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 44056,
+        "Change_in_Total_Assets": 19564,
+        "Net_Income": 7643,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 7
+      }
+    ],
+    "annual_perf": [
+      {
+        "Period": "19.09.2019",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0,
+        "End_of_Period_Assets": 309266,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2019",
+        "Performance_Pct": 0.0383,
+        "Cumulative_Performance_Pct": 0.0383,
+        "End_of_Period_Assets": 321098,
+        "Period_Deposits_Withdrawals": 309266,
+        "Change_in_Total_Assets": 12129,
+        "Net_Income": -1107,
+        "Return_on_Net_Income_Pct": -0.0035,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2020",
+        "Performance_Pct": 0.2546,
+        "Cumulative_Performance_Pct": 0.3027,
+        "End_of_Period_Assets": 635745,
+        "Period_Deposits_Withdrawals": 208775,
+        "Change_in_Total_Assets": 46975,
+        "Net_Income": 4853,
+        "Return_on_Net_Income_Pct": 0.0124,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2021",
+        "Performance_Pct": -0.0919,
+        "Cumulative_Performance_Pct": 0.183,
+        "End_of_Period_Assets": 746002,
+        "Period_Deposits_Withdrawals": 191861,
+        "Change_in_Total_Assets": -81604,
+        "Net_Income": 17841,
+        "Return_on_Net_Income_Pct": 0.0222,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2022",
+        "Performance_Pct": -0.4036,
+        "Cumulative_Performance_Pct": -0.2944,
+        "End_of_Period_Assets": 568044,
+        "Period_Deposits_Withdrawals": 130810,
+        "Change_in_Total_Assets": -308768,
+        "Net_Income": -5806,
+        "Return_on_Net_Income_Pct": -0.0072,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2023",
+        "Performance_Pct": 0.0901,
+        "Cumulative_Performance_Pct": -0.2309,
+        "End_of_Period_Assets": 619217,
+        "Period_Deposits_Withdrawals": 0,
+        "Change_in_Total_Assets": 51172,
+        "Net_Income": -16388,
+        "Return_on_Net_Income_Pct": -0.0288,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "2024",
+        "Performance_Pct": 0.0033,
+        "Cumulative_Performance_Pct": -0.2283,
+        "End_of_Period_Assets": 878955,
+        "Period_Deposits_Withdrawals": 245716,
+        "Change_in_Total_Assets": 11892,
+        "Net_Income": 10920,
+        "Return_on_Net_Income_Pct": 0.0138,
+        "Row_Type": "ANNUAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "30.09.2025",
+        "Performance_Pct": 0,
+        "Cumulative_Performance_Pct": 0.0043,
+        "End_of_Period_Assets": 3858,
+        "Period_Deposits_Withdrawals": null,
+        "Change_in_Total_Assets": null,
+        "Net_Income": null,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "INITIAL",
+        "Source_Page": 8
+      },
+      {
+        "Period": "Total",
+        "Performance_Pct": null,
+        "Cumulative_Performance_Pct": null,
+        "End_of_Period_Assets": null,
+        "Period_Deposits_Withdrawals": 1130483,
+        "Change_in_Total_Assets": -271320,
+        "Net_Income": 14172,
+        "Return_on_Net_Income_Pct": null,
+        "Row_Type": "TOTAL",
+        "Source_Page": 8
+      }
+    ],
+    "net_assets_summary": {
+      "Assets": 919794.74,
+      "Accrued Interest on Securities": 0,
+      "Net Accrued Interest on Deposits and Loans": 0,
+      "Total Assets": 919794.74,
+      "Commitments": 0
+    },
+    "exchange_rates": [
+      {
+        "Base_Currency": "EUR",
+        "Target_Currency": "USD",
+        "Exchange_Rate": 1.17290262,
+        "Source_Text": "1 EUR 1.17290262 USD",
+        "Source_Page": 6
+      }
+    ],
+    "unmapped": [
+      {
+        "Page_Number": "N/A",
+        "Bounding_Box": "N/A",
+        "Raw_Content": "No unmapped content. All source content classified and parsed.",
+        "Audit_Reason": "ZERO_LOSS_VERIFIED"
+      }
+    ],
+    "validation_checks": [
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Page Coverage",
+        "Message": "All source pages accounted for (11 of 11 pages processed).",
+        "Details": "{'processed_pages': 11, 'total_pages': 11}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Portfolio Identifier",
+        "Message": "Portfolio number successfully extracted: 1002591.",
+        "Details": "{'portfolio_number': '1002591'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Data Completeness",
+        "Check_Name": "Valuation Date",
+        "Message": "Valuation date verified: 30.09.2025.",
+        "Details": "{'valuation_date': '30.09.2025'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Holdings Count",
+        "Message": "Extracted 9 security holdings records across statements.",
+        "Details": "{'holdings_count': 9}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Security Identifiers",
+        "Message": "All extracted holdings have valid ISIN / security numbers.",
+        "Details": "{'missing_count': 0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Holdings Integrity",
+        "Check_Name": "Subtotal Reconciliation",
+        "Message": "All security category subtotals match the source statement exactly.",
+        "Details": "{'status': 'MATCH'}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Financial Reconciliation",
+        "Check_Name": "Net Assets Balance Equation",
+        "Message": "Assets (919794.74) + Accrued Int (0) + Loan Accrued (0) = Total Assets (919794.74).",
+        "Details": "{'calculated': 919794.74, 'statement': 919794.74}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Deposits/Withdrawals Total",
+        "Message": "Monthly deposits/withdrawals sum (44056) matches Total row (44056).",
+        "Details": "{'calculated': 44056.0, 'total_row': 44056.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Performance Validation",
+        "Check_Name": "Monthly Net Income Total",
+        "Message": "Monthly net income sum (7643) matches Total row (7643) exactly.",
+        "Details": "{'calculated': 7643.0, 'total_row': 7643.0}"
+      },
+      {
+        "Level": "PASS",
+        "Category": "Extraction Quality",
+        "Check_Name": "Unmapped Content",
+        "Message": "Zero unmapped items. Complete deterministic mapping of all financial data.",
+        "Details": "{'unmapped_count': 0}"
+      }
+    ]
+  }
+}

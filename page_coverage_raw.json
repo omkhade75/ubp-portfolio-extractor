@@ -1,0 +1,1148 @@
+[
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 1,
+    "total_pages": 11,
+    "line_count": 67,
+    "detected_headings": [
+      "CURRENT PORTFOLIO",
+      "SUMMARY OF NET ASSETS",
+      "HISTORY OF MONTHLY PERFORMANCES",
+      "HISTORY OF YEARLY PERFORMANCES",
+      "ASSET ALLOCATION",
+      "BONDS/NOTES, BOND FUNDS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "PAGE  1",
+      "ASSETS",
+      "PAGE  2",
+      "BREAKDOWN BY CURRENCY",
+      "PAGE  3",
+      "CURRENT PORTFOLIO",
+      "PAGE  6",
+      "SUMMARY OF NET ASSETS"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 2,
+    "total_pages": 11,
+    "line_count": 63,
+    "detected_headings": [
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "STRUCTURED PRODUCTS",
+      "CURRENT ACCOUNTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   2  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "ASSET CLASS",
+      "TOTAL"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 3,
+    "total_pages": 11,
+    "line_count": 107,
+    "detected_headings": [
+      "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   3  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio 001 SEE1002590",
+      "Portfolio No. 1002590",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 4,
+    "total_pages": 11,
+    "line_count": 86,
+    "detected_headings": [
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "STRUCTURED PRODUCTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   4  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio 001 SEE1002590",
+      "Portfolio No. 1002590",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 5,
+    "total_pages": 11,
+    "line_count": 29,
+    "detected_headings": [
+      "CURRENT ACCOUNTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   5  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio 001 SEE1002590",
+      "Portfolio No. 1002590",
+      "AMOUNT",
+      "DENOMINATION"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 6,
+    "total_pages": 11,
+    "line_count": 26,
+    "detected_headings": [
+      "SUMMARY OF NET ASSETS",
+      "NET ACCRUED INT DEP AND LOANS",
+      "EXCHANGE RATES USED"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   6  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "SUMMARY OF NET ASSETS",
+      "USD",
+      "%"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 7,
+    "total_pages": 11,
+    "line_count": 154,
+    "detected_headings": [
+      "HISTORY OF MONTHLY PERFORMANCES (07.2024 - 06.2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   7  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "HISTORY OF MONTHLY PERFORMANCES (07.2024 - 06.2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 8,
+    "total_pages": 11,
+    "line_count": 136,
+    "detected_headings": [
+      "HISTORY OF ANNUAL PERFORMANCES (2016 - 2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   8  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "HISTORY OF ANNUAL PERFORMANCES (2016 - 2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 9,
+    "total_pages": 11,
+    "line_count": 34,
+    "detected_headings": [
+      "DISCLAIMER",
+      "General Information"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   9  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "DISCLAIMER",
+      "General Information",
+      "Important information"
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 10,
+    "total_pages": 11,
+    "line_count": 22,
+    "detected_headings": [
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "or alternative investments such as certain commodities."
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page  10  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "PRC 001 (low risk): Instruments with low fluctuations in value, good creditworthiness and liquidity on normal markets."
+    ]
+  },
+  {
+    "pdf": "1_UBP_1002590_Jul2025.pdf",
+    "page_num": 11,
+    "total_pages": 11,
+    "line_count": 10,
+    "detected_headings": [
+      "Acknowledgement of assets:"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page  11  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002590",
+      "Acknowledgement of assets:",
+      "We hereby confirm having taken due note of and accepted in full settlement the contents of the RECONCILIATION STATEMENT, its APPENDICES and the account statements attached thereto.",
+      "We thus declare, in particular, that we approve all the transactions performed by the Bank on the basis of valid instructions from the parties authorised to intervene on the"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 1,
+    "total_pages": 11,
+    "line_count": 67,
+    "detected_headings": [
+      "CURRENT PORTFOLIO",
+      "SUMMARY OF NET ASSETS",
+      "HISTORY OF MONTHLY PERFORMANCES",
+      "HISTORY OF YEARLY PERFORMANCES",
+      "ASSET ALLOCATION",
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "PAGE  1",
+      "ASSETS",
+      "PAGE  2",
+      "BREAKDOWN BY CURRENCY",
+      "PAGE  3",
+      "CURRENT PORTFOLIO",
+      "PAGE  6",
+      "SUMMARY OF NET ASSETS"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 2,
+    "total_pages": 11,
+    "line_count": 61,
+    "detected_headings": [
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "STRUCTURED PRODUCTS",
+      "CURRENT ACCOUNTS",
+      "LOANS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   2  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "ASSET CLASS",
+      "TOTAL"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 3,
+    "total_pages": 11,
+    "line_count": 117,
+    "detected_headings": [
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   3  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio 001 SEE1002590",
+      "Portfolio No. 1002590",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 4,
+    "total_pages": 11,
+    "line_count": 117,
+    "detected_headings": [
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "STRUCTURED PRODUCTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   4  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio 001 SEE1002590",
+      "Portfolio No. 1002590",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 5,
+    "total_pages": 11,
+    "line_count": 40,
+    "detected_headings": [
+      "CURRENT ACCOUNTS",
+      "LOANS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   5  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio 001 SEE1002590",
+      "Portfolio No. 1002590",
+      "AMOUNT",
+      "DENOMINATION"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 6,
+    "total_pages": 11,
+    "line_count": 26,
+    "detected_headings": [
+      "SUMMARY OF NET ASSETS",
+      "NET ACCRUED INT DEP AND LOANS",
+      "EXCHANGE RATES USED"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   6  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "SUMMARY OF NET ASSETS",
+      "USD",
+      "%"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 7,
+    "total_pages": 11,
+    "line_count": 153,
+    "detected_headings": [
+      "HISTORY OF MONTHLY PERFORMANCES (10.2024 - 09.2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   7  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "HISTORY OF MONTHLY PERFORMANCES (10.2024 - 09.2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 8,
+    "total_pages": 11,
+    "line_count": 136,
+    "detected_headings": [
+      "HISTORY OF ANNUAL PERFORMANCES (2016 - 2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   8  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "HISTORY OF ANNUAL PERFORMANCES (2016 - 2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 9,
+    "total_pages": 11,
+    "line_count": 34,
+    "detected_headings": [
+      "DISCLAIMER",
+      "General Information"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   9  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "DISCLAIMER",
+      "General Information",
+      "Important information"
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 10,
+    "total_pages": 11,
+    "line_count": 22,
+    "detected_headings": [
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "or alternative investments such as certain commodities."
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page  10  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "PRC 001 (low risk): Instruments with low fluctuations in value, good creditworthiness and liquidity on normal markets."
+    ]
+  },
+  {
+    "pdf": "2_UBP_1002590_Oct2025.pdf",
+    "page_num": 11,
+    "total_pages": 11,
+    "line_count": 10,
+    "detected_headings": [
+      "Acknowledgement of assets:"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page  11  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002590",
+      "Acknowledgement of assets:",
+      "We hereby confirm having taken due note of and accepted in full settlement the contents of the RECONCILIATION STATEMENT, its APPENDICES and the account statements attached thereto.",
+      "We thus declare, in particular, that we approve all the transactions performed by the Bank on the basis of valid instructions from the parties authorised to intervene on the"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 1,
+    "total_pages": 12,
+    "line_count": 68,
+    "detected_headings": [
+      "CURRENT PORTFOLIO",
+      "SUMMARY OF NET ASSETS",
+      "HISTORY OF MONTHLY PERFORMANCES",
+      "HISTORY OF YEARLY PERFORMANCES",
+      "ASSET ALLOCATION",
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "PAGE  1",
+      "ASSETS",
+      "PAGE  2",
+      "BREAKDOWN BY CURRENCY",
+      "PAGE  3",
+      "CURRENT PORTFOLIO",
+      "PAGE  7",
+      "SUMMARY OF NET ASSETS"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 2,
+    "total_pages": 12,
+    "line_count": 64,
+    "detected_headings": [
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "STRUCTURED PRODUCTS",
+      "CURRENT ACCOUNTS",
+      "LOANS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   2  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "ASSET CLASS",
+      "TOTAL"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 3,
+    "total_pages": 12,
+    "line_count": 118,
+    "detected_headings": [
+      "EQUITIES, EQUITY FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   3  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio 001 SEE",
+      "Portfolio No.",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 4,
+    "total_pages": 12,
+    "line_count": 113,
+    "detected_headings": [
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   4  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio 001 SEE",
+      "Portfolio No.",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 5,
+    "total_pages": 12,
+    "line_count": 40,
+    "detected_headings": [
+      "STRUCTURED PRODUCTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   5  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio 001 SEE",
+      "Portfolio No.",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 6,
+    "total_pages": 12,
+    "line_count": 59,
+    "detected_headings": [
+      "CURRENT ACCOUNTS",
+      "LOANS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   6  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio 001 SEE",
+      "Portfolio No.",
+      "AMOUNT",
+      "DENOMINATION"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 7,
+    "total_pages": 12,
+    "line_count": 27,
+    "detected_headings": [
+      "SUMMARY OF NET ASSETS",
+      "NET ACCRUED INT DEP AND LOANS",
+      "EXCHANGE RATES USED"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   7  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "SUMMARY OF NET ASSETS",
+      "USD",
+      "%"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 8,
+    "total_pages": 12,
+    "line_count": 154,
+    "detected_headings": [
+      "HISTORY OF MONTHLY PERFORMANCES (01.2025 - 12.2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   8  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "HISTORY OF MONTHLY PERFORMANCES (01.2025 - 12.2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 9,
+    "total_pages": 12,
+    "line_count": 137,
+    "detected_headings": [
+      "HISTORY OF ANNUAL PERFORMANCES (2016 - 2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page   9  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "HISTORY OF ANNUAL PERFORMANCES (2016 - 2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 10,
+    "total_pages": 12,
+    "line_count": 35,
+    "detected_headings": [
+      "DISCLAIMER",
+      "General Information"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page  10  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "DISCLAIMER",
+      "General Information",
+      "Important information"
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 11,
+    "total_pages": 12,
+    "line_count": 23,
+    "detected_headings": [
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "or alternative investments such as certain commodities."
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page  11  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "PRC 001 (low risk): Instruments with low fluctuations in value, good creditworthiness and liquidity on normal markets."
+    ]
+  },
+  {
+    "pdf": "3_UBP_1002590_Jan2026.pdf",
+    "page_num": 12,
+    "total_pages": 12,
+    "line_count": 11,
+    "detected_headings": [
+      "Acknowledgement of assets:"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 31.12.2025",
+      "Page  12  / 12",
+      "Report edited on    : 01.01.26",
+      "Portfolio No.",
+      "Acknowledgement of assets:",
+      "We hereby confirm having taken due note of and accepted in full settlement the contents of the RECONCILIATION STATEMENT, its APPENDICES and the account statements attached thereto.",
+      "We thus declare, in particular, that we approve all the transactions performed by the Bank on the basis of valid instructions from the parties authorised to intervene on the"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 1,
+    "total_pages": 11,
+    "line_count": 63,
+    "detected_headings": [
+      "CURRENT PORTFOLIO",
+      "SUMMARY OF NET ASSETS",
+      "HISTORY OF MONTHLY PERFORMANCES",
+      "HISTORY OF YEARLY PERFORMANCES",
+      "ASSET ALLOCATION",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "PAGE  1",
+      "ASSETS",
+      "PAGE  2",
+      "BREAKDOWN BY CURRENCY",
+      "PAGE  3",
+      "CURRENT PORTFOLIO",
+      "PAGE  6",
+      "SUMMARY OF NET ASSETS"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 2,
+    "total_pages": 11,
+    "line_count": 49,
+    "detected_headings": [
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "CURRENT ACCOUNTS",
+      "Current accounts"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   2  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "ASSET CLASS",
+      "TOTAL"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 3,
+    "total_pages": 11,
+    "line_count": 121,
+    "detected_headings": [
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   3  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio 001 SEE1002591",
+      "Portfolio No. 1002591",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 4,
+    "total_pages": 11,
+    "line_count": 35,
+    "detected_headings": [
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   4  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio 001 SEE1002591",
+      "Portfolio No. 1002591",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 5,
+    "total_pages": 11,
+    "line_count": 29,
+    "detected_headings": [
+      "CURRENT ACCOUNTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   5  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio 001 SEE1002591",
+      "Portfolio No. 1002591",
+      "AMOUNT",
+      "DENOMINATION"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 6,
+    "total_pages": 11,
+    "line_count": 26,
+    "detected_headings": [
+      "SUMMARY OF NET ASSETS",
+      "NET ACCRUED INT DEP AND LOANS",
+      "EXCHANGE RATES USED"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   6  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "SUMMARY OF NET ASSETS",
+      "USD",
+      "%"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 7,
+    "total_pages": 11,
+    "line_count": 153,
+    "detected_headings": [
+      "HISTORY OF MONTHLY PERFORMANCES (07.2024 - 06.2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   7  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "HISTORY OF MONTHLY PERFORMANCES (07.2024 - 06.2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 8,
+    "total_pages": 11,
+    "line_count": 105,
+    "detected_headings": [
+      "HISTORY OF ANNUAL PERFORMANCES (2019 - 2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   8  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "HISTORY OF ANNUAL PERFORMANCES (2019 - 2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 9,
+    "total_pages": 11,
+    "line_count": 34,
+    "detected_headings": [
+      "DISCLAIMER",
+      "General Information"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page   9  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "DISCLAIMER",
+      "General Information",
+      "Important information"
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 10,
+    "total_pages": 11,
+    "line_count": 22,
+    "detected_headings": [
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "or alternative investments such as certain commodities."
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page  10  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "PRC 001 (low risk): Instruments with low fluctuations in value, good creditworthiness and liquidity on normal markets."
+    ]
+  },
+  {
+    "pdf": "4_UBP_1002591_Jul2025.pdf",
+    "page_num": 11,
+    "total_pages": 11,
+    "line_count": 10,
+    "detected_headings": [
+      "Acknowledgement of assets:"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.06.2025",
+      "Page  11  / 11",
+      "Report edited on    : 01.07.25",
+      "Portfolio No. 1002591",
+      "Acknowledgement of assets:",
+      "We hereby confirm having taken due note of and accepted in full settlement the contents of the RECONCILIATION STATEMENT, its APPENDICES and the account statements attached thereto.",
+      "We thus declare, in particular, that we approve all the transactions performed by the Bank on the basis of valid instructions from the parties authorised to intervene on the"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 1,
+    "total_pages": 11,
+    "line_count": 66,
+    "detected_headings": [
+      "CURRENT PORTFOLIO",
+      "SUMMARY OF NET ASSETS",
+      "HISTORY OF MONTHLY PERFORMANCES",
+      "HISTORY OF YEARLY PERFORMANCES",
+      "ASSET ALLOCATION",
+      "BONDS/NOTES, BOND FUNDS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "PAGE  1",
+      "ASSETS",
+      "PAGE  2",
+      "BREAKDOWN BY CURRENCY",
+      "PAGE  3",
+      "CURRENT PORTFOLIO",
+      "PAGE  6",
+      "SUMMARY OF NET ASSETS"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 2,
+    "total_pages": 11,
+    "line_count": 56,
+    "detected_headings": [
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES",
+      "CURRENT ACCOUNTS",
+      "Bonds/Notes, Bond fu",
+      "Current accounts"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   2  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "BREAKDOWN OF NET ASSETS BY CURRENCY (IN 000\u2019S USD)",
+      "ASSET CLASS",
+      "TOTAL"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 3,
+    "total_pages": 11,
+    "line_count": 111,
+    "detected_headings": [
+      "BONDS/NOTES, BOND FUNDS & CERTIFICATES",
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   3  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio 001 SEE1002591",
+      "Portfolio No. 1002591",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 4,
+    "total_pages": 11,
+    "line_count": 46,
+    "detected_headings": [
+      "ALTERNATIVE INVESTMENTS & CERTIFICATES"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   4  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio 001 SEE1002591",
+      "Portfolio No. 1002591",
+      "UNITS/NOMINAL",
+      "SECURITY NAME"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 5,
+    "total_pages": 11,
+    "line_count": 29,
+    "detected_headings": [
+      "CURRENT ACCOUNTS"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   5  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio 001 SEE1002591",
+      "Portfolio No. 1002591",
+      "AMOUNT",
+      "DENOMINATION"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 6,
+    "total_pages": 11,
+    "line_count": 26,
+    "detected_headings": [
+      "SUMMARY OF NET ASSETS",
+      "NET ACCRUED INT DEP AND LOANS",
+      "EXCHANGE RATES USED"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   6  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "SUMMARY OF NET ASSETS",
+      "USD",
+      "%"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 7,
+    "total_pages": 11,
+    "line_count": 152,
+    "detected_headings": [
+      "HISTORY OF MONTHLY PERFORMANCES (10.2024 - 09.2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   7  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "HISTORY OF MONTHLY PERFORMANCES (10.2024 - 09.2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 8,
+    "total_pages": 11,
+    "line_count": 105,
+    "detected_headings": [
+      "HISTORY OF ANNUAL PERFORMANCES (2019 - 2025) IN USD"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   8  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "HISTORY OF ANNUAL PERFORMANCES (2019 - 2025) IN USD",
+      "PERIOD",
+      "PERFORMANCE"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 9,
+    "total_pages": 11,
+    "line_count": 34,
+    "detected_headings": [
+      "DISCLAIMER",
+      "General Information"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page   9  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "DISCLAIMER",
+      "General Information",
+      "Important information"
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 10,
+    "total_pages": 11,
+    "line_count": 22,
+    "detected_headings": [
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "or alternative investments such as certain commodities."
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page  10  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "DISCLAIMER",
+      "Product Risk Classification (PRC)",
+      "PRC 001 (low risk): Instruments with low fluctuations in value, good creditworthiness and liquidity on normal markets."
+    ]
+  },
+  {
+    "pdf": "5_UBP_1002591_Oct2025.pdf",
+    "page_num": 11,
+    "total_pages": 11,
+    "line_count": 10,
+    "detected_headings": [
+      "Acknowledgement of assets:"
+    ],
+    "first_few_lines": [
+      "UNION BANCAIRE PRIVEE, UBP SA, SINGAPORE BRANCH",
+      "PORTFOLIO VALUATION AS OF 30.09.2025",
+      "Page  11  / 11",
+      "Report edited on    : 01.10.25",
+      "Portfolio No. 1002591",
+      "Acknowledgement of assets:",
+      "We hereby confirm having taken due note of and accepted in full settlement the contents of the RECONCILIATION STATEMENT, its APPENDICES and the account statements attached thereto.",
+      "We thus declare, in particular, that we approve all the transactions performed by the Bank on the basis of valid instructions from the parties authorised to intervene on the"
+    ]
+  }
+]
