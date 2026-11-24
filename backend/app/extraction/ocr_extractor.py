@@ -125,21 +125,27 @@ def _run_local_ocr_engine(img_path: str) -> Tuple[List[Dict[str, Any]], float]:
         except Exception:
             pass  # Fall through to Windows Media OCR
 
-    # Fallback to Windows Media OCR via win_ocr_helper.ps1
-    norm_path = os.path.abspath(img_path).replace("/", "\\")
-    res = subprocess.run([
-        "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
-        "-File", PS_SCRIPT_PATH,
-        "-ImagePath", norm_path
-    ], capture_output=True, text=True, check=True)
+    # Fallback to Windows Media OCR via win_ocr_helper.ps1 on Windows
+    if os.name == "nt" and os.path.isfile(PS_SCRIPT_PATH):
+        try:
+            norm_path = os.path.abspath(img_path).replace("/", "\\")
+            res = subprocess.run([
+                "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
+                "-File", PS_SCRIPT_PATH,
+                "-ImagePath", norm_path
+            ], capture_output=True, text=True, check=True)
 
-    data = json.loads(res.stdout)
-    lines = data.get("lines", [])
-    # Default confidence for Windows OCR
-    for line in lines:
-        for w in line.get("words", []):
-            w["confidence"] = 95.0
-    return lines, 95.0
+            data = json.loads(res.stdout)
+            lines = data.get("lines", [])
+            # Default confidence for Windows OCR
+            for line in lines:
+                for w in line.get("words", []):
+                    w["confidence"] = 95.0
+            return lines, 95.0
+        except Exception:
+            pass
+
+    return [], 0.0
 
 def extract_page_with_ocr(
     page: pymupdf.Page,
@@ -170,10 +176,9 @@ def extract_page_with_ocr(
         pix.save(tmp_img)
         # Apply Pillow image enhancement if needed
         with Image.open(tmp_img) as pil_img:
-            # Check contrast / sharpness
             enhancer = ImageEnhance.Contrast(pil_img)
-            enhanced = enhancer.enhance(1.2)
-            enhanced.save(tmp_img)
+            enhanced = enhancer.enhance(1.2).copy()
+        enhanced.save(tmp_img)
 
         # 2. Run local OCR
         ocr_lines, avg_conf = _run_local_ocr_engine(tmp_img)
