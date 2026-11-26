@@ -96,7 +96,9 @@ export const Home: React.FC = () => {
     setActiveResultIndex(0);
   };
 
-  const isProcessing = isUploading || jobStatus?.status === "PROCESSING" || jobStatus?.status === "PENDING";
+  const isProcessing =
+    isUploading ||
+    (!!jobStatus && !["COMPLETED", "FAILED", "CANCELLED"].includes(jobStatus.status));
   const results = jobStatus?.results || [];
 
   return (
@@ -119,7 +121,7 @@ export const Home: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {results.length > 0 && (
+            {(results.length > 0 || errorMessage) && (
               <button
                 type="button"
                 onClick={handleReset}
@@ -131,15 +133,15 @@ export const Home: React.FC = () => {
             )}
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
               <Shield className="w-3.5 h-3.5 text-emerald-600" />
-              Isolated Render Container
+              Isolated Server-Side Processing
             </span>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-800 border border-blue-200">
               <Cpu className="w-3.5 h-3.5 text-blue-600" />
-              Server-Side Python Engine
+              Python Financial Extraction Engine
             </span>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-300">
               <Lock className="w-3.5 h-3.5 text-slate-500" />
-              Deterministic / Zero External AI Calls
+              Deterministic Processing / No External AI Calls
             </span>
           </div>
         </div>
