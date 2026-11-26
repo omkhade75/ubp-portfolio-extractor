@@ -7,15 +7,17 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from app.services.job_manager import job_manager
 from app.config import SAMPLE_PDFS_DIR, OUTPUT_DIR
-from app.models.schemas import ExtractionJobStatus
+from app.models.schemas import ExtractionJobStatus, JobLifecycleState
 
 router = APIRouter(prefix="/api")
 
 @router.get("/health")
+@router.head("/health")
 def health_check():
     return {"status": "ok", "app": "UBP Portfolio Statement Extraction System"}
 
 @router.post("/jobs")
+@router.post("/upload")
 async def create_extraction_job(
     files: List[UploadFile] = File(...),
 ):
@@ -24,6 +26,7 @@ async def create_extraction_job(
         raise HTTPException(status_code=400, detail="No files uploaded.")
 
     job_id = job_manager.create_job()
+    accepted = []
 
     for upload in files:
         content = await upload.read()
@@ -31,9 +34,17 @@ async def create_extraction_job(
         if err:
             job_manager.delete_job(job_id)
             raise HTTPException(status_code=400, detail=err)
+        accepted.append(upload.filename)
 
     job_manager.start_processing(job_id)
-    return {"job_id": job_id, "status": "PENDING", "message": f"Processing started for {len(files)} file(s)."}
+    return {
+        "job_id": job_id,
+        "status": JobLifecycleState.QUEUED.value,
+        "stage": JobLifecycleState.QUEUED.value,
+        "accepted_files": accepted,
+        "total_files": len(accepted),
+        "message": f"Processing queued for {len(accepted)} file(s)."
+    }
 
 @router.post("/jobs/load-samples")
 def load_sample_files_job():
@@ -52,7 +63,16 @@ def load_sample_files_job():
             raise HTTPException(status_code=500, detail=err)
 
     job_manager.start_processing(job_id)
-    return {"job_id": job_id, "status": "PENDING", "message": f"Loaded {len(sample_files)} sample PDFs.", "files": [os.path.basename(f) for f in sample_files]}
+    filenames = [os.path.basename(f) for f in sample_files]
+    return {
+        "job_id": job_id,
+        "status": JobLifecycleState.QUEUED.value,
+        "stage": JobLifecycleState.QUEUED.value,
+        "accepted_files": filenames,
+        "total_files": len(filenames),
+        "message": f"Loaded {len(sample_files)} sample PDFs.",
+        "files": filenames
+    }
 
 @router.get("/jobs/{job_id}", response_model=ExtractionJobStatus)
 def get_job_status(job_id: str):

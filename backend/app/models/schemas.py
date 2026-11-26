@@ -220,14 +220,34 @@ class StatementExtractionResult(BaseModel):
     validation_checks: List[ValidationCheck] = Field(default_factory=list)
     excel_path: Optional[str] = None
 
+from enum import Enum
+
+class JobLifecycleState(str, Enum):
+    QUEUED = "QUEUED"
+    UPLOADING = "UPLOADING"
+    INSPECTING = "INSPECTING"
+    CLASSIFYING = "CLASSIFYING"
+    EXTRACTING = "EXTRACTING"
+    NORMALIZING = "NORMALIZING"
+    VALIDATING = "VALIDATING"
+    GENERATING_EXCEL = "GENERATING_EXCEL"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+
 class ExtractionJobStatus(BaseModel):
     job_id: str
-    status: str  # "PENDING", "PROCESSING", "COMPLETED", "FAILED"
+    status: str  # One of JobLifecycleState
     phase: str
+    stage: str = "QUEUED"
     progress_percentage: int
     total_files: int
     processed_files: int
     current_file: Optional[str] = None
+    total_pages: Optional[int] = None
+    processed_pages: Optional[int] = None
+    accepted_files: List[str] = Field(default_factory=list)
     error_message: Optional[str] = None
     results: List[StatementExtractionResult] = Field(default_factory=list)
     zip_path: Optional[str] = None
+    download_url: Optional[str] = None

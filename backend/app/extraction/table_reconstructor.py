@@ -29,18 +29,28 @@ from app.extraction.word_extractor import extract_visual_words_and_lines, get_pa
 from app.extraction.ocr_extractor import detect_page_type, extract_page_with_ocr
 from app.processing.financial_validator import run_financial_validation
 
-def extract_ubp_statement(file_path: str) -> StatementExtractionResult:
+def extract_ubp_statement(
+    file_path: str,
+    progress_callback: Optional[Any] = None
+) -> StatementExtractionResult:
     """
     Deterministic master extractor for UBP portfolio valuation statements.
     Processes all pages, classifies sections, extracts structured entities,
     and runs independent financial validations.
+    Supports progress_callback(stage, phase, percentage).
     """
     filename = os.path.basename(file_path)
     doc = pymupdf.open(file_path)
     total_pages = len(doc)
 
+    if progress_callback:
+        progress_callback("INSPECTING", f"Inspecting {filename} ({total_pages} pages)", 10)
+
     # 1. Document metadata inspection
     metadata = inspect_pdf_document(doc, filename)
+
+    if progress_callback:
+        progress_callback("CLASSIFYING", f"Classifying document structure ({total_pages} pages)", 25)
 
     # 2. Page classification and raw text record
     classified_pages: Dict[int, str] = {}
@@ -116,6 +126,9 @@ def extract_ubp_statement(file_path: str) -> StatementExtractionResult:
     monthly_pages = [p for p, s in classified_pages.items() if s == "MONTHLY_PERFORMANCE"]
     annual_pages = [p for p, s in classified_pages.items() if s == "ANNUAL_PERFORMANCE"]
 
+    if progress_callback:
+        progress_callback("EXTRACTING", f"Extracting tables & securities holdings ({len(holdings_pages)} pages)", 50)
+
     # Extract Asset Allocation & Portfolio Performance Summary (Overview)
     for pno in overview_pages:
         alloc_items = parse_asset_allocation_page(doc[pno], pno + 1)
@@ -183,6 +196,9 @@ def extract_ubp_statement(file_path: str) -> StatementExtractionResult:
         a_rows, _ = parse_annual_performance_page(doc[pno], pno + 1)
         annual_perf.extend(a_rows)
 
+    if progress_callback:
+        progress_callback("NORMALIZING", "Normalizing financial data & disclosures", 70)
+
     # Extract Comments and Disclosures
     comments_disclosures = parse_disclosures(doc, classified_pages)
 
@@ -213,6 +229,9 @@ def extract_ubp_statement(file_path: str) -> StatementExtractionResult:
         raw_pages=raw_pages,
         validation_checks=[]
     )
+
+    if progress_callback:
+        progress_callback("VALIDATING", "Running cross-section financial validation", 85)
 
     # 4. Financial Validation
     validation_checks = run_financial_validation(result)

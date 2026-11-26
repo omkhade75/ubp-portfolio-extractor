@@ -3,25 +3,27 @@ import { CheckCircle2, Loader2, Clock } from "lucide-react";
 
 interface ProcessingProgressProps {
   phase: string;
+  stage?: string;
   progressPercentage: number;
   currentFile?: string;
   totalFiles: number;
   processedFiles: number;
 }
 
-const PHASES = [
-  "File validation",
-  "PDF inspection",
-  "Statement/template identification",
-  "Page classification",
-  "Text and table extraction",
-  "Data normalization",
-  "Financial validation",
-  "Excel generation",
+const STAGES = [
+  { key: "QUEUED", label: "File validation", minPct: 0 },
+  { key: "INSPECTING", label: "PDF inspection", minPct: 5 },
+  { key: "CLASSIFYING", label: "Page classification", minPct: 20 },
+  { key: "EXTRACTING", label: "Text & table extraction", minPct: 40 },
+  { key: "NORMALIZING", label: "Data normalization", minPct: 65 },
+  { key: "VALIDATING", label: "Financial validation", minPct: 80 },
+  { key: "GENERATING_EXCEL", label: "Excel generation", minPct: 90 },
+  { key: "COMPLETED", label: "Completed", minPct: 100 },
 ];
 
 export const ProcessingProgress: React.FC<ProcessingProgressProps> = ({
   phase,
+  stage,
   progressPercentage,
   currentFile,
   totalFiles,
@@ -55,17 +57,20 @@ export const ProcessingProgress: React.FC<ProcessingProgressProps> = ({
         />
       </div>
 
-      {/* 8-phase pipeline grid */}
+      {/* 8-stage pipeline grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-100">
-        {PHASES.map((pName, idx) => {
-          const isDone = progressPercentage === 100 || (processedFiles > 0 && idx < 6);
-          const isCurrent = phase.toLowerCase().includes(pName.toLowerCase());
+        {STAGES.map((s, idx) => {
+          const isDone = progressPercentage >= (idx === STAGES.length - 1 ? 100 : STAGES[idx + 1].minPct);
+          const isCurrent =
+            (stage && stage.toUpperCase() === s.key) ||
+            (!stage && phase.toLowerCase().includes(s.label.toLowerCase())) ||
+            (!isDone && progressPercentage >= s.minPct);
 
           return (
             <div
               key={idx}
               className={`flex items-center gap-1.5 p-2 rounded text-xs transition ${
-                isCurrent
+                isCurrent && !isDone
                   ? "bg-blue-50 text-blue-800 font-semibold border border-blue-200"
                   : isDone
                   ? "text-slate-600 bg-slate-50"
@@ -79,7 +84,7 @@ export const ProcessingProgress: React.FC<ProcessingProgressProps> = ({
               ) : (
                 <Clock className="w-3.5 h-3.5 text-slate-300 shrink-0" />
               )}
-              <span className="truncate">{pName}</span>
+              <span className="truncate">{s.label}</span>
             </div>
           );
         })}

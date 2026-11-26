@@ -190,17 +190,29 @@ export interface StatementExtractionResult {
   excel_path?: string;
 }
 
+export class JobNotFoundError extends Error {
+  constructor(jobId: string) {
+    super(`Job ${jobId} not found on server (container restarted or session expired).`);
+    this.name = "JobNotFoundError";
+  }
+}
+
 export interface ExtractionJobStatus {
   job_id: string;
-  status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED";
+  status: string;
+  stage?: string;
   phase: string;
   progress_percentage: number;
   total_files: number;
   processed_files: number;
   current_file?: string;
+  total_pages?: number;
+  processed_pages?: number;
+  accepted_files?: string[];
   error_message?: string;
   results: StatementExtractionResult[];
   zip_path?: string;
+  download_url?: string;
 }
 
 export interface JobFilesResponse {
@@ -220,12 +232,19 @@ export interface JobFilesResponse {
 
 const API_BASE = "/api";
 
-export async function uploadStatements(files: File[]): Promise<{ job_id: string }> {
+export async function uploadStatements(files: File[]): Promise<{
+  job_id: string;
+  status: string;
+  stage: string;
+  accepted_files: string[];
+  total_files: number;
+  message: string;
+}> {
   const formData = new FormData();
   for (const f of files) {
     formData.append("files", f);
   }
-  const res = await fetch(`${API_BASE}/jobs`, {
+  const res = await fetch(`${API_BASE}/upload`, {
     method: "POST",
     body: formData,
   });
@@ -236,11 +255,13 @@ export async function uploadStatements(files: File[]): Promise<{ job_id: string 
   return res.json();
 }
 
-
 export async function getJobStatus(jobId: string): Promise<ExtractionJobStatus> {
   const res = await fetch(`${API_BASE}/jobs/${jobId}`);
+  if (res.status === 404) {
+    throw new JobNotFoundError(jobId);
+  }
   if (!res.ok) {
-    throw new Error(`Failed to fetch job status for ${jobId}`);
+    throw new Error(`Failed to fetch job status for ${jobId} (HTTP ${res.status})`);
   }
   return res.json();
 }
