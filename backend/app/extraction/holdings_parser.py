@@ -173,8 +173,8 @@ def detect_holdings_column_anchors(lines: List[VisualLine], page_width: float) -
         "mkt_val_min": page_width * 0.73,       # ~615
         "mkt_val_max": page_width * 0.85,       # ~715
         "usd_val_min": page_width * 0.83,       # ~700
-        "usd_val_max": page_width * 0.93,       # ~780
-        "pct_min": page_width * 0.90,           # ~760
+        "usd_val_max": page_width * 0.916,      # ~770
+        "pct_min": page_width * 0.922,          # ~774.5
     }
 
     # Only inspect header lines that span across the table columns (>= 70% of page width)
@@ -210,15 +210,17 @@ def detect_holdings_column_anchors(lines: List[VisualLine], page_width: float) -
             anchors["cost_max"] = max(anchors["cost_max"], w.x1 + 30.0)
         elif "TOTAL" in wt:
             anchors["mkt_val_min"] = w.x0 - 20.0
-        elif "%" in wt or "ASSETS" in wt:
-            anchors["pct_min"] = min(anchors["pct_min"], w.x0 - 15.0)
+        elif "%" in wt:
+            anchors["pct_min"] = max(page_width * 0.92, w.x0 - 18.0)
+        elif "ASSETS" in wt and w.x0 >= page_width * 0.90:
+            anchors["pct_min"] = max(page_width * 0.92, w.x0 - 5.0)
 
     if len(market_words) >= 2 and not has_total_mkt_val:
         m0, m1 = market_words[0], market_words[1]
         anchors["price_min"] = m0.x0 - 20.0
         anchors["price_max"] = m0.x1 + 35.0
         anchors["usd_val_min"] = m1.x0 - 15.0
-        anchors["usd_val_max"] = (anchors.get("pct_min") or page_width * 0.90) - 5.0
+        anchors["usd_val_max"] = min(anchors.get("usd_val_max", page_width * 0.915), (anchors.get("pct_min") or page_width * 0.93) - 5.0)
         anchors["mkt_val_min"] = anchors["usd_val_min"]
         anchors["mkt_val_max"] = anchors["usd_val_max"]
     elif market_words:
@@ -227,6 +229,9 @@ def detect_holdings_column_anchors(lines: List[VisualLine], page_width: float) -
         anchors["price_max"] = m0.x1 + 40.0
         if value_words:
             anchors["usd_val_min"] = value_words[-1].x0 - 20.0
+
+    # Ensure strict separation between USD Value column and Percentage of Assets column
+    anchors["usd_val_max"] = min(anchors.get("usd_val_max", page_width * 0.915), anchors["pct_min"] - 5.0)
 
     return anchors
 
@@ -373,8 +378,8 @@ def _build_holding_item(
     mkt_val_min = anchors["mkt_val_min"] if anchors else 615.0
     mkt_val_max = anchors["mkt_val_max"] if anchors else 715.0
     usd_val_min = anchors["usd_val_min"] if anchors else 700.0
-    usd_val_max = anchors["usd_val_max"] if anchors else 780.0
-    pct_min = anchors["pct_min"] if anchors else 760.0
+    usd_val_max = anchors["usd_val_max"] if anchors else 770.0
+    pct_min = anchors["pct_min"] if anchors else 774.0
     esg_prev_min = anchors["esg_prev_min"] if anchors and "esg_prev_min" in anchors else 360.0
     esg_prev_max = anchors["esg_prev_max"] if anchors and "esg_prev_max" in anchors else 405.0
     esg_curr_min = anchors["esg_curr_min"] if anchors and "esg_curr_min" in anchors else 400.0
@@ -493,22 +498,28 @@ def _build_holding_item(
 
     # 4. Numbers to the right of ISIN on primary line
     right_words = [w for w in words if w.x0 > (isin_x0 or isin_min)]
+    consumed_tokens = set()
     
     yield_val = None
     net_avg_cost = None
     net_avg_cost_currency = None
     market_price = None
+    market_price_state = "SOURCE_BLANK"
     market_price_currency = None
     total_market_value = None
+    total_market_value_state = "SOURCE_BLANK"
     market_value_currency = None
     value_in_usd = None
+    value_in_usd_state = "SOURCE_BLANK"
     percentage_of_total_assets = None
+    percentage_state = "SOURCE_BLANK"
 
     # Identify currency tokens strictly by column geometry
     accrued_interest_currency = None
     for w in right_words:
         cand = w.text.strip().upper()
         if is_iso_currency(cand):
+            consumed_tokens.add(id(w))
             if cost_min - 20.0 <= w.x0 < price_min - 20.0:
                 net_avg_cost_currency = cand
             else:
@@ -517,22 +528,30 @@ def _build_holding_item(
     # Parse numeric tokens by dynamic x position:
     # Yield: yield_min <= x0 < yield_max
     for w in right_words:
+        if id(w) in consumed_tokens:
+            continue
         if yield_min <= w.x0 < yield_max:
             fn = parse_financial_number(w.text)
             if fn.is_valid and fn.value is not None:
                 yield_val = fn.value
+                consumed_tokens.add(id(w))
 
     # Net Average Cost: cost_min <= x0 < cost_max
     for w in right_words:
+        if id(w) in consumed_tokens:
+            continue
         if cost_min <= w.x0 < cost_max:
             clean_t = re.sub(r"[^\d\.'’\-]", "", w.text.strip())
             fn = parse_financial_number(clean_t)
             if fn.is_valid and fn.value is not None:
                 net_avg_cost = fn.value
+                consumed_tokens.add(id(w))
 
     # Market Price: price_min <= x0 < min(price_max, usd_val_min)
     effective_price_max = min(price_max, usd_val_min) if (usd_val_min and usd_val_min > price_min) else price_max
     for w in right_words:
+        if id(w) in consumed_tokens:
+            continue
         if price_min <= w.x0 < effective_price_max:
             raw_p = w.text.strip()
             if is_iso_currency(raw_p):
@@ -542,40 +561,61 @@ def _build_holding_item(
                 price_marker = m_marker.group(1)
             clean_t = re.sub(r"[^\d\.'’\-]", "", raw_p)
             fn = parse_financial_number(clean_t)
-            if fn.is_valid and fn.value is not None:
+            if fn.is_valid:
                 market_price = fn.value
+                market_price_state = fn.state
+                consumed_tokens.add(id(w))
+                break
 
     # Check primary line for market price date if not found on continuation line
     if market_price_date is None:
         for w in right_words:
             if (price_min - 20.0 <= w.x0 <= price_max + 20.0) and re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", w.text.strip()):
                 market_price_date = w.text.strip()
+                consumed_tokens.add(id(w))
 
     # Total Market Value: mkt_val_min <= x0 < mkt_val_max
     for w in right_words:
+        if id(w) in consumed_tokens:
+            continue
         if mkt_val_min <= w.x0 < mkt_val_max:
             fn = parse_financial_number(w.text)
-            if fn.is_valid and fn.value is not None:
+            if fn.is_valid:
                 total_market_value = fn.value
+                total_market_value_state = fn.state
+                consumed_tokens.add(id(w))
+                break
 
     # Value in USD: usd_val_min <= x0 < usd_val_max
     for w in right_words:
+        if id(w) in consumed_tokens:
+            continue
         if usd_val_min <= w.x0 < usd_val_max:
             fn = parse_financial_number(w.text)
-            if fn.is_valid and fn.value is not None:
+            if fn.is_valid:
                 value_in_usd = fn.value
+                value_in_usd_state = fn.state
+                consumed_tokens.add(id(w))
+                break
 
-    # % Assets: x0 >= pct_min
+    # % Assets: x0 >= pct_min (must never consume tokens belonging to Value in USD or earlier columns)
     for w in right_words:
+        if id(w) in consumed_tokens:
+            continue
         if w.x0 >= pct_min:
             fn = parse_financial_number(w.text)
-            if fn.is_valid and fn.value is not None:
+            if fn.is_valid:
                 percentage_of_total_assets = fn.value
+                percentage_state = fn.state
+                consumed_tokens.add(id(w))
+                break
 
     if total_market_value is None and value_in_usd is not None:
         total_market_value = value_in_usd
-    if value_in_usd is None and total_market_value is not None and (market_value_currency == "USD" or not market_value_currency):
+        total_market_value_state = "CALCULATED"
+    if value_in_usd is None and total_market_value is not None:
         value_in_usd = total_market_value
+        value_in_usd_state = total_market_value_state
 
     accrued_interest = accrued_interest_local or accrued_interest_usd
     if market_value_currency == "USD" and accrued_interest_usd is not None:
@@ -601,16 +641,20 @@ def _build_holding_item(
         net_avg_cost=net_avg_cost,
         net_avg_cost_currency=net_avg_cost_currency,
         market_price=market_price,
+        market_price_state=market_price_state,
         price_marker=price_marker,
         market_price_currency=market_price_currency,
         market_price_date=market_price_date,
         total_market_value=total_market_value,
+        total_market_value_state=total_market_value_state,
         market_value_currency=market_value_currency or "USD",
         accrued_interest=accrued_interest,
         accrued_interest_currency=accrued_interest_currency or market_value_currency or "USD",
         accrued_interest_usd=accrued_interest_usd or (accrued_interest if market_value_currency == "USD" else None),
         value_in_usd=value_in_usd,
+        value_in_usd_state=value_in_usd_state,
         percentage_of_total_assets=percentage_of_total_assets,
+        percentage_state=percentage_state,
         previous_esg_rating=previous_esg_rating,
         current_esg_rating=current_esg_rating,
         esg_rating_previous=previous_esg_rating,

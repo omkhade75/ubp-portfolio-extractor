@@ -163,7 +163,7 @@ def test_all_10_holdings_extracted(extraction_result):
             "name": "GLOBAL LEADERS EQUITY ETF",
             "sec_no": "IE-GL-62419",
             "units": Decimal("625.00"),
-            "yield": Decimal("0.00"),
+            "yield": None,  # Source prints dash '-', preserved as None
             "cost": Decimal("78.20"),
             "price": Decimal("89.00"),
             "curr": "USD",
@@ -175,7 +175,7 @@ def test_all_10_holdings_extracted(extraction_result):
             "name": "ASIA-PACIFIC DIVIDEND FUND",
             "sec_no": "LU-AP-88253",
             "units": Decimal("331.50"),
-            "yield": Decimal("0.00"),
+            "yield": None,  # Source prints dash '-', preserved as None
             "cost": Decimal("95.00"),
             "price": Decimal("100.00"),
             "curr": "USD",

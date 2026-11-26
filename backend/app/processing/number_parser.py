@@ -2,6 +2,14 @@ import re
 from decimal import Decimal, InvalidOperation
 from typing import Optional, Tuple, NamedTuple
 
+class SourceValueState:
+    EXPLICIT_ZERO = "EXPLICIT_ZERO"
+    NUMERIC_VALUE = "NUMERIC_VALUE"
+    SOURCE_DASH = "SOURCE_DASH"
+    SOURCE_BLANK = "SOURCE_BLANK"
+    UNREADABLE = "UNREADABLE"
+    CALCULATED = "CALCULATED"
+
 class FinancialNumber(NamedTuple):
     raw: str
     value: Optional[Decimal]
@@ -11,6 +19,8 @@ class FinancialNumber(NamedTuple):
     is_percentage: bool
     currency: Optional[str] = None
     error: Optional[str] = None
+    state: str = SourceValueState.NUMERIC_VALUE
+    is_dash: bool = False
 
 # Known currency symbols/codes
 COMMON_CURRENCIES = {"USD", "EUR", "HKD", "CHF", "GBP", "SGD", "JPY", "CAD", "AUD"}
@@ -51,18 +61,28 @@ def parse_financial_number(
     """
     if raw_text is None:
         if allow_blank:
-            return FinancialNumber(raw="", value=None, is_valid=True, is_negative=False, has_asterisk=False, is_percentage=False)
-        return FinancialNumber(raw="", value=None, is_valid=False, is_negative=False, has_asterisk=False, is_percentage=False, error="Empty input")
+            return FinancialNumber(raw="", value=None, is_valid=True, is_negative=False, has_asterisk=False, is_percentage=False, state=SourceValueState.SOURCE_BLANK)
+        return FinancialNumber(raw="", value=None, is_valid=False, is_negative=False, has_asterisk=False, is_percentage=False, state=SourceValueState.UNREADABLE, error="Empty input")
 
     raw = clean_financial_string(raw_text)
     if not raw:
         if allow_blank:
-            return FinancialNumber(raw=raw_text, value=None, is_valid=True, is_negative=False, has_asterisk=False, is_percentage=False)
-        return FinancialNumber(raw=raw_text, value=None, is_valid=False, is_negative=False, has_asterisk=False, is_percentage=False, error="Blank string")
+            return FinancialNumber(raw=raw_text, value=None, is_valid=True, is_negative=False, has_asterisk=False, is_percentage=False, state=SourceValueState.SOURCE_BLANK)
+        return FinancialNumber(raw=raw_text, value=None, is_valid=False, is_negative=False, has_asterisk=False, is_percentage=False, state=SourceValueState.UNREADABLE, error="Blank string")
 
-    # Check for dash representing zero or nil
+    # Check for dash representing unavailable, not applicable, or nil marker
+    # In accordance with source fidelity standards, dash is preserved as None numeric value
     if raw in ("-", "--", "—", "-.-"):
-        return FinancialNumber(raw=raw_text, value=Decimal("0.00"), is_valid=True, is_negative=False, has_asterisk=False, is_percentage=False)
+        return FinancialNumber(
+            raw=raw_text,
+            value=None,
+            is_valid=True,
+            is_negative=False,
+            has_asterisk=False,
+            is_percentage=False,
+            state=SourceValueState.SOURCE_DASH,
+            is_dash=True
+        )
 
     work = raw
     detected_currency = default_currency
@@ -109,6 +129,7 @@ def parse_financial_number(
             has_asterisk=has_asterisk,
             is_percentage=is_percentage,
             currency=detected_currency,
+            state=SourceValueState.UNREADABLE,
             error=f"Cannot parse '{clean_digits}' as Decimal"
         )
 
@@ -116,6 +137,7 @@ def parse_financial_number(
         dec_val = Decimal(clean_digits)
         if is_negative and dec_val != Decimal("0"):
             dec_val = -dec_val
+        num_state = SourceValueState.EXPLICIT_ZERO if dec_val == Decimal("0") else SourceValueState.NUMERIC_VALUE
         return FinancialNumber(
             raw=raw_text,
             value=dec_val,
@@ -123,7 +145,9 @@ def parse_financial_number(
             is_negative=is_negative,
             has_asterisk=has_asterisk,
             is_percentage=is_percentage,
-            currency=detected_currency
+            currency=detected_currency,
+            state=num_state,
+            is_dash=False
         )
     except InvalidOperation as e:
         return FinancialNumber(
@@ -134,6 +158,7 @@ def parse_financial_number(
             has_asterisk=has_asterisk,
             is_percentage=is_percentage,
             currency=detected_currency,
+            state=SourceValueState.UNREADABLE,
             error=str(e)
         )
 

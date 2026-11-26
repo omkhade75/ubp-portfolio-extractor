@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from app.processing.number_parser import parse_financial_number, clean_financial_string, format_financial_decimal
+from app.processing.number_parser import parse_financial_number, clean_financial_string, format_financial_decimal, SourceValueState
 
 def test_apostrophe_numbers():
     fn = parse_financial_number("2’267’669.27")
@@ -44,10 +44,18 @@ def test_zero_and_dash():
     fn = parse_financial_number("0.00")
     assert fn.is_valid
     assert fn.value == Decimal("0.00")
+    assert fn.state == SourceValueState.EXPLICIT_ZERO
 
     fn_dash = parse_financial_number("-")
     assert fn_dash.is_valid
-    assert fn_dash.value == Decimal("0.00")
+    assert fn_dash.value is None
+    assert fn_dash.is_dash
+    assert fn_dash.state == SourceValueState.SOURCE_DASH
+
+    fn_blank = parse_financial_number("")
+    assert fn_blank.is_valid
+    assert fn_blank.value is None
+    assert fn_blank.state == SourceValueState.SOURCE_BLANK
 
 def test_currency_prefix():
     fn = parse_financial_number("USD 247’821.91")

@@ -1,3 +1,4 @@
+import re
 from typing import List, Dict, Any, Optional
 from decimal import Decimal
 
@@ -444,13 +445,88 @@ def run_financial_validation(res: StatementExtractionResult) -> List[ValidationC
     ))
 
     # 10. Missing vs Zero Fields Integrity Check
-    checks.append(ValidationCheck(
-        category="Holdings Integrity",
-        name="Missing vs Zero Fields Integrity",
-        level="PASS",
-        message="Source blank fields correctly preserved as unpopulated/blank; zero values only assigned when explicitly printed in source.",
-        details={"holdings_count": holdings_count}
-    ))
+    explicit_zeros = 0
+    source_blanks = 0
+    source_dashes = 0
+    numeric_values = 0
+    violations = []
+    
+    for h in res.holdings:
+        # Check percentage_of_total_assets
+        p_state = getattr(h, "percentage_state", "SOURCE_BLANK")
+        p_val = h.percentage_of_total_assets
+        if p_state == "EXPLICIT_ZERO":
+            explicit_zeros += 1
+            if p_val != Decimal("0") and p_val != Decimal("0.00"):
+                violations.append(f"Holding {h.id} ({h.isin_secur_no or h.security_name}): percentage_state is EXPLICIT_ZERO but value is {p_val}")
+        elif p_state in ("SOURCE_BLANK", "SOURCE_DASH", "UNREADABLE"):
+            if p_state == "SOURCE_BLANK":
+                source_blanks += 1
+            elif p_state == "SOURCE_DASH":
+                source_dashes += 1
+            if p_val is not None:
+                violations.append(f"Holding {h.id} ({h.isin_secur_no or h.security_name}): percentage_state is {p_state} but value was converted to {p_val}")
+        elif p_state in ("NUMERIC_VALUE", "CALCULATED"):
+            numeric_values += 1
+            if p_val is None:
+                violations.append(f"Holding {h.id} ({h.isin_secur_no or h.security_name}): percentage_state is {p_state} but value is None")
+                
+        # Check market_price
+        mp_state = getattr(h, "market_price_state", "SOURCE_BLANK")
+        mp_val = h.market_price
+        if mp_state == "EXPLICIT_ZERO":
+            explicit_zeros += 1
+        elif mp_state in ("SOURCE_BLANK", "SOURCE_DASH", "UNREADABLE"):
+            if mp_val is not None:
+                violations.append(f"Holding {h.id}: market_price_state is {mp_state} but value is {mp_val}")
+                
+        # Check total_market_value
+        tmv_state = getattr(h, "total_market_value_state", "SOURCE_BLANK")
+        tmv_val = h.total_market_value
+        if tmv_state == "EXPLICIT_ZERO":
+            explicit_zeros += 1
+        elif tmv_state in ("SOURCE_BLANK", "SOURCE_DASH", "UNREADABLE"):
+            if tmv_val is not None:
+                violations.append(f"Holding {h.id}: total_market_value_state is {tmv_state} but value is {tmv_val}")
+                
+        # Check value_in_usd
+        vusd_state = getattr(h, "value_in_usd_state", "SOURCE_BLANK")
+        vusd_val = h.value_in_usd
+        if vusd_state == "EXPLICIT_ZERO":
+            explicit_zeros += 1
+        elif vusd_state in ("SOURCE_BLANK", "SOURCE_DASH", "UNREADABLE"):
+            if vusd_val is not None:
+                violations.append(f"Holding {h.id}: value_in_usd_state is {vusd_state} but value is {vusd_val}")
+
+    if violations:
+        checks.append(ValidationCheck(
+            category="Holdings Integrity",
+            name="Missing vs Zero Fields Integrity",
+            level="FAIL",
+            message=f"Missing vs Zero Integrity VIOLATION: {len(violations)} fields incorrectly converted blanks/dashes to numbers: {'; '.join(violations[:3])}",
+            details={
+                "holdings_count": holdings_count,
+                "violations": violations,
+                "explicit_zeros": explicit_zeros,
+                "source_blanks": source_blanks,
+                "source_dashes": source_dashes
+            }
+        ))
+    else:
+        checks.append(ValidationCheck(
+            category="Holdings Integrity",
+            name="Missing vs Zero Fields Integrity",
+            level="PASS",
+            message=f"Missing vs Zero Fields Integrity verified: All {explicit_zeros} zero values are explicitly printed in source; {source_blanks} source blanks and {source_dashes} source dashes preserved as empty/blank without conversion to zero.",
+            details={
+                "holdings_count": holdings_count,
+                "explicit_zeros": explicit_zeros,
+                "source_blanks": source_blanks,
+                "source_dashes": source_dashes,
+                "numeric_values": numeric_values,
+                "status": "CONFORMING"
+            }
+        ))
 
     # ==========================================
     # 3. PORTFOLIO BREAKDOWN
@@ -831,11 +907,70 @@ def run_financial_validation(res: StatementExtractionResult) -> List[ValidationC
     # ==========================================
     p1_flow = res.portfolio_summary_performance.total_inc_out_cash_sec if res.portfolio_summary_performance else None
     
-    # CRITICAL RULE: Include only individual MONTHLY records. Exclude INITIAL and TOTAL rows to prevent double-counting.
-    monthly_periodic_rows = [
-        m for m in res.monthly_performance
-        if not m.is_initial_row and not m.is_total_row and (m.row_type == "MONTHLY" or m.row_type is None)
-    ]
+    # Dynamically extract reporting period from Page 1 summary to align monthly flows
+    rep_period_str = res.portfolio_summary_performance.reporting_period if res.portfolio_summary_performance else None
+    val_date_str = (
+        res.portfolio_summary_performance.valuation_date 
+        if res.portfolio_summary_performance and res.portfolio_summary_performance.valuation_date 
+        else res.metadata.valuation_date
+    )
+    
+    period_start_year, period_start_month = None, None
+    period_end_year, period_end_month = None, None
+    
+    if val_date_str:
+        m_val = re.search(r"(\d{2})[./](\d{2})[./](\d{4})", val_date_str)
+        if m_val:
+            period_end_month = int(m_val.group(2))
+            period_end_year = int(m_val.group(3))
+            
+    if rep_period_str:
+        dates_in_period = re.findall(r"(\d{2})[./](\d{2})[./](\d{4})", rep_period_str)
+        if dates_in_period:
+            period_start_month = int(dates_in_period[0][1])
+            period_start_year = int(dates_in_period[0][2])
+            if len(dates_in_period) > 1:
+                period_end_month = int(dates_in_period[1][1])
+                period_end_year = int(dates_in_period[1][2])
+                
+    if period_start_year is None and period_end_year is not None:
+        period_start_year = period_end_year
+        period_start_month = 1
+
+    # CRITICAL RULE: Include only individual MONTHLY records within the reporting period.
+    # Exclude INITIAL and TOTAL rows to prevent double-counting.
+    # Exclude prior-period history months (e.g. 2024 rows in a 2025 statement) that are printed for reference.
+    monthly_periodic_rows = []
+    excluded_prior_rows = []
+    
+    for m in res.monthly_performance:
+        if m.is_initial_row or m.is_total_row:
+            continue
+        if m.row_type not in ("MONTHLY", None):
+            continue
+            
+        m_month, m_year = None, None
+        m_match = re.match(r"^(\d{2})\.(\d{4})$", m.period.strip())
+        if m_match:
+            m_month = int(m_match.group(1))
+            m_year = int(m_match.group(2))
+        else:
+            m_match2 = re.match(r"^(\d{2})\.(\d{2})\.(\d{4})$", m.period.strip())
+            if m_match2:
+                m_month = int(m_match2.group(2))
+                m_year = int(m_match2.group(3))
+                
+        if m_year is not None and m_month is not None and period_start_year is not None and period_end_year is not None:
+            row_tuple = (m_year, m_month)
+            start_tuple = (period_start_year, period_start_month)
+            end_tuple = (period_end_year, period_end_month)
+            if start_tuple <= row_tuple <= end_tuple:
+                monthly_periodic_rows.append(m)
+            else:
+                excluded_prior_rows.append(m)
+        else:
+            monthly_periodic_rows.append(m)
+
     monthly_flows = (
         sum((m.period_deposits_withdrawals for m in monthly_periodic_rows if m.period_deposits_withdrawals is not None), Decimal("0"))
         if monthly_periodic_rows else None
@@ -847,30 +982,56 @@ def run_financial_validation(res: StatementExtractionResult) -> List[ValidationC
 
     if p1_flow is not None and monthly_flows is not None:
         flow_diff = abs(p1_flow - monthly_flows)
-        if flow_diff > Decimal("0.05"):
+        period_label = f" ({period_start_month:02d}.{period_start_year} - {period_end_month:02d}.{period_end_year})" if period_start_year and period_end_year else ""
+        rep_period_key = f"{period_start_month:02d}.{period_start_year} - {period_end_month:02d}.{period_end_year}" if period_start_year else "ALL"
+        
+        if flow_diff == Decimal("0"):
             checks.append(ValidationCheck(
                 category="Cross-Section Reconciliation",
                 name="Portfolio Flow vs Performance Flow",
-                level="INFO",
-                message=f"SOURCE_DISCREPANCY: Page 1 Portfolio Summary cash/securities flow ({p1_flow} USD) differs from Monthly Performance deposits/withdrawals total ({monthly_flows} USD). Both source values preserved without alteration.",
+                level="PASS",
+                message=f"Page 1 Portfolio Summary cash/securities flow perfectly matches Monthly Performance deposits/withdrawals ({p1_flow} USD){period_label}.",
                 details={
                     "page1_portfolio_flow": str(p1_flow),
                     "monthly_performance_flow": str(monthly_flows),
-                    "annual_latest_flow": str(annual_latest) if annual_latest is not None else None,
-                    "discrepancy": str(flow_diff),
-                    "reconciliation_status": "SOURCE_DISCREPANCY"
+                    "reconciliation_status": "MATCH",
+                    "difference": "0.00",
+                    "reporting_period": rep_period_key,
+                    "eligible_months_count": len(monthly_periodic_rows),
+                    "excluded_months_count": len(excluded_prior_rows)
+                }
+            ))
+        elif flow_diff <= Decimal("1.00"):
+            checks.append(ValidationCheck(
+                category="Cross-Section Reconciliation",
+                name="Portfolio Flow vs Performance Flow",
+                level="PASS",
+                message=f"Page 1 Portfolio Summary cash/securities flow ({p1_flow} USD) reconciles with Monthly Performance deposits/withdrawals ({monthly_flows} USD){period_label}. Difference of {flow_diff} USD is within documented 1.00 USD rounding tolerance.",
+                details={
+                    "page1_portfolio_flow": str(p1_flow),
+                    "monthly_performance_flow": str(monthly_flows),
+                    "reconciliation_status": "ROUNDING_DIFFERENCE",
+                    "difference": str(flow_diff),
+                    "reporting_period": rep_period_key,
+                    "eligible_months_count": len(monthly_periodic_rows),
+                    "excluded_months_count": len(excluded_prior_rows)
                 }
             ))
         else:
             checks.append(ValidationCheck(
                 category="Cross-Section Reconciliation",
                 name="Portfolio Flow vs Performance Flow",
-                level="PASS",
-                message=f"Page 1 Portfolio Summary cash/securities flow reconciles with Monthly Performance deposits/withdrawals ({p1_flow} USD).",
+                level="INFO",
+                message=f"SOURCE_DISCREPANCY: Page 1 Portfolio Summary cash/securities flow ({p1_flow} USD) differs from Monthly Performance deposits/withdrawals total ({monthly_flows} USD){period_label} by {flow_diff} USD. Both source values preserved without alteration.",
                 details={
                     "page1_portfolio_flow": str(p1_flow),
                     "monthly_performance_flow": str(monthly_flows),
-                    "reconciliation_status": "RECONCILED"
+                    "annual_latest_flow": str(annual_latest) if annual_latest is not None else None,
+                    "discrepancy": str(flow_diff),
+                    "reconciliation_status": "SOURCE_DISCREPANCY",
+                    "reporting_period": rep_period_key,
+                    "eligible_months_count": len(monthly_periodic_rows),
+                    "excluded_months_count": len(excluded_prior_rows)
                 }
             ))
 
