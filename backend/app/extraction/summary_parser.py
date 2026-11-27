@@ -224,7 +224,8 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
         if "SINCE" in tu:
             m_s = re.search(r"SINCE\s+([0-9]{2}\.[0-9]{2}\.[0-9]{4}(?:\s+TO\s+[0-9]{2}\.[0-9]{2}\.[0-9]{4})?)", t, re.IGNORECASE)
             if m_s:
-                rep_period = f"SINCE {re.sub(r'\s+', ' ', m_s.group(1).strip().upper())}"
+                norm_period = re.sub(r"\s+", " ", m_s.group(1).strip().upper())
+                rep_period = f"SINCE {norm_period}"
                 raw_vals["reporting_period"] = rep_period
 
         if "INITIAL ASSETS" in tu:
