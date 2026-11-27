@@ -23,6 +23,12 @@ def _synthetic_path(filename: str) -> str:
         (_synthetic_path("Synthetic_Portfolio_Test_03.pdf"), "SYN-6303", Decimal("1815000.00"), 12, 6),
         (_synthetic_path("Synthetic_Portfolio_Test_04.pdf"), "SYN-7404", Decimal("2120000.00"), 14, 6),
         (_synthetic_path("Synthetic_Portfolio_Test_05.pdf"), "SYN-8505", Decimal("1500000.00"), 12, 6),
+        (_synthetic_path("Synthetic_Portfolio_Test_06.pdf"), "SYN-9606", Decimal("1900000.00"), 14, 6),
+        (_synthetic_path("Synthetic_Portfolio_Test_07.pdf"), "SYN-9707", Decimal("1750000.00"), 12, 6),
+        (_synthetic_path("Synthetic_Portfolio_Test_08.pdf"), "SYN-10808", Decimal("1600000.00"), 12, 6),
+        (_synthetic_path("Synthetic_Portfolio_Test_09.pdf"), "SYN-11809", Decimal("2050000.00"), 12, 7),
+        (_synthetic_path("Synthetic_Portfolio_Test_10.pdf"), "SYN-12010", Decimal("1900000.00"), 12, 7),
+        (_synthetic_path("Synthetic_Portfolio_Test_11.pdf"), "SYN-13011", Decimal("2350000.00"), 12, 7),
     ],
 )
 def test_nine_document_full_reconciliation(
@@ -167,4 +173,112 @@ def test_synthetic_05_alternative_terminology_and_multi_line_holdings():
     assert l_chf.amount == Decimal("-13636.36")
     assert l_chf.usd_equivalent == Decimal("-15000.00")
     assert "LN-TEST-8505-B" in (l_chf.loan_reference or l_chf.description or "")
+
+
+def test_synthetic_11_multi_line_holding_separation():
+    p11 = _synthetic_path("Synthetic_Portfolio_Test_11.pdf")
+    if not os.path.exists(p11):
+        pytest.skip("Synthetic_Portfolio_Test_11.pdf not present")
+
+    res = extract_ubp_statement(p11)
+
+    assert res.metadata.portfolio_number == "SYN-13011"
+    assert len(res.holdings) == 12
+
+    # Verify zero FAIL validation checks
+    fails = [c for c in res.validation_checks if c.level == "FAIL"]
+    assert fails == [], f"Validation failures: {[f.message for f in fails]}"
+
+    # Specifically test the previously defective positions HLD-010 and HLD-011 on page 4
+    h10 = next(h for h in res.holdings if h.isin_secur_no == "XS1301100100")
+    h11 = next(h for h in res.holdings if h.isin_secur_no == "XS1301100118")
+    h12 = next(h for h in res.holdings if h.isin_secur_no == "XS1301100126")
+
+    # 1. HOLDING 10: Euro Principal Protected Note - Maturity 2035
+    assert "EURO PRINCIPAL PROTECTED NOTE" in h10.security_name.upper()
+    assert "MATURITY 2035" in h10.security_name.upper()
+    # Must NOT contain text from Holding 11
+    assert "HARBOURFRONT" not in h10.security_name.upper()
+    assert h10.units_nominal == Decimal("81818.18")
+    assert h10.value_in_usd == Decimal("90000.00")
+
+    # 2. HOLDING 11: Harbourfront Equity Participation Note - HKD Series 10
+    assert "HARBOURFRONT EQUITY PARTICIPATION NOTE" in h11.security_name.upper()
+    assert "SERIES 10" in h11.security_name.upper()
+    assert h11.security_name != ""
+    assert h11.units_nominal == Decimal("468000")
+    assert h11.value_in_usd == Decimal("60000.00")
+
+    # 3. HOLDING 12: Fairhaven USD Callable Income Note - Class L
+    assert "FAIRHAVEN USD CALLABLE INCOME NOTE" in h12.security_name.upper()
+    assert "CLASS L" in h12.security_name.upper()
+    assert h12.units_nominal == Decimal("60000")
+    assert h12.value_in_usd == Decimal("60000.00")
+
+
+def test_synthetic_10_multi_line_holding_separation():
+    p10 = _synthetic_path("Synthetic_Portfolio_Test_10.pdf")
+    if not os.path.exists(p10):
+        pytest.skip("Synthetic_Portfolio_Test_10.pdf not present")
+
+    res = extract_ubp_statement(p10)
+
+    assert res.metadata.portfolio_number == "SYN-12010"
+    assert len(res.holdings) == 12
+
+    # Verify zero FAIL validation checks
+    fails = [c for c in res.validation_checks if c.level == "FAIL"]
+    assert fails == [], f"Validation failures: {[f.message for f in fails]}"
+
+    # Specifically test positions HLD-010 and HLD-011 on page 4
+    h10 = next(h for h in res.holdings if h.isin_secur_no == "XS1201000104")
+    h11 = next(h for h in res.holdings if h.isin_secur_no == "XS1201000112")
+    h12 = next(h for h in res.holdings if h.isin_secur_no == "XS1201000120")
+
+    # 1. HOLDING 10: Euro Capital Protection Note - Maturity 2034
+    assert "EURO CAPITAL PROTECTION NOTE" in h10.security_name.upper()
+    assert "MATURITY 2034" in h10.security_name.upper()
+    assert "HARBOURVIEW" not in h10.security_name.upper()
+    assert h10.units_nominal == Decimal("54545.45")
+    assert h10.value_in_usd == Decimal("60000.00")
+
+    # 2. HOLDING 11: Harbourview Equity Participation Note - HKD Series 9
+    assert "HARBOURVIEW EQUITY PARTICIPATION NOTE" in h11.security_name.upper()
+    assert "SERIES 9" in h11.security_name.upper()
+    assert h11.security_name != ""
+    assert h11.units_nominal == Decimal("468000")
+    assert h11.value_in_usd == Decimal("60000.00")
+
+    # 3. HOLDING 12: Rivermark USD Callable Income Note - Class C
+    assert "RIVERMARK USD CALLABLE INCOME NOTE" in h12.security_name.upper()
+    assert "CLASS C" in h12.security_name.upper()
+    assert h12.units_nominal == Decimal("60000")
+    assert h12.value_in_usd == Decimal("60000.00")
+
+
+def test_synthetic_06_alternate_headers_and_ocr():
+    p06 = _synthetic_path("Synthetic_Portfolio_Test_06.pdf")
+    if not os.path.exists(p06):
+        pytest.skip("Synthetic_Portfolio_Test_06.pdf not present")
+
+    res = extract_ubp_statement(p06)
+
+    assert res.metadata.portfolio_number == "SYN-9606"
+    assert len(res.holdings) == 14
+
+    # Verify zero FAIL validation checks
+    fails = [c for c in res.validation_checks if c.level == "FAIL"]
+    assert fails == [], f"Validation failures: {[f.message for f in fails]}"
+
+    # Verify all holdings have non-empty names
+    for h in res.holdings:
+        assert h.security_name and len(h.security_name.strip()) >= 3, f"Holding {h.id} has empty name"
+
+    # Verify Structured Products on Page 5
+    sp = [h for h in res.holdings if "STRUCTURED PRODUCTS" in h.asset_category.upper()]
+    assert len(sp) == 3
+    assert any("CROSS-CURRENCY" in h.security_name.upper() for h in sp)
+    assert any("HONG KONG TECHNOLOGY" in h.security_name.upper() for h in sp)
+    assert any("MATURED STERLING" in h.security_name.upper() for h in sp)
+
 

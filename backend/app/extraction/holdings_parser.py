@@ -141,11 +141,13 @@ def is_category_header(
 
             remainder = upper[m_start.end():].strip()
             rem_words = remainder.split()
+            continuation_noise = {"CONTINUATION", "CONTINUED", "PAGE", "CONT", "(CONTINUED)", "(CONT.)", "SCANNED", "-", "—"}
             non_numeric_words = [
                 rw for rw in rem_words
                 if not parse_financial_number(rw).is_valid
                 and not is_valid_iso_currency(rw)
                 and rw not in {"%", "-"}
+                and rw not in continuation_noise
             ]
             if non_numeric_words:
                 continue
@@ -319,7 +321,8 @@ def is_description_only_line(l: VisualLine, col_map: TableColumnMap) -> bool:
     if not name_words:
         return False
     # If the line contains financial figures in values/cost/price/units/percentage columns (e.g. accrued interest continuation lines), it is not description-only
-    for k in ("MARKET_VALUE", "REPORTING_VALUE", "PERCENTAGE", "AVERAGE_COST", "MARKET_PRICE", "UNITS", "SECURITY_ID"):
+    # Note: SECURITY_ID is excluded because non-ID numbers (e.g. 'Series 10' or '2035') spilling into the ID column must not disqualify description lines
+    for k in ("MARKET_VALUE", "REPORTING_VALUE", "PERCENTAGE", "AVERAGE_COST", "MARKET_PRICE", "UNITS"):
         for w in assigned.get(k, []):
             wt = w.text.strip()
             if is_valid_iso_currency(wt) or wt in {"-", "—", "/"}:
@@ -447,7 +450,7 @@ def parse_holdings_pages(
         page_num = pno + 1
         page_width = page.rect.width
         page_height = page.rect.height
-        _, lines = extract_visual_words_and_lines(page)
+        _, lines = extract_visual_words_and_lines(page, y_tolerance=5.5)
 
         col_map = detect_holdings_table_map(lines, page_width)
         page_header_maps.append({
@@ -471,9 +474,28 @@ def parse_holdings_pages(
             if l.y >= footer_y_limit:
                 continue
             lu = l.text.upper()
-            if any(f in lu for f in ["ORIGINAL DENOMINATION AND REPORTING", "BLANK FIELDS ARE INTENTIONALLY", "REPORT EDITED ON", "SYNTHETIC TEST ONLY", "UNION BANCAIRE PRIVEE"]):
+            if any(f in lu for f in ["ORIGINAL DENOMINATION AND REPORTING", "BLANK FIELDS ARE INTENTIONALLY", "REPORT EDITED ON", "SYNTHETIC TEST ONLY", "UNION BANCAIRE PRIVEE", "EXPLICIT ZERO", "INTENTIONALLY BLANK", "PIXELS ONLY"]):
                 continue
             content_lines.append(l)
+
+        # Check if any pre-header line on this page specifies a category banner (e.g. 'STRUCTURED PRODUCTS - SCANNED CONTINUATION PAGE')
+        for l in lines:
+            if 50.0 < l.y < data_start_y:
+                cat_match = is_category_header(
+                    l.text.strip(),
+                    dynamic_categories,
+                    line_x0=l.words[0].x0 if l.words else None,
+                    col_map=col_map
+                )
+                if cat_match:
+                    cat_name, subtotal, pct = cat_match
+                    current_category = cat_name
+                    if subtotal is not None or cat_name not in category_subtotals:
+                        category_subtotals[cat_name] = {
+                            "subtotal_usd": subtotal,
+                            "percentage": pct,
+                            "page": page_num
+                        }
 
         # If a narrow trailing '%' header was dropped (e.g. by OCR at the right page margin) while body rows clearly
         # contain a rightmost percentage column to the right of REPORTING_VALUE / MARKET_VALUE, infer PERCENTAGE bounds geometrically.
@@ -537,14 +559,33 @@ def parse_holdings_pages(
                 idx += 1
                 continue
 
-            # Case B: Vertically separated row with description on line 1 and financial anchor on line 2
-            if (
-                idx + 1 < len(content_lines)
-                and is_case_b_pair(line, content_lines[idx + 1], col_map)
-                and (content_lines[idx + 1].y - line.y <= 24.0)
-            ):
-                holding_lines = [line, content_lines[idx + 1]]
-                next_idx = idx + 2
+            # Multi-line Case B: 1 or more description lines followed by a financial anchor
+            is_case_b = False
+            desc_lines = []
+            fin_line_cand = None
+            fin_idx = -1
+            if is_description_only_line(line, col_map):
+                desc_lines = [line]
+                scan_k = idx + 1
+                while scan_k < len(content_lines) and is_description_only_line(content_lines[scan_k], col_map) and (content_lines[scan_k].y - content_lines[scan_k - 1].y <= 18.0):
+                    desc_lines.append(content_lines[scan_k])
+                    scan_k += 1
+                if scan_k < len(content_lines) and has_financial_anchor(content_lines[scan_k], col_map) and (content_lines[scan_k].y - desc_lines[-1].y <= 24.0):
+                    assigned_fin, _ = assign_words_to_columns(content_lines[scan_k].words, col_map)
+                    fin_name_words = [
+                        w.text.strip().upper() for w in assigned_fin.get("SECURITY_NAME", [])
+                        if w.text.strip().upper() not in {"ESG", "/", "|", "-", "—"}
+                        and not re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", w.text.strip())
+                        and not re.match(r"^[A-D]{1,3}[\+\-]?(?:/[A-D]{1,3}[\+\-]?)?$", w.text.strip().upper())
+                    ]
+                    if len(fin_name_words) < 2 and (not fin_name_words or len(fin_name_words[0]) < 6):
+                        is_case_b = True
+                        fin_line_cand = content_lines[scan_k]
+                        fin_idx = scan_k
+
+            if is_case_b and fin_line_cand is not None:
+                holding_lines = desc_lines + [fin_line_cand]
+                next_idx = fin_idx + 1
                 while next_idx < len(content_lines):
                     cand = content_lines[next_idx]
                     if is_category_header(
@@ -554,11 +595,16 @@ def parse_holdings_pages(
                         col_map=col_map
                     ):
                         break
-                    if _is_primary_line(cand) or (
-                        next_idx + 1 < len(content_lines)
-                        and is_case_b_pair(cand, content_lines[next_idx + 1], col_map)
-                    ):
+                    if _is_primary_line(cand):
                         break
+                    # If cand is an introductory description line for the next financial anchor, break
+                    if is_description_only_line(cand, col_map):
+                        chk_k = next_idx + 1
+                        while chk_k < len(content_lines) and is_description_only_line(content_lines[chk_k], col_map) and (content_lines[chk_k].y - content_lines[chk_k - 1].y <= 18.0):
+                            chk_k += 1
+                        if chk_k < len(content_lines) and (content_lines[chk_k].y - content_lines[chk_k - 1].y <= 24.0):
+                            if is_case_b_pair(content_lines[chk_k - 1], content_lines[chk_k], col_map):
+                                break
                     holding_lines.append(cand)
                     next_idx += 1
 
@@ -587,11 +633,16 @@ def parse_holdings_pages(
                         col_map=col_map
                     ):
                         break
-                    if _is_primary_line(next_l) or (
-                        next_idx + 1 < len(content_lines)
-                        and is_case_b_pair(next_l, content_lines[next_idx + 1], col_map)
-                    ):
+                    if _is_primary_line(next_l):
                         break
+                    # If next_l is an introductory description line for the next financial anchor, break
+                    if is_description_only_line(next_l, col_map):
+                        chk_k = next_idx + 1
+                        while chk_k < len(content_lines) and is_description_only_line(content_lines[chk_k], col_map) and (content_lines[chk_k].y - content_lines[chk_k - 1].y <= 18.0):
+                            chk_k += 1
+                        if chk_k < len(content_lines) and (content_lines[chk_k].y - content_lines[chk_k - 1].y <= 24.0):
+                            if is_case_b_pair(content_lines[chk_k - 1], content_lines[chk_k], col_map):
+                                break
                     holding_lines.append(next_l)
                     next_idx += 1
 
@@ -700,6 +751,24 @@ def _build_holding_item(
                 if wu == "ESG" or wu == previous_esg_rating.upper() or wu == current_esg_rating.upper():
                     continue
             l_name_words.append(w)
+
+        # If this line has NO valid identifier, any tokens in SECURITY_ID that are not noise belong to the description!
+        l_id_cand, _ = _extract_identifier_from_words(l_assigned.get("SECURITY_ID", []), line_text=l.text)
+        if l_id_cand is None and l_assigned.get("SECURITY_ID"):
+            for w in l_assigned["SECURITY_ID"]:
+                wt = w.text.strip()
+                wu = wt.upper()
+                if (
+                    wu in watermark_noise
+                    or wu in {"/", "|"}
+                    or is_valid_iso_currency(wu)
+                    or _is_credit_rating(wu)
+                    or wu.startswith("ESG")
+                    or re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", wu)
+                ):
+                    continue
+                l_name_words.append(w)
+
         if l_name_words:
             l_name_words.sort(key=lambda w: w.x0)
             name_parts.append(" ".join(w.text for w in l_name_words).strip())
@@ -857,6 +926,9 @@ def _build_holding_item(
                 accrued_interest_usd = fn.value
 
     full_security_name = " ".join([p for p in name_parts if p]).strip()
+    for fn_noise in ["EXPLICIT ZERO", "INTENTIONALLY BLANK", "PIXELS ONLY"]:
+        if fn_noise in full_security_name.upper():
+            full_security_name = re.sub(r"\s*" + re.escape(fn_noise) + r".*$", "", full_security_name, flags=re.IGNORECASE).strip()
 
     # Preserve fallback currency if UNITS specified it (e.g. HKD 702,000) and CCY was absent
     effective_mkt_curr = market_value_currency or market_price_currency or units_curr or "USD"

@@ -11,9 +11,13 @@ from PIL import Image, ImageEnhance
 
 from app.extraction.word_extractor import ExtractedWord, VisualLine
 
-# Cache for OCR results to avoid re-running on same page:
-# (doc_key, page_num) -> (page_text, extracted_words, visual_lines, avg_confidence, page_type)
-_PAGE_OCR_CACHE: Dict[Tuple[str, int], Tuple[str, List[ExtractedWord], List[VisualLine], float, str]] = {}
+# Cache for OCR raw word extraction (to avoid re-running expensive image OCR on same page):
+# (doc_key, page_num) -> (extracted_words, avg_confidence, page_type)
+_PAGE_RAW_OCR_WORDS_CACHE: Dict[Tuple[str, int], Tuple[List[ExtractedWord], float, str]] = {}
+
+# Cache for line-grouped OCR results:
+# (doc_key, page_num, y_tolerance) -> (page_text, extracted_words, visual_lines, avg_confidence, page_type)
+_PAGE_OCR_CACHE: Dict[Tuple[str, int, float], Tuple[str, List[ExtractedWord], List[VisualLine], float, str]] = {}
 
 PS_SCRIPT_PATH = os.path.join(os.path.dirname(__file__), "win_ocr_helper.ps1")
 
@@ -157,152 +161,157 @@ def extract_page_with_ocr(
     y_tolerance: float = 4.0
 ) -> Tuple[str, List[ExtractedWord], List[VisualLine], float, str]:
     """
-    Renders the page at 300 DPI, runs deterministic local OCR, scales pixel
+    Renders the page at 400 DPI, runs deterministic local OCR, scales pixel
     coordinates to PDF points, groups into VisualLines, and caches results.
     Returns: (page_text, extracted_words, visual_lines, avg_confidence, page_type)
     """
     doc_key = get_doc_cache_key(page)
-    cache_key = (doc_key, page_num)
+    cache_key = (doc_key, page_num, round(y_tolerance, 2))
     if cache_key in _PAGE_OCR_CACHE:
         return _PAGE_OCR_CACHE[cache_key]
 
-    page_type, _ = detect_page_type(page)
-
-    # 1. Render page at 400 DPI so fine punctuation (apostrophes, decimals, markers) remains sharp for OCR
-    zoom = 400.0 / 72.0
-    mat = pymupdf.Matrix(zoom, zoom)
-    pix = page.get_pixmap(matrix=mat, alpha=False)
-
-    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_f:
-        tmp_img = tmp_f.name
-
-    try:
-        pix.save(tmp_img)
-        # Apply Pillow grayscale normalization + gentle contrast enhancement
-        with Image.open(tmp_img) as pil_img:
-            gray_img = pil_img.convert("L")
-            enhancer = ImageEnhance.Contrast(gray_img)
-            enhanced = enhancer.enhance(1.2).copy()
-        enhanced.save(tmp_img)
-
-        # 2. Run local OCR
-        ocr_lines, avg_conf = _run_local_ocr_engine(tmp_img)
-    finally:
-        if os.path.exists(tmp_img):
-            try:
-                os.remove(tmp_img)
-            except Exception:
-                pass
-
-    # 3. Coordinate conversion: Image pixels -> PDF points
-    img_w = pix.width
-    img_h = pix.height
-    scale_x = page.rect.width / img_w
-    scale_y = page.rect.height / img_h
-
-    extracted_words: List[ExtractedWord] = []
-    word_idx = 0
-
-    for l_idx, line in enumerate(ocr_lines):
-        line_words = line.get("words", [])
-        for w in line_words:
-            raw_w_text = w.get("text", "")
-            w_text = _clean_ocr_text_token(raw_w_text)
-            if not w_text:
-                continue
-
-            wx = w.get("x", 0)
-            wy = w.get("y", 0)
-            ww = w.get("width", 0)
-            wh = w.get("height", 0)
-            conf = float(w.get("confidence", 95.0))
-
-            x0 = wx * scale_x
-            y0 = wy * scale_y
-            x1 = (wx + ww) * scale_x
-            y1 = (wy + wh) * scale_y
-
-            # Check if this word is a split part of the previous number
-            # e.g. 649 and '022 -> 649'022 or 250' and ooo -> 250'000
-            if extracted_words and extracted_words[-1].line_no == l_idx:
-                prev_w = extracted_words[-1]
-                if w_text.startswith("'") and re.match(r"^\d+$", prev_w.text):
-                    extracted_words.pop()
-                    merged_text = prev_w.text + w_text
-                    extracted_words.append(ExtractedWord(
-                        text=merged_text,
-                        x0=prev_w.x0,
-                        y0=min(prev_w.y0, round(y0, 2)),
-                        x1=round(x1, 2),
-                        y1=max(prev_w.y1, round(y1, 2)),
-                        raw_x0=prev_w.raw_x0,
-                        raw_y0=min(prev_w.raw_y0, round(y0, 2)),
-                        raw_x1=round(x1, 2),
-                        raw_y1=max(prev_w.raw_y1, round(y1, 2)),
-                        block_no=prev_w.block_no,
-                        line_no=l_idx,
-                        word_no=prev_w.word_no,
-                        confidence=min(prev_w.confidence, conf)
-                    ))
+    raw_cache_key = (doc_key, page_num)
+    if raw_cache_key in _PAGE_RAW_OCR_WORDS_CACHE:
+        extracted_words, avg_conf, page_type = _PAGE_RAW_OCR_WORDS_CACHE[raw_cache_key]
+    else:
+        page_type, _ = detect_page_type(page)
+    
+        # 1. Render page at 400 DPI so fine punctuation (apostrophes, decimals, markers) remains sharp for OCR
+        zoom = 400.0 / 72.0
+        mat = pymupdf.Matrix(zoom, zoom)
+        pix = page.get_pixmap(matrix=mat, alpha=False)
+    
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_f:
+            tmp_img = tmp_f.name
+    
+        try:
+            pix.save(tmp_img)
+            # Apply Pillow grayscale normalization + gentle contrast enhancement
+            with Image.open(tmp_img) as pil_img:
+                gray_img = pil_img.convert("L")
+                enhancer = ImageEnhance.Contrast(gray_img)
+                enhanced = enhancer.enhance(1.2).copy()
+            enhanced.save(tmp_img)
+    
+            # 2. Run local OCR
+            ocr_lines, avg_conf = _run_local_ocr_engine(tmp_img)
+        finally:
+            if os.path.exists(tmp_img):
+                try:
+                    os.remove(tmp_img)
+                except Exception:
+                    pass
+    
+        # 3. Coordinate conversion: Image pixels -> PDF points
+        img_w = pix.width
+        img_h = pix.height
+        scale_x = page.rect.width / img_w
+        scale_y = page.rect.height / img_h
+    
+        extracted_words: List[ExtractedWord] = []
+        word_idx = 0
+    
+        for l_idx, line in enumerate(ocr_lines):
+            line_words = line.get("words", [])
+            for w in line_words:
+                raw_w_text = w.get("text", "")
+                w_text = _clean_ocr_text_token(raw_w_text)
+                if not w_text:
                     continue
-                elif w_text.lower() in ("ooo", "oo") and prev_w.text.endswith("'"):
-                    extracted_words.pop()
-                    merged_text = prev_w.text + ("000" if len(w_text) == 3 else "00")
-                    extracted_words.append(ExtractedWord(
-                        text=merged_text,
-                        x0=prev_w.x0,
-                        y0=min(prev_w.y0, round(y0, 2)),
-                        x1=round(x1, 2),
-                        y1=max(prev_w.y1, round(y1, 2)),
-                        raw_x0=prev_w.raw_x0,
-                        raw_y0=min(prev_w.raw_y0, round(y0, 2)),
-                        raw_x1=round(x1, 2),
-                        raw_y1=max(prev_w.raw_y1, round(y1, 2)),
-                        block_no=prev_w.block_no,
-                        line_no=l_idx,
-                        word_no=prev_w.word_no,
-                        confidence=min(prev_w.confidence, conf)
-                    ))
-                    continue
-                elif re.match(r"^\.\d{2,4}$", w_text) and re.match(r"^\d{2}\.\d{2}$", prev_w.text):
-                    extracted_words.pop()
-                    merged_text = prev_w.text + w_text
-                    extracted_words.append(ExtractedWord(
-                        text=merged_text,
-                        x0=prev_w.x0,
-                        y0=min(prev_w.y0, round(y0, 2)),
-                        x1=round(x1, 2),
-                        y1=max(prev_w.y1, round(y1, 2)),
-                        raw_x0=prev_w.raw_x0,
-                        raw_y0=min(prev_w.raw_y0, round(y0, 2)),
-                        raw_x1=round(x1, 2),
-                        raw_y1=max(prev_w.raw_y1, round(y1, 2)),
-                        block_no=prev_w.block_no,
-                        line_no=l_idx,
-                        word_no=prev_w.word_no,
-                        confidence=min(prev_w.confidence, conf)
-                    ))
-                    continue
-
-            extracted_words.append(ExtractedWord(
-                text=w_text,
-                x0=round(x0, 2),
-                y0=round(y0, 2),
-                x1=round(x1, 2),
-                y1=round(y1, 2),
-                raw_x0=round(x0, 2),
-                raw_y0=round(y0, 2),
-                raw_x1=round(x1, 2),
-                raw_y1=round(y1, 2),
-                block_no=0,
-                line_no=l_idx,
-                word_no=word_idx,
-                confidence=conf
-            ))
-            word_idx += 1
-
-    # Sort words visually: top-to-bottom, left-to-right
-    extracted_words.sort(key=lambda item: (item.y0, item.x0))
+    
+                wx = w.get("x", 0)
+                wy = w.get("y", 0)
+                ww = w.get("width", 0)
+                wh = w.get("height", 0)
+                conf = float(w.get("confidence", 95.0))
+    
+                x0 = wx * scale_x
+                y0 = wy * scale_y
+                x1 = (wx + ww) * scale_x
+                y1 = (wy + wh) * scale_y
+    
+                # Check if this word is a split part of the previous number
+                # e.g. 649 and '022 -> 649'022 or 250' and ooo -> 250'000
+                if extracted_words and extracted_words[-1].line_no == l_idx:
+                    prev_w = extracted_words[-1]
+                    if w_text.startswith("'") and re.match(r"^\d+$", prev_w.text):
+                        extracted_words.pop()
+                        merged_text = prev_w.text + w_text
+                        extracted_words.append(ExtractedWord(
+                            text=merged_text,
+                            x0=prev_w.x0,
+                            y0=min(prev_w.y0, round(y0, 2)),
+                            x1=round(x1, 2),
+                            y1=max(prev_w.y1, round(y1, 2)),
+                            raw_x0=prev_w.raw_x0,
+                            raw_y0=min(prev_w.raw_y0, round(y0, 2)),
+                            raw_x1=round(x1, 2),
+                            raw_y1=max(prev_w.raw_y1, round(y1, 2)),
+                            block_no=prev_w.block_no,
+                            line_no=l_idx,
+                            word_no=prev_w.word_no,
+                            confidence=min(prev_w.confidence, conf)
+                        ))
+                        continue
+                    elif w_text.lower() in ("ooo", "oo") and prev_w.text.endswith("'"):
+                        extracted_words.pop()
+                        merged_text = prev_w.text + ("000" if len(w_text) == 3 else "00")
+                        extracted_words.append(ExtractedWord(
+                            text=merged_text,
+                            x0=prev_w.x0,
+                            y0=min(prev_w.y0, round(y0, 2)),
+                            x1=round(x1, 2),
+                            y1=max(prev_w.y1, round(y1, 2)),
+                            raw_x0=prev_w.raw_x0,
+                            raw_y0=min(prev_w.raw_y0, round(y0, 2)),
+                            raw_x1=round(x1, 2),
+                            raw_y1=max(prev_w.raw_y1, round(y1, 2)),
+                            block_no=prev_w.block_no,
+                            line_no=l_idx,
+                            word_no=prev_w.word_no,
+                            confidence=min(prev_w.confidence, conf)
+                        ))
+                        continue
+                    elif re.match(r"^\.\d{2,4}$", w_text) and re.match(r"^\d{2}\.\d{2}$", prev_w.text):
+                        extracted_words.pop()
+                        merged_text = prev_w.text + w_text
+                        extracted_words.append(ExtractedWord(
+                            text=merged_text,
+                            x0=prev_w.x0,
+                            y0=min(prev_w.y0, round(y0, 2)),
+                            x1=round(x1, 2),
+                            y1=max(prev_w.y1, round(y1, 2)),
+                            raw_x0=prev_w.raw_x0,
+                            raw_y0=min(prev_w.raw_y0, round(y0, 2)),
+                            raw_x1=round(x1, 2),
+                            raw_y1=max(prev_w.raw_y1, round(y1, 2)),
+                            block_no=prev_w.block_no,
+                            line_no=l_idx,
+                            word_no=prev_w.word_no,
+                            confidence=min(prev_w.confidence, conf)
+                        ))
+                        continue
+    
+                extracted_words.append(ExtractedWord(
+                    text=w_text,
+                    x0=round(x0, 2),
+                    y0=round(y0, 2),
+                    x1=round(x1, 2),
+                    y1=round(y1, 2),
+                    raw_x0=round(x0, 2),
+                    raw_y0=round(y0, 2),
+                    raw_x1=round(x1, 2),
+                    raw_y1=round(y1, 2),
+                    block_no=0,
+                    line_no=l_idx,
+                    word_no=word_idx,
+                    confidence=conf
+                ))
+                word_idx += 1
+    
+        # Sort words visually: top-to-bottom, left-to-right
+        extracted_words.sort(key=lambda item: (item.y0, item.x0))
+        _PAGE_RAW_OCR_WORDS_CACHE[raw_cache_key] = (extracted_words, avg_conf, page_type)
 
     # 4. Group into visual lines
     lines: List[VisualLine] = []

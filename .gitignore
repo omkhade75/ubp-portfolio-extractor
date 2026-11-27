@@ -44,6 +44,7 @@ frontend/dist/
 # App Runtime Data
 input/
 output/
+test_outputs_audit/
 logs/
 debug/
 references/

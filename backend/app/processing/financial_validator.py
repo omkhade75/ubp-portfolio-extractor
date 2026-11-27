@@ -247,6 +247,58 @@ def run_financial_validation(res: StatementExtractionResult) -> List[ValidationC
                 details={"holdings_count": holdings_count}
             ))
 
+    # 1b. Merged Security Description Check
+    merged_descriptions = []
+    for h in res.holdings:
+        sname = h.security_name or ""
+        # Check for multiple distinct instrument titles or maturity/series followed by a new title
+        m_merged = re.search(
+            r"(?:Maturity\s+\d{4}|Series\s+\d+|Class\s+[A-Z0-9]+)\s+[A-Z][a-z]+.*?\b(?:Note|Bond|Fund|Strategy|Portfolio|ETF|SICAV|Partnership)\b",
+            sname
+        )
+        if m_merged:
+            merged_descriptions.append(f"{h.id} ({h.isin_secur_no or 'No ID'}): '{sname}'")
+
+    if merged_descriptions:
+        checks.append(ValidationCheck(
+            category="Holdings Integrity",
+            name="Merged Description Check",
+            level="FAIL",
+            message=f"Merged security descriptions detected across {len(merged_descriptions)} holdings: {'; '.join(merged_descriptions[:3])}",
+            details={"merged_holdings": merged_descriptions}
+        ))
+    elif holdings_count > 0:
+        checks.append(ValidationCheck(
+            category="Holdings Integrity",
+            name="Merged Description Check",
+            level="PASS",
+            message=f"All {holdings_count} security descriptions confirmed single, atomic instruments with zero description concatenation.",
+            details={"holdings_count": holdings_count}
+        ))
+
+    # 1c. 1-to-1 Description-to-Financial Record Mapping Check
+    mapping_issues = []
+    for h in res.holdings:
+        if (h.units_nominal is not None or h.value_in_usd is not None) and (not h.security_name or len(h.security_name.strip()) < 3):
+            mapping_issues.append(f"{h.id}: Financial record present (units={h.units_nominal}, value={h.value_in_usd}) but Security Name is blank.")
+
+    if mapping_issues:
+        checks.append(ValidationCheck(
+            category="Holdings Integrity",
+            name="1-to-1 Description-to-Financial Record Mapping",
+            level="FAIL",
+            message=f"1-to-1 description mapping failure: {len(mapping_issues)} financial positions missing description: {'; '.join(mapping_issues[:3])}",
+            details={"issues": mapping_issues}
+        ))
+    elif holdings_count > 0:
+        checks.append(ValidationCheck(
+            category="Holdings Integrity",
+            name="1-to-1 Description-to-Financial Record Mapping",
+            level="PASS",
+            message=f"1-to-1 description-to-financial record mapping verified: all {holdings_count} financial positions possess independent, non-empty security descriptions.",
+            details={"holdings_count": holdings_count}
+        ))
+
     # 2. Security Identifier Structural & Column Validity Check
     DISALLOWED_IDENTIFIER_WORDS = {
         "BONDS", "NOTES", "ALTERNATIVES", "ALTERNATIVE", "EQUITIES", "EQUITY",

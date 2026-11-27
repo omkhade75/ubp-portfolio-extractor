@@ -23,16 +23,16 @@ def is_valid_iso_currency(token: str) -> bool:
 # Configurable synonym dictionaries for semantic header mapping.
 # Ordered by specificity when matching.
 HOLDINGS_SYNONYMS: Dict[str, List[str]] = {
-    "UNITS": ["UNITS/NOMINAL", "UNITS / NOMINAL", "POSITION / NOMINAL", "POSITION/NOMINAL", "POSITION SIZE", "POSITION", "NOMINAL AMOUNT", "NOMINAL", "UNITS", "QUANTITY", "QTY"],
-    "SECURITY_NAME": ["SECURITY NAME", "INSTRUMENT DESCRIPTION", "ASSET DESCRIPTION", "SECURITY DESCRIPTION", "INSTRUMENT NAME", "INVESTMENT NAME", "DESCRIPTION", "DENOMINATION"],
+    "UNITS": ["UNITS/NOMINAL", "UNITS / NOMINAL", "POSITION / NOMINAL", "POSITION/NOMINAL", "POSITION SIZE", "POSITION", "NOMINAL AMOUNT", "NOMINAL / QUANTITY", "NOMINAL/QUANTITY", "NOMINAL QUANTITY", "NOMINAL", "UNITS", "QUANTITY", "QTY"],
+    "SECURITY_NAME": ["SECURITY NAME", "INSTRUMENT DESCRIPTION", "ASSET DESCRIPTION", "SECURITY DESCRIPTION", "INSTRUMENT NAME", "INVESTMENT NAME", "SECURITY / INSTRUMENT", "SECURITY/INSTRUMENT", "SECURITY INSTRUMENT", "SECURITY", "INSTRUMENT", "DESCRIPTION", "DENOMINATION"],
     "SECURITY_ID": ["SECURITY NO.", "SECURITY NO", "SECURITY NUMBER", "SECUR. NO.", "SECUR NO", "REFERENCE CODE", "SECURITY IDENTIFIER", "INSTRUMENT CODE", "REFERENCE", "REF CODE", "ISIN", "IDENTIFIER", "VALOREN"],
-    "YIELD_RATING": ["DISTRIBUTION / YIELD", "DISTRIBUTION/YIELD", "YIELD / RATING", "YIELD/RATING", "CURRENT YIELD", "DISTRIBUTION YIELD", "INCOME YIELD", "YIELD", "/AV.PU.PRI"],
+    "YIELD_RATING": ["DISTRIBUTION / YIELD", "DISTRIBUTION/YIELD", "YIELD / RATING", "YIELD/RATING", "CURRENT YIELD", "DISTRIBUTION YIELD", "INCOME YIELD", "COUPON / YIELD", "COUPON/YIELD", "COUPON", "YIELD", "/AV.PU.PRI"],
     "AVERAGE_COST": ["NET AVERAGE COST", "AVERAGE COST", "AVG. COST", "AVG COST", "COST PRICE", "ACQUISITION PRICE", "PURCHASE PRICE"],
     "MARKET_PRICE": ["MARKET PRICE", "CLOSING PRICE", "CURRENT PRICE", "LAST PRICE", "VALUATION PRICE", "CLOSING"],
     "MARKET_CURRENCY": ["DENOM. CCY", "DENOM CCY", "DENOMINATION CCY", "PRICE CURRENCY", "INSTRUMENT CURRENCY", "CURRENCY", "CCY", "CURR", "DENOM"],
-    "MARKET_VALUE": ["TOTAL MARKET VALUE", "VALUATION AMOUNT", "TOTAL VALUATION", "MARKET VALUE", "ACCRUED INTEREST"],
-    "REPORTING_VALUE": ["MARKET VALUE IN REPORTING CURRENCY", "VALUE IN REPORTING CURRENCY", "MARKET VALUE IN USD", "REPORTING VALUE", "USD EQUIVALENT", "VALUE IN USD", "REPORTING EQUIVALENT"],
-    "PERCENTAGE": ["PERCENTAGE OF ASSETS", "% OF PORTFOLIO", "% PORTFOLIO", "PORTFOLIO %", "ALLOCATION %", "% ASSETS", "%"],
+    "MARKET_VALUE": ["TOTAL MARKET VALUE", "VALUATION AMOUNT", "TOTAL VALUATION", "POSITION VALUE", "POSITION AMOUNT", "MARKET VALUE", "ACCRUED INTEREST"],
+    "REPORTING_VALUE": ["MARKET VALUE IN REPORTING CURRENCY", "VALUE IN REPORTING CURRENCY", "MARKET VALUE IN USD", "REPORTING VALUE (USD)", "REPORTING VALUE", "USD EQUIVALENT", "VALUE IN USD", "REPORTING EQUIVALENT"],
+    "PERCENTAGE": ["PERCENTAGE OF ASSETS", "% OF PORTFOLIO", "% PORTFOLIO", "PORTFOLIO %", "ALLOCATION %", "% ASSETS", "%", "WEIGHT %", "WEIGHT 0/0", "WEIGHT O/O", "WEIGHT"],
 }
 
 ACCOUNTS_SYNONYMS: Dict[str, List[str]] = {
@@ -149,11 +149,13 @@ def match_semantic_field(
 
     # Special pattern: VALUE IN <CCY> or REPORTING VALUE (<CCY>)
     if allow_dynamic_reporting_ccy:
-        if re.match(r"^(?:VALUE\s+IN|REPORTING\s+VALUE(?:\s*\(?[A-Z]{3}\)?)?)\s*(?:USD|EUR|CHF|GBP|HKD|SGD)?$", norm):
+        if re.match(r"^(?:VALUE\s+IN|E?PORTING\s+VALUE(?:\s*\(?[A-Z]{3}\)?)?)\s*(?:USD|EUR|CHF|GBP|HKD|SGD)?\)?$", norm):
             if "REPORTING_VALUE" in synonyms:
                 return "REPORTING_VALUE"
         if re.match(r"^OUTSTANDING\s*(?:\([A-Z]{3}\))?$", norm) and "REPORTING_VALUE" in synonyms:
             return "REPORTING_VALUE"
+        if re.match(r"^WEIGHT\s*(?:%|0/0|O/O)?$", norm) and "PERCENTAGE" in synonyms:
+            return "PERCENTAGE"
 
     # Build flat list (semantic_key, synonym) sorted longest-first
     candidates: List[Tuple[str, str]] = []
@@ -270,8 +272,8 @@ def build_table_column_map(
     # Collect phrases from primary header line and merge vertically overlapping phrases from secondary lines
     raw_clusters: List[Dict] = []
     for line_idx, hl in enumerate(main_header_lines):
-        # Use tight gap (8.5pt) for table headers; Performance headers sometimes have wide word spacing within same column? Check!
-        max_gap = 7.5 if section_type in ("HOLDINGS", "CURRENCY_BREAKDOWN", "ACCOUNTS", "LOANS") else 9.0
+        # Use tight gap for table headers (intra-word is ~2.2pt, inter-column is >= 6.0pt)
+        max_gap = 5.0 if section_type in ("HOLDINGS", "CURRENCY_BREAKDOWN", "ACCOUNTS", "LOANS") else 9.0
         phrases = _group_line_words_into_phrases(hl.words, max_gap=max_gap)
         for text, x0, x1 in phrases:
             if line_idx == 0:
