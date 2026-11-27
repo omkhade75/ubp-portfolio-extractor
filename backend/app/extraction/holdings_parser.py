@@ -6,6 +6,7 @@ import pymupdf
 from app.models.schemas import HoldingItem
 from app.processing.number_parser import parse_financial_number
 from app.extraction.identifier_engine import normalize_security_identifier, IdentifierResult
+from app.extraction.ocr_extractor import detect_page_type
 from app.extraction.word_extractor import extract_visual_words_and_lines, VisualLine, ExtractedWord
 from app.extraction.table_header_engine import (
     HOLDINGS_SYNONYMS,
@@ -247,7 +248,7 @@ def _extract_identifier_from_words(
     for w in id_words:
         tok = w.text.strip()
         clean = tok.upper()
-        if (tok.isdigit() and len(tok) <= 3) or clean in DISALLOWED_ID_WORDS or _is_credit_rating(clean) or clean.startswith("ESG"):
+        if (tok.isdigit() and len(tok) <= 3) or clean in DISALLOWED_ID_WORDS or _is_credit_rating(clean) or clean.startswith("ESG") or re.match(r"^\d{2,4}[./-]\d{2}[./-]\d{2,4}$", tok):
             continue
         res = normalize_security_identifier(tok, confidence=w.confidence)
         if res.status in ("PASS", "NORMALIZED"):
@@ -266,7 +267,7 @@ def _extract_identifier_from_words(
             if len(grp) >= 2:
                 joined = "".join(w.text.strip() for w in grp)
                 clean_j = joined.upper()
-                if clean_j in DISALLOWED_ID_WORDS or _is_credit_rating(clean_j) or clean_j.startswith("ESG"):
+                if clean_j in DISALLOWED_ID_WORDS or _is_credit_rating(clean_j) or clean_j.startswith("ESG") or re.match(r"^\d{2,4}[./-]\d{2}[./-]\d{2,4}$", joined):
                     continue
                 avg_conf = sum(w.confidence for w in grp) / len(grp)
                 res = normalize_security_identifier(joined, confidence=avg_conf)
@@ -285,6 +286,7 @@ def _extract_identifier_from_words(
             and not clean_tok.isalpha()
             and not _is_credit_rating(clean_tok)
             and not clean_tok.startswith("ESG")
+            and not re.match(r"^\d{2,4}[./-]\d{2}[./-]\d{2,4}$", clean_tok)
             and (any(c.isdigit() for c in clean_tok) or ("-" in clean_tok and len(clean_tok) >= 4))
             and not any(k in clean_tok for k in ["SAMPLE", "VALID", "DEMO"])
         ):
@@ -450,7 +452,11 @@ def parse_holdings_pages(
         page_num = pno + 1
         page_width = page.rect.width
         page_height = page.rect.height
-        _, lines = extract_visual_words_and_lines(page, y_tolerance=5.5)
+        # Digital vector pages have precise typography (pitch ~8pt, metadata separation ~4pt); use 3.0pt tolerance.
+        # Scanned OCR pages have bounding box tilt and jitter across wide landscape tables; use 5.5pt tolerance.
+        _, page_needs_ocr = detect_page_type(page)
+        hld_y_tol = 5.5 if page_needs_ocr else 3.0
+        _, lines = extract_visual_words_and_lines(page, y_tolerance=hld_y_tol)
 
         col_map = detect_holdings_table_map(lines, page_width)
         page_header_maps.append({

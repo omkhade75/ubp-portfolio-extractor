@@ -57,6 +57,17 @@ def normalize_security_identifier(
             detected_format="INVALID"
         )
 
+    # Reject dates (valuation date, maturity date, or price date) from being treated as security identifiers
+    if re.match(r"^\d{2,4}[./-]\d{2}[./-]\d{2,4}$", base):
+        return IdentifierResult(
+            raw_identifier=raw_clean,
+            normalized_identifier="",
+            status="NOT_PRESENT",
+            provenance="DATE_NOT_AN_IDENTIFIER",
+            confidence=100.0,
+            detected_format="DATE"
+        )
+
     # -------------------------------------------------------------
     # 1. Extraneous 'O' inserted between alpha prefix and numeric body
     # -------------------------------------------------------------

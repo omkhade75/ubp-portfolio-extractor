@@ -1,4 +1,5 @@
 import os
+import re
 from decimal import Decimal
 import pytest
 
@@ -29,6 +30,7 @@ def _synthetic_path(filename: str) -> str:
         (_synthetic_path("Synthetic_Portfolio_Test_09.pdf"), "SYN-11809", Decimal("2050000.00"), 12, 7),
         (_synthetic_path("Synthetic_Portfolio_Test_10.pdf"), "SYN-12010", Decimal("1900000.00"), 12, 7),
         (_synthetic_path("Synthetic_Portfolio_Test_11.pdf"), "SYN-13011", Decimal("2350000.00"), 12, 7),
+        (_synthetic_path("Synthetic_Portfolio_Test_12.pdf"), "SYN-14012", Decimal("1710000.00"), 12, 8),
     ],
 )
 def test_nine_document_full_reconciliation(
@@ -280,5 +282,59 @@ def test_synthetic_06_alternate_headers_and_ocr():
     assert any("CROSS-CURRENCY" in h.security_name.upper() for h in sp)
     assert any("HONG KONG TECHNOLOGY" in h.security_name.upper() for h in sp)
     assert any("MATURED STERLING" in h.security_name.upper() for h in sp)
+
+
+def test_synthetic_12_multi_line_holding_separation():
+    """
+    Synthetic Test 12 Holdout Verification:
+    Ensures 1-to-1 description-to-holding association without description merging or blank names.
+    Verifies that multi-line instrument descriptions (Easton Municipal, Blue Peak Asia,
+    Alder Ridge, EUR Capital Protected Note, Harbour Lantern Participation Note,
+    Northline Callable Yield Note) are each preserved with their respective identifiers and financial rows.
+    """
+    p12 = _synthetic_path("Synthetic_Portfolio_Test_12.pdf")
+    if not os.path.exists(p12):
+        pytest.skip("Synthetic_Portfolio_Test_12.pdf not present")
+
+    res = extract_ubp_statement(p12)
+
+    assert res.metadata.portfolio_number == "SYN-14012"
+    assert len(res.holdings) == 12
+
+    # Verify zero FAIL validation checks
+    fails = [c for c in res.validation_checks if c.level == "FAIL"]
+    assert fails == [], f"Validation failures: {[f.message for f in fails]}"
+
+    # Verify every holding has a valid, non-blank security name
+    for h in res.holdings:
+        assert h.security_name and len(h.security_name.strip()) >= 3, f"Holding {h.id} has empty name"
+        # Confirm no date was extracted as an identifier
+        assert not re.match(r"^\d{2,4}[./-]\d{2}[./-]\d{2,4}", str(h.isin_secur_no or "")), (
+            f"Holding {h.id} has a date misclassified as ISIN: {h.isin_secur_no}"
+        )
+
+    # Verify Structured Products on Page 4
+    sp = [h for h in res.holdings if "STRUCTURED PRODUCTS" in h.asset_category.upper()]
+    assert len(sp) == 3
+
+    h_eur_cap = next(h for h in sp if "EUR CAPITAL PROTECTED" in h.security_name.upper())
+    assert "HARBOUR LANTERN" not in h_eur_cap.security_name.upper()
+    assert h_eur_cap.isin_secur_no == "XS1401200108"
+    assert h_eur_cap.units_nominal == Decimal("90909.09")
+    assert h_eur_cap.value_in_usd == Decimal("100000.00")
+
+    h_harbour = next(h for h in sp if "HARBOUR LANTERN" in h.security_name.upper())
+    assert "SERIES 6" in h_harbour.security_name.upper()
+    assert "NORTHLINE" not in h_harbour.security_name.upper()
+    assert h_harbour.isin_secur_no == "XS1401200116"
+    assert h_harbour.units_nominal == Decimal("312000")
+    assert h_harbour.value_in_usd == Decimal("40000.00")
+
+    h_northline = next(h for h in sp if "NORTHLINE" in h.security_name.upper())
+    assert "CLASS P" in h_northline.security_name.upper()
+    assert h_northline.isin_secur_no == "XS1401200124"
+    assert h_northline.units_nominal == Decimal("30000")
+    assert h_northline.value_in_usd == Decimal("30000.00")
+
 
 
