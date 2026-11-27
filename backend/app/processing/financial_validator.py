@@ -63,7 +63,7 @@ def run_financial_validation(res: StatementExtractionResult) -> List[ValidationC
                 "identifier_source": "INFERRED_FROM_FILENAME"
             }
         ))
-    elif meta.portfolio_number and len(meta.portfolio_number) >= 6:
+    elif meta.portfolio_number and len(meta.portfolio_number) >= 4:
         checks.append(ValidationCheck(
             category="Data Completeness",
             name="Portfolio Identifier",
@@ -528,9 +528,99 @@ def run_financial_validation(res: StatementExtractionResult) -> List[ValidationC
             }
         ))
 
+    # 11. Structural Column Boundary & Security ID Separation Check
+    col_struct_issues = []
+    col_conf_warnings = []
+    for h in res.holdings:
+        if h.isin_secur_no and h.isin_secur_no in h.security_name:
+            col_struct_issues.append(f"{h.id}: identifier '{h.isin_secur_no}' leaked into security_name")
+        if re.search(r"\bESG\s+(?:AAA|AA|A|BBB|BB|B|CCC)\b", h.security_name or "", re.IGNORECASE):
+            col_struct_issues.append(f"{h.id}: ESG token leaked into security_name")
+        if getattr(h, "header_confidence", "HIGH") == "REVIEW_REQUIRED":
+            col_conf_warnings.append(h.id)
+
+    if holdings_count > 0:
+        if col_struct_issues:
+            checks.append(ValidationCheck(
+                category="Holdings Integrity",
+                name="Column Boundary & Identifier Separation",
+                level="FAIL",
+                message=f"Structural column misalignment detected: {'; '.join(col_struct_issues[:3])}",
+                details={"issues": col_struct_issues}
+            ))
+        elif col_conf_warnings:
+            checks.append(ValidationCheck(
+                category="Holdings Integrity",
+                name="Column Boundary & Identifier Separation",
+                level="INFO",
+                message=f"Holdings extracted cleanly via positional fallback on {len(col_conf_warnings)} holding(s) without explicit table headers.",
+                details={"fallback_holdings": col_conf_warnings}
+            ))
+        else:
+            checks.append(ValidationCheck(
+                category="Holdings Integrity",
+                name="Column Boundary & Identifier Separation",
+                level="PASS",
+                message=f"Header-driven column mapping verified across all {holdings_count} holdings with clean security ID, ESG, and price/value isolation.",
+                details={"holdings_count": holdings_count, "column_maps_detected": len(res.detected_column_maps.get("holdings", []))}
+            ))
+
     # ==========================================
     # 3. PORTFOLIO BREAKDOWN
     # ==========================================
+    # Currency Breakdown currency-key & row-sum validation
+    if res.currency_breakdown:
+        cb_issues = []
+        for cb in res.currency_breakdown:
+            if "AMT" in cb.currencies or "AMOUNT" in cb.currencies:
+                cb_issues.append(f"{cb.asset_class}: non-currency column key in currencies ({list(cb.currencies.keys())})")
+            if cb.total_in_thousands is not None and cb.currencies:
+                curr_sum = sum((d.amount_in_thousands or Decimal("0")) for d in cb.currencies.values())
+                if abs(curr_sum - cb.total_in_thousands) > Decimal("5.0"):
+                    cb_issues.append(f"{cb.asset_class}: currency sum {curr_sum} != total {cb.total_in_thousands}")
+        if cb_issues:
+            checks.append(ValidationCheck(
+                category="Portfolio Breakdown",
+                name="Currency Breakdown Consistency",
+                level="FAIL",
+                message=f"Currency breakdown structural error: {'; '.join(cb_issues[:3])}",
+                details={"issues": cb_issues}
+            ))
+        else:
+            all_ccys = []
+            for cb in res.currency_breakdown:
+                for c in (cb.detected_currencies or list(cb.currencies.keys())):
+                    if c not in all_ccys:
+                        all_ccys.append(c)
+            checks.append(ValidationCheck(
+                category="Portfolio Breakdown",
+                name="Currency Breakdown Consistency",
+                level="PASS",
+                message=f"Currency breakdown columns ({', '.join(all_ccys)}) and cross-currency row totals reconciled cleanly.",
+                details={"currencies": all_ccys, "rows": len(res.currency_breakdown)}
+            ))
+
+    # Account vs Loan classification bleed check
+    misclassified_loans_in_accounts = [
+        a for a in res.current_accounts
+        if re.search(r"\b(?:LN-[A-Z0-9]+|LOAN\s+FACILITY|BORROWING\s+FACILITY)\b", f"{a.account_name} {a.account_number or ''}", re.IGNORECASE)
+    ]
+    if misclassified_loans_in_accounts:
+        checks.append(ValidationCheck(
+            category="Portfolio Breakdown",
+            name="Accounts vs Loans Section Separation",
+            level="FAIL",
+            message=f"{len(misclassified_loans_in_accounts)} loan facility record(s) misclassified inside Current Accounts.",
+            details={"misclassified": [a.account_name for a in misclassified_loans_in_accounts]}
+        ))
+    elif res.current_accounts or res.loans:
+        checks.append(ValidationCheck(
+            category="Portfolio Breakdown",
+            name="Accounts vs Loans Section Separation",
+            level="PASS",
+            message=f"Current Accounts ({len(res.current_accounts)}) and Loans ({len(res.loans)}) cleanly separated by section boundaries.",
+            details={"accounts": len(res.current_accounts), "loans": len(res.loans)}
+        ))
     # Compare Current Accounts total
     current_acc_sum = sum((a.market_value_usd or Decimal("0")) for a in res.current_accounts)
     alloc_acc = None

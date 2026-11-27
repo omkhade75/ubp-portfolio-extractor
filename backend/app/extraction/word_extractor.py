@@ -26,24 +26,31 @@ class VisualLine(NamedTuple):
 def get_watermark_lines(page: pymupdf.Page) -> Set[Tuple[int, int]]:
     """
     Identifies watermark text lines by inspecting geometric orientation (diagonal spans),
-    font size, and typical watermark phrases ('SAMPLE - NOT VALID', 'SAMPLE / NOT VALID').
+    large semi-transparent/background stamp font sizes, and typical watermark phrases.
     Returns a set of (block_no, line_no) tuples corresponding to watermark lines.
     """
     wm_lines: Set[Tuple[int, int]] = set()
+    watermark_keywords = [
+        "SAMPLE", "NOT VALID", "VALID", "DEMO",
+        "NOT A REAL", "REAL BANK STATEMENT", "SYNTHETIC DATA", "FICTIONAL TRAINING"
+    ]
     text_dict = page.get_text("dict")
     for bno, b in enumerate(text_dict.get("blocks", [])):
         for lno, l in enumerate(b.get("lines", [])):
             d = l.get("dir", (1.0, 0.0))
             is_diag = abs(d[1]) > 0.05 and abs(d[0]) > 0.05
-            txt = " ".join(s.get("text", "") for s in l.get("spans", [])).upper().strip()
-            # 1. Diagonal watermark lines
-            if is_diag and any(k in txt for k in ["SAMPLE", "NOT VALID", "VALID", "DEMO"]):
+            spans = l.get("spans", [])
+            txt = " ".join(s.get("text", "") for s in spans).upper().strip()
+            max_size = max((s.get("size", 0) for s in spans), default=0)
+
+            # 1. Diagonal watermark lines (any prominent diagonal banner across page)
+            if is_diag and (max_size >= 14.0 or any(k in txt for k in watermark_keywords) or txt in {"TEST", "BANK", "STATEMENT", "DATA", "NOT", "A", "REAL", "-"}):
                 wm_lines.add((bno, lno))
-            # 2. Prominent watermark phrases
-            elif "SAMPLE / NOT VALID" in txt or "SAMPLE - NOT VALID" in txt:
+            # 2. Prominent explicit watermark phrases
+            elif "SAMPLE / NOT VALID" in txt or "SAMPLE - NOT VALID" in txt or "NOT A REAL BANK STATEMENT" in txt:
                 wm_lines.add((bno, lno))
-            # 3. Large font watermark spans
-            elif any(s.get("size", 0) >= 18.0 and any(k in s.get("text", "").upper() for k in ["SAMPLE", "NOT VALID", "VALID"]) for s in l.get("spans", [])):
+            # 3. Large font watermark spans (stamps overlapping table content)
+            elif max_size >= 18.0 and (any(k in txt for k in watermark_keywords) or txt in {"TEST", "SYNTHETIC", "BANK", "STATEMENT"}):
                 wm_lines.add((bno, lno))
     return wm_lines
 

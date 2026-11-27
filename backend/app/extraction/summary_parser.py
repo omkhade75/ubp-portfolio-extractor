@@ -12,16 +12,11 @@ from app.models.schemas import (
     ExchangeRateItem
 )
 from app.processing.number_parser import parse_financial_number
-from app.extraction.word_extractor import extract_visual_words_and_lines
-
-COMMON_ISO_CURRENCIES = {
-    "USD", "EUR", "GBP", "CHF", "JPY", "HKD", "SGD", "AUD", "CAD", "NZD",
-    "CNY", "SEK", "NOK", "DKK", "ZAR", "BRL", "INR", "KRW", "MXN", "AED", "SAR"
-}
+from app.extraction.word_extractor import extract_visual_words_and_lines, VisualLine, ExtractedWord
+from app.extraction.table_header_engine import is_valid_iso_currency
 
 def is_iso_currency(token: str) -> bool:
-    clean = token.strip().upper()
-    return clean in COMMON_ISO_CURRENCIES or (len(clean) == 3 and clean.isalpha() and clean.isupper())
+    return is_valid_iso_currency(token)
 
 def parse_asset_allocation_page(page: pymupdf.Page, page_num: int) -> List[AssetAllocationItem]:
     """
@@ -89,14 +84,13 @@ def parse_asset_allocation_page(page: pymupdf.Page, page_num: int) -> List[Asset
 def parse_portfolio_esg_generic(raw_text: str) -> Tuple[Optional[str], Optional[str]]:
     """
     Dynamically extracts Previous and Current Portfolio ESG ratings from source line text.
-    Handles any UBP statement layout generically:
-      - Ratings with qualifiers: 'AA (LEADER) AA (LEADER)', 'AA (LEADER) M (LEADER)', 'A (AVERAGE) A (AVERAGE)'
-      - Simple rating codes: 'AA AA', '078 085', 'B CCC'
+    Handles any UBP / synthetic statement layout generically:
+      - Ratings with qualifiers: 'AA (LEADER) AA (LEADER)', 'AA (AVERAGE) / A (AVERAGE)', 'AA (LEADER) M (LEADER)'
+      - Simple rating codes: 'AA AA', 'AA / A', '078 085', 'B CCC'
       - Single ratings: 'AA (LEADER)', 'AA'
-      - Flexible parenthetical headers: (PREVIOUS - CURRENT), (PREVIOUS • CURRENT), (PREVIOUS CURRENT), (PREVIOUS / CURRENT)
-    Never hardcodes portfolio numbers or specific rating strings.
+      - Flexible headers: PORTFOLIO ESG RATING (...), PORTFOLIO ESG (PREVIOUS / CURRENT), etc.
     """
-    m = re.search(r"PORTFOLIO\s+ESG\s+RATING(?:\s*\([^\)]*\))?\s*(.*)", raw_text, re.IGNORECASE)
+    m = re.search(r"PORTFOLIO\s+ESG(?:\s+RATING)?(?:\s*\([^\)]*\))?\s*:?\s*(.*)", raw_text, re.IGNORECASE)
     if not m:
         return None, None
     rem = m.group(1).strip()
@@ -108,28 +102,43 @@ def parse_portfolio_esg_generic(raw_text: str) -> Tuple[Optional[str], Optional[
     if not rem:
         return None, None
 
-    # Check for two qualified ratings: e.g. 'AA (LEADER) AA (LEADER)'
-    m_qual = re.match(r"^([A-Za-z0-9\/\+\-]+(?:\s*\([A-Za-z0-9\s\/\+\-]+\)))\s+([A-Za-z0-9\/\+\-]+(?:\s*\([A-Za-z0-9\s\/\+\-]+\)))$", rem)
+    # Check for two qualified ratings separated by slash/pipe or whitespace:
+    # e.g. 'AA (AVERAGE) / A (AVERAGE)' or 'AA (LEADER) AA (LEADER)'
+    m_qual_sep = re.match(
+        r"^([A-Za-z0-9+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))\s*(?:/|\|)\s*([A-Za-z0-9+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))$",
+        rem,
+    )
+    if m_qual_sep:
+        return m_qual_sep.group(1).strip(), m_qual_sep.group(2).strip()
+
+    m_qual = re.match(
+        r"^([A-Za-z0-9\/+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))\s+([A-Za-z0-9\/+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))$",
+        rem,
+    )
     if m_qual:
         return m_qual.group(1).strip(), m_qual.group(2).strip()
 
-    # Check for two simple tokens: e.g. 'AA AA' or '078 085'
-    m_simple = re.match(r"^([A-Za-z0-9\/\+\-]+)\s+([A-Za-z0-9\/\+\-]+)$", rem)
+    # Check for two simple tokens separated by slash/pipe or space: 'AA / A', 'AA AA', '078 085'
+    m_simple_sep = re.match(r"^([A-Za-z0-9+\-]+)\s*(?:/|\|)\s*([A-Za-z0-9+\-]+)$", rem)
+    if m_simple_sep:
+        return m_simple_sep.group(1).strip(), m_simple_sep.group(2).strip()
+
+    m_simple = re.match(r"^([A-Za-z0-9\/+\-]+)\s+([A-Za-z0-9\/+\-]+)$", rem)
     if m_simple:
         return m_simple.group(1).strip(), m_simple.group(2).strip()
 
     # Single qualified rating: 'AA (LEADER)'
-    m_single_qual = re.match(r"^([A-Za-z0-9\/\+\-]+\s*\([A-Za-z0-9\s\/\+\-]+\))$", rem)
+    m_single_qual = re.match(r"^([A-Za-z0-9\/+\-]+\s*\([A-Za-z0-9\s\/+\-]+\))$", rem)
     if m_single_qual:
         return None, m_single_qual.group(1).strip()
 
     # Single simple token: 'AA'
-    m_single = re.match(r"^([A-Za-z0-9\/\+\-]+)$", rem)
+    m_single = re.match(r"^([A-Za-z0-9\/+\-]+)$", rem)
     if m_single:
         return None, m_single.group(1).strip()
 
-    # General token splitting
-    tokens = rem.split()
+    # General token splitting (strip isolated slash separators)
+    tokens = [tok for tok in rem.split() if tok not in ("/", "|")]
     if len(tokens) >= 4 and "(" in tokens[1] and "(" in tokens[3]:
         return f"{tokens[0]} {tokens[1]}", f"{tokens[2]} {tokens[3]}"
     elif len(tokens) == 2:
@@ -175,12 +184,22 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
 
     mid_x_left = page.rect.width * 0.50
     for l in lines:
-        if "PORTFOLIO ESG RATING" in l.text.upper() or "ESG RATING" in l.text.upper():
-            # First check left-column words to prevent right-column bleeding
+        lu = l.text.upper()
+        if "PORTFOLIO ESG RATING" in lu or "PORTFOLIO ESG" in lu or "ESG RATING" in lu:
+            # Check whichever column contains the PORTFOLIO ESG label to avoid cross-column bleed
             left_words = [w for w in l.words if w.x0 < mid_x_left]
+            right_words_esg = [w for w in l.words if w.x0 >= page.rect.width * 0.45]
             left_text = " ".join(w.text for w in left_words).strip()
-            
-            p_prev, p_curr = parse_portfolio_esg_generic(left_text if "PORTFOLIO ESG" in left_text.upper() else l.text)
+            right_text_esg = " ".join(w.text for w in right_words_esg).strip()
+
+            if "PORTFOLIO ESG" in left_text.upper() or "ESG RATING" in left_text.upper():
+                esg_cand = left_text
+            elif "PORTFOLIO ESG" in right_text_esg.upper() or "ESG RATING" in right_text_esg.upper():
+                esg_cand = right_text_esg
+            else:
+                esg_cand = l.text
+
+            p_prev, p_curr = parse_portfolio_esg_generic(esg_cand)
             if p_prev or p_curr:
                 port_prev_esg = p_prev
                 port_curr_esg = p_curr
@@ -203,9 +222,9 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
         tu = t.upper()
 
         if "SINCE" in tu:
-            m_s = re.search(r"SINCE\s+([0-9]{2}\.[0-9]{2}\.[0-9]{4})", t, re.IGNORECASE)
+            m_s = re.search(r"SINCE\s+([0-9]{2}\.[0-9]{2}\.[0-9]{4}(?:\s+TO\s+[0-9]{2}\.[0-9]{2}\.[0-9]{4})?)", t, re.IGNORECASE)
             if m_s:
-                rep_period = f"SINCE {m_s.group(1)}"
+                rep_period = f"SINCE {re.sub(r'\s+', ' ', m_s.group(1).strip().upper())}"
                 raw_vals["reporting_period"] = rep_period
 
         if "INITIAL ASSETS" in tu:
@@ -328,15 +347,20 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
 
 def parse_currency_breakdown_page(page: pymupdf.Page, page_num: int) -> List[CurrencyBreakdownItem]:
     """
-    Parses Page 2 Currency Breakdown table (in 000's USD).
-    Dynamically identifies all currencies present across the columns and uses
-    header column anchors to avoid token-shift errors.
+    Parses Page 2 Currency Breakdown table generically using header column spans.
+    Rejects non-currency column modifiers (e.g. 'AMT', 'AMOUNT') using strict ISO 4217 validation,
+    and tracks detected unit scale ('THOUSANDS' or 'UNITS') plus ordered detected currencies.
     """
     _, lines = extract_visual_words_and_lines(page)
     items: List[CurrencyBreakdownItem] = []
 
+    full_up = " ".join(l.text.upper() for l in lines)
+    if "IN UNITS" in full_up or "FULL AMOUNTS" in full_up or "(UNITS)" in full_up:
+        unit_scale = "UNITS"
+    else:
+        unit_scale = "THOUSANDS"
+
     # 1. Detect header line with currency columns
-    # Example: ASSET CLASS TOTAL % USD % HKD % or ASSET CLASS TOTAL % USD % EUR* %
     header_line = None
     for l in lines:
         tu = l.text.strip().upper()
@@ -347,36 +371,43 @@ def parse_currency_breakdown_page(page: pymupdf.Page, page_num: int) -> List[Cur
     if not header_line:
         return items
 
-    # Build column anchors from header line
-    anchors = []  # list of (name, is_pct, x_coord)
+    # Build column anchors: list of [name, is_pct, hx0, hx1]
+    anchors: List[List] = []
     curr = None
     currency_columns: List[str] = []
 
-    for w in header_line.words:
+    for w in sorted(header_line.words, key=lambda x: x.x0):
         wt = re.sub(r"[^A-Z%]", "", w.text.upper())
         if wt == "TOTAL":
-            anchors.append(("TOTAL", False, w.x0))
+            anchors.append(["TOTAL", False, w.x0, w.x1])
+            curr = None
+        elif wt in ("AMT", "AMOUNT") and curr is not None and anchors and anchors[-1][0] == f"{curr}_AMT":
+            # Expand currency header span to include adjacent 'AMT' label (e.g., 'USD AMT')
+            anchors[-1][3] = max(anchors[-1][3], w.x1)
         elif wt == "%":
             if anchors and anchors[-1][0] == "TOTAL":
-                anchors.append(("TOTAL_PCT", True, w.x0))
+                anchors.append(["TOTAL_PCT", True, w.x0, w.x1])
             elif curr:
-                anchors.append((f"{curr}_PCT", True, w.x0))
-        elif is_iso_currency(wt):
+                anchors.append([f"{curr}_PCT", True, w.x0, w.x1])
+        elif is_valid_iso_currency(wt):
             curr = wt
             if curr not in currency_columns:
                 currency_columns.append(curr)
-            anchors.append((f"{curr}_AMT", False, w.x0))
+            anchors.append([f"{curr}_AMT", False, w.x0, w.x1])
 
     if not currency_columns:
         currency_columns = ["USD"]
 
+    # Sort anchors left-to-right and build non-overlapping horizontal intervals
+    anchors.sort(key=lambda a: a[2])
     in_table = False
     for l in lines:
         t = l.text.strip()
-        if "ASSET CLASS" in t and "TOTAL" in t:
+        tu = t.upper()
+        if "ASSET CLASS" in tu and "TOTAL" in tu:
             in_table = True
             continue
-        if "ALLOCATION BY INVESTMENT CATEGORY" in t or "BREAKDOWN BY CURRENCY" in t:
+        if "ALLOCATION BY INVESTMENT CATEGORY" in tu or "BREAKDOWN BY CURRENCY" in tu or "SUMMARY OF NET ASSETS" in tu:
             in_table = False
             continue
 
@@ -400,19 +431,20 @@ def parse_currency_breakdown_page(page: pymupdf.Page, page_num: int) -> List[Cur
 
         if num_start_idx > 0:
             cat_name = " ".join(w.text for w in words[:num_start_idx]).strip()
-            # Normalize NET ASSETS USD -> NET ASSETS
-            cat_name = re.sub(r"\s+USD$", "", cat_name)
+            cat_name = re.sub(r"\s+USD$", "", cat_name, flags=re.IGNORECASE)
 
-            # Map numeric tokens to closest column anchors
+            # Map each numeric token to closest anchor center (strictly one owner per column)
             row_vals: Dict[str, Decimal] = {}
             row_raw_vals: Dict[str, str] = {}
             for w in words[num_start_idx:]:
                 fn = parse_financial_number(w.text)
-                if not fn.is_valid or fn.value is None:
+                if not fn.is_valid or fn.value is None or not anchors:
                     continue
-                best_a = min(anchors, key=lambda a: abs(a[2] - w.x0))
-                row_vals[best_a[0]] = fn.value
-                row_raw_vals[best_a[0]] = w.text
+                w_center = (w.x0 + w.x1) / 2.0
+                best_a = min(anchors, key=lambda a: abs(((a[2] + a[3]) / 2.0) - w_center))
+                if best_a[0] not in row_vals:
+                    row_vals[best_a[0]] = fn.value
+                    row_raw_vals[best_a[0]] = w.text
 
             fn_total = row_vals.get("TOTAL")
             fn_total_pct = row_vals.get("TOTAL_PCT")
@@ -435,6 +467,8 @@ def parse_currency_breakdown_page(page: pymupdf.Page, page_num: int) -> List[Cur
                 asset_class=cat_name,
                 total_in_thousands=fn_total,
                 total_percentage=fn_total_pct,
+                unit_scale=unit_scale,
+                detected_currencies=list(currency_columns),
                 currencies=curr_dict,
                 source_page=page_num,
                 raw_text=l.text
@@ -442,82 +476,175 @@ def parse_currency_breakdown_page(page: pymupdf.Page, page_num: int) -> List[Cur
 
     return items
 
+def _group_region_words_into_lines(words: List[ExtractedWord], y_tol: float = 4.0) -> List[VisualLine]:
+    """Re-groups spatially filtered words from a single column/region into VisualLines."""
+    if not words:
+        return []
+    sorted_w = sorted(words, key=lambda w: (w.y0, w.x0))
+    grouped: List[List[ExtractedWord]] = []
+    cur: List[ExtractedWord] = [sorted_w[0]]
+    cur_y = (sorted_w[0].y0 + sorted_w[0].y1) / 2.0
+    for w in sorted_w[1:]:
+        wy = (w.y0 + w.y1) / 2.0
+        if abs(wy - cur_y) <= y_tol:
+            cur.append(w)
+        else:
+            grouped.append(sorted(cur, key=lambda x: x.x0))
+            cur = [w]
+            cur_y = wy
+    if cur:
+        grouped.append(sorted(cur, key=lambda x: x.x0))
+    return [
+        VisualLine(
+            y=sum((x.y0 + x.y1) / 2.0 for x in grp) / len(grp),
+            y0=min(x.y0 for x in grp),
+            y1=max(x.y1 for x in grp),
+            words=grp,
+            text=" ".join(x.text for x in grp),
+        )
+        for grp in grouped
+    ]
+
 def parse_net_assets_summary_page(page: pymupdf.Page, page_num: int) -> Tuple[Optional[NetAssetsSummaryData], List[ExchangeRateItem]]:
     """
-    Parses Summary of Net Assets and Exchange Rates Used.
+    Parses Summary of Net Assets and Exchange Rates Used generically.
+    Supports both vertical stacked layout (UBP standard) and horizontal two-column layout
+    where SUMMARY OF NET ASSETS and EXCHANGE RATES USED sit side by side at the same y.
+    Supports both 2-column (Amount + %) and 1-column (Amount only) Net Assets tables.
     """
-    _, lines = extract_visual_words_and_lines(page)
-    
+    words, lines = extract_visual_words_and_lines(page)
+
     summary_data = NetAssetsSummaryData(source_page=page_num, raw_text="")
     exchange_rates: List[ExchangeRateItem] = []
 
-    full_text_lines = []
-    in_summary = False
-    in_exchange_rates = False
+    full_text_lines = [l.text.strip() for l in lines if l.text.strip()]
 
+    # Locate section heading coordinates dynamically using word clusters
+    sum_anchor: Optional[Tuple[float, float]] = None
+    exch_anchor: Optional[Tuple[float, float]] = None
     for l in lines:
-        t = l.text.strip()
-        full_text_lines.append(t)
-        
-        if "SUMMARY OF NET ASSETS" in t:
-            in_summary = True
-            in_exchange_rates = False
+        tu = l.text.upper()
+        if sum_anchor is None and "SUMMARY OF NET ASSETS" in tu:
+            for idx in range(len(l.words)):
+                if l.words[idx].text.upper() == "SUMMARY":
+                    sum_anchor = (l.words[idx].x0, l.y0)
+                    break
+            if sum_anchor is None:
+                sum_anchor = (l.words[0].x0, l.y0)
+        if exch_anchor is None and "EXCHANGE RATES USED" in tu:
+            for idx in range(len(l.words)):
+                if l.words[idx].text.upper() == "EXCHANGE":
+                    exch_anchor = (l.words[idx].x0, l.y0)
+                    break
+            if exch_anchor is None:
+                exch_anchor = (l.words[0].x0, l.y0)
+
+    is_side_by_side = (
+        sum_anchor is not None
+        and exch_anchor is not None
+        and abs(sum_anchor[1] - exch_anchor[1]) < 45.0
+        and abs(exch_anchor[0] - sum_anchor[0]) > page.rect.width * 0.25
+    )
+
+    footer_y = page.rect.height * 0.90
+    for l in lines:
+        if l.y0 < page.rect.height * 0.70:
+            continue
+        tu = l.text.upper()
+        if "E.& O.E." in tu or re.search(r"\bPAGE\s+\d+\s*/\s*\d+", tu):
+            footer_y = min(footer_y, l.y0 - 2.0)
+
+    if is_side_by_side:
+        assert sum_anchor is not None and exch_anchor is not None
+        if exch_anchor[0] > sum_anchor[0]:
+            split_x = exch_anchor[0] - 15.0
+            sum_words = [w for w in words if w.x0 < split_x and sum_anchor[1] + 5.0 < w.y0 < footer_y]
+            exch_words = [w for w in words if w.x0 >= split_x and exch_anchor[1] + 5.0 < w.y0 < footer_y]
+        else:
+            split_x = sum_anchor[0] - 15.0
+            sum_words = [w for w in words if w.x0 >= split_x and sum_anchor[1] + 5.0 < w.y0 < footer_y]
+            exch_words = [w for w in words if w.x0 < split_x and exch_anchor[1] + 5.0 < w.y0 < footer_y]
+    else:
+        sum_y_start = (sum_anchor[1] + 5.0) if sum_anchor else 0.0
+        exch_y_start = (exch_anchor[1] + 5.0) if exch_anchor else footer_y
+        if sum_anchor and exch_anchor:
+            if exch_anchor[1] > sum_anchor[1]:
+                sum_words = [w for w in words if sum_y_start < w.y0 < exch_anchor[1] - 2.0 and w.y0 < footer_y]
+                exch_words = [w for w in words if exch_y_start < w.y0 < footer_y]
+            else:
+                exch_words = [w for w in words if exch_y_start < w.y0 < sum_anchor[1] - 2.0 and w.y0 < footer_y]
+                sum_words = [w for w in words if sum_y_start < w.y0 < footer_y]
+        elif sum_anchor:
+            sum_words = [w for w in words if sum_y_start < w.y0 < footer_y]
+            exch_words = []
+        elif exch_anchor:
+            sum_words = []
+            exch_words = [w for w in words if exch_y_start < w.y0 < footer_y]
+        else:
+            sum_words, exch_words = [], []
+
+    sum_lines = _group_region_words_into_lines(sum_words)
+    exch_lines = _group_region_words_into_lines(exch_words)
+
+    # Parse Summary of Net Assets lines cleanly (supports 1-col Amount OR 2-col Amount + %)
+    for sl in sum_lines:
+        tu = sl.text.strip().upper()
+        if not tu or tu in ("USD %", "USD", "%") or "THIS SYNTHETIC DOCUMENT" in tu or "FINANCIAL CALCULATIONS USE" in tu:
             continue
 
-        if "EXCHANGE RATES USED" in t:
-            in_summary = False
-            in_exchange_rates = True
+        row_nums = []
+        for w in sl.words:
+            fn = parse_financial_number(w.text)
+            if fn.is_valid and fn.value is not None:
+                row_nums.append(fn)
+
+        if not row_nums:
             continue
 
-        if "E.& O.E." in t or "PAGE" in t:
-            in_summary = False
-            in_exchange_rates = False
-            continue
+        # If row has 2+ numeric values -> [..., amount, pct]; if 1 numeric value -> [amount] (NOT pct!)
+        amt_val = row_nums[-2].value if len(row_nums) >= 2 else row_nums[-1].value
+        pct_val = row_nums[-1].value if len(row_nums) >= 2 else None
 
-        words = l.words
-        if in_summary and len(words) >= 2:
-            # Look for line like: ASSETS 2’260’653.31 99.69
-            # or ACCRUED INTEREST ON SECURITIES 7’015.96 0.31
-            # or NET ACCRUED INT DEP AND LOANS 0.00 0.00 or 2'364.96- 0.09-
-            # or TOTAL ASSETS 2’267’669.27 100.00
-            # or COMMITMENTS 0.00
-            line_upper = t.upper()
-            
-            # Find numbers from right
-            fn_last = parse_financial_number(words[-1].text)
-            fn_second_last = parse_financial_number(words[-2].text) if len(words) >= 3 else None
+        if "TOTAL ASSETS" in tu:
+            summary_data.total_assets_usd = amt_val
+            if pct_val is not None:
+                summary_data.total_assets_pct = pct_val
+        elif "ACCRUED INTEREST ON SECURITIES" in tu:
+            summary_data.accrued_interest_securities_usd = amt_val
+            if pct_val is not None:
+                summary_data.accrued_interest_securities_pct = pct_val
+        elif "NET ACCRUED INT" in tu:
+            summary_data.net_accrued_int_deposits_loans_usd = amt_val
+            if pct_val is not None:
+                summary_data.net_accrued_int_deposits_loans_pct = pct_val
+        elif "ASSETS" in tu and "TOTAL" not in tu:
+            summary_data.assets_usd = amt_val
+            if pct_val is not None:
+                summary_data.assets_pct = pct_val
+        elif "COMMITMENTS" in tu:
+            summary_data.commitments_usd = amt_val
 
-            if "TOTAL ASSETS" in line_upper:
-                if fn_last.is_valid:
-                    summary_data.total_assets_pct = fn_last.value
-                if fn_second_last and fn_second_last.is_valid:
-                    summary_data.total_assets_usd = fn_second_last.value
-            elif "ACCRUED INTEREST ON SECURITIES" in line_upper:
-                if fn_last.is_valid:
-                    summary_data.accrued_interest_securities_pct = fn_last.value
-                if fn_second_last and fn_second_last.is_valid:
-                    summary_data.accrued_interest_securities_usd = fn_second_last.value
-            elif "NET ACCRUED INT" in line_upper:
-                if fn_last.is_valid:
-                    summary_data.net_accrued_int_deposits_loans_pct = fn_last.value
-                if fn_second_last and fn_second_last.is_valid:
-                    summary_data.net_accrued_int_deposits_loans_usd = fn_second_last.value
-            elif "ASSETS" in line_upper and "TOTAL" not in line_upper:
-                if fn_last.is_valid:
-                    summary_data.assets_pct = fn_last.value
-                if fn_second_last and fn_second_last.is_valid:
-                    summary_data.assets_usd = fn_second_last.value
-            elif "COMMITMENTS" in line_upper:
-                if fn_last.is_valid:
-                    summary_data.commitments_usd = fn_last.value
-
-        elif in_exchange_rates:
-            # Example: 1 USD 7.84833538 HKD, 1 USD = 0.8524 EUR, or USD / CHF 0.9000
-            m_rate = re.search(r"(?:1\s+)?([A-Z]{3})\s*(?:=|\/)?\s*([0-9\.]+)\s+([A-Z]{3})", t)
-            if m_rate:
-                base_c = m_rate.group(1)
-                rate_val = Decimal(m_rate.group(2))
-                target_c = m_rate.group(3)
+    # Parse Exchange Rates Used region
+    for el in exch_lines:
+        t = el.text.strip()
+        m_rate = re.search(r"(?:1\s+)?([A-Z]{3})\s*(?:=|\/)?\s*([0-9][0-9\.\']+)\s+([A-Z]{3})", t)
+        if m_rate and is_valid_iso_currency(m_rate.group(1)) and is_valid_iso_currency(m_rate.group(3)):
+            base_c = m_rate.group(1).upper()
+            rate_val = Decimal(m_rate.group(2).replace("'", ""))
+            target_c = m_rate.group(3).upper()
+            exchange_rates.append(ExchangeRateItem(
+                base_currency=base_c,
+                target_currency=target_c,
+                rate=rate_val,
+                raw_text=t,
+                source_page=page_num
+            ))
+        else:
+            m_rate2 = re.search(r"([A-Z]{3})\s*\/\s*([A-Z]{3})\s*(?:=)?\s*([0-9][0-9\.\']+)", t)
+            if m_rate2 and is_valid_iso_currency(m_rate2.group(1)) and is_valid_iso_currency(m_rate2.group(2)):
+                base_c = m_rate2.group(1).upper()
+                target_c = m_rate2.group(2).upper()
+                rate_val = Decimal(m_rate2.group(3).replace("'", ""))
                 exchange_rates.append(ExchangeRateItem(
                     base_currency=base_c,
                     target_currency=target_c,
@@ -525,19 +652,6 @@ def parse_net_assets_summary_page(page: pymupdf.Page, page_num: int) -> Tuple[Op
                     raw_text=t,
                     source_page=page_num
                 ))
-            else:
-                m_rate2 = re.search(r"([A-Z]{3})\s*\/\s*([A-Z]{3})\s*(?:=)?\s*([0-9\.]+)", t)
-                if m_rate2:
-                    base_c = m_rate2.group(1)
-                    target_c = m_rate2.group(2)
-                    rate_val = Decimal(m_rate2.group(3))
-                    exchange_rates.append(ExchangeRateItem(
-                        base_currency=base_c,
-                        target_currency=target_c,
-                        rate=rate_val,
-                        raw_text=t,
-                        source_page=page_num
-                    ))
 
     if summary_data.assets_usd is None and summary_data.total_assets_usd is not None:
         acc_sec = summary_data.accrued_interest_securities_usd or Decimal("0")

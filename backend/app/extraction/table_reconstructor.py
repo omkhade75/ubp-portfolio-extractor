@@ -168,9 +168,14 @@ def extract_ubp_statement(
 
     # Extract Holdings (with cross-page continuity and dynamically discovered categories)
     dynamic_categories = [a.investment_category for a in asset_allocation if a.investment_category]
+    holdings_header_maps = []
     if holdings_pages:
-        h_items, _ = parse_holdings_pages(doc, holdings_pages, dynamic_categories=dynamic_categories)
+        h_items, h_meta = parse_holdings_pages(doc, holdings_pages, dynamic_categories=dynamic_categories)
         holdings.extend(h_items)
+        holdings_header_maps = h_meta.get("__header_maps__", [])
+
+    if not metadata.reporting_period and portfolio_summary_perf and portfolio_summary_perf.reporting_period:
+        metadata.reporting_period = portfolio_summary_perf.reporting_period
 
     # Extract Current Accounts and Loans
     for pno in accounts_loans_pages:
@@ -211,6 +216,24 @@ def extract_ubp_statement(
             reason="Unfamiliar or non-standard page layout: section heading does not match standard UBP report templates."
         ))
 
+    # Compute deterministic section confidence & detected column maps
+    h_confs = [m.get("confidence", "HIGH") for m in holdings_header_maps] if holdings_header_maps else []
+    holdings_conf = (
+        "REVIEW_REQUIRED" if "REVIEW_REQUIRED" in h_confs
+        else ("MEDIUM" if "MEDIUM" in h_confs else ("HIGH" if holdings else "NOT_PRESENT"))
+    )
+    section_confidence = {
+        "overview": "HIGH" if asset_allocation else "NOT_PRESENT",
+        "currency_breakdown": "HIGH" if currency_breakdown else "NOT_PRESENT",
+        "holdings": holdings_conf,
+        "current_accounts": "HIGH" if current_accounts else "NOT_PRESENT",
+        "loans": "HIGH" if loans else ("VERIFIED_NOT_PRESENT" if accounts_loans_pages else "NOT_PRESENT"),
+        "net_assets_summary": "HIGH" if (net_assets_summary and net_assets_summary.total_assets_usd is not None) else "NOT_PRESENT",
+        "exchange_rates": "HIGH" if exchange_rates else "NOT_PRESENT",
+        "monthly_performance": "HIGH" if monthly_perf else "NOT_PRESENT",
+        "annual_performance": "HIGH" if annual_perf else "NOT_PRESENT",
+    }
+
     # Create extraction result object
     result = StatementExtractionResult(
         metadata=metadata,
@@ -227,7 +250,9 @@ def extract_ubp_statement(
         comments_disclosures=comments_disclosures,
         unmapped_content=unmapped_content,
         raw_pages=raw_pages,
-        validation_checks=[]
+        validation_checks=[],
+        section_confidence=section_confidence,
+        detected_column_maps={"holdings": holdings_header_maps},
     )
 
     if progress_callback:

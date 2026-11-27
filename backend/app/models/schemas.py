@@ -12,6 +12,8 @@ class CurrencyBreakdownItem(BaseModel):
     asset_class: str
     total_in_thousands: Optional[Decimal] = None
     total_percentage: Optional[Decimal] = None
+    unit_scale: str = "THOUSANDS"  # "THOUSANDS" or "UNITS"
+    detected_currencies: List[str] = Field(default_factory=list)
     currencies: Dict[str, CurrencyDetail] = Field(default_factory=dict)
     source_page: int
     raw_text: str
@@ -53,6 +55,7 @@ class HoldingItem(BaseModel):
     security_name: str
     isin_secur_no: Optional[str] = None
     yield_val: Optional[Decimal] = None
+    yield_state: str = "SOURCE_BLANK"
     duration: Optional[str] = None
     rating: Optional[str] = None
     net_avg_cost: Optional[Decimal] = None
@@ -77,6 +80,8 @@ class HoldingItem(BaseModel):
     current_esg_rating: Optional[str] = None
     esg_rating_previous: Optional[str] = None
     esg_rating_current: Optional[str] = None
+    header_confidence: str = "HIGH"
+    unassigned_tokens: List[str] = Field(default_factory=list)
     source_page: int
     bbox: List[float] = Field(default_factory=list)
     raw_text: str
@@ -190,7 +195,9 @@ class StatementMetadata(BaseModel):
     valuation_date: Optional[str] = None
     report_edited_date: Optional[str] = None
     bank_name: str = "NOT_STATED"
+    institution_provenance: str = "NOT_PRESENT"  # EXTRACTED, INFERRED, NOT_PRESENT
     report_currency: str = "USD"
+    reporting_period: Optional[str] = None
     total_pages: int
     detected_sections: List[str] = Field(default_factory=list)
     client_name: Optional[str] = None
@@ -218,6 +225,8 @@ class StatementExtractionResult(BaseModel):
     unmapped_content: List[UnmappedContentItem] = Field(default_factory=list)
     raw_pages: List[RawPageData] = Field(default_factory=list)
     validation_checks: List[ValidationCheck] = Field(default_factory=list)
+    section_confidence: Dict[str, str] = Field(default_factory=dict)
+    detected_column_maps: Dict[str, Any] = Field(default_factory=dict)
     excel_path: Optional[str] = None
 
 from enum import Enum

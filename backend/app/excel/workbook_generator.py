@@ -111,6 +111,7 @@ def _build_portfolio_overview_sheet(wb, res: StatementExtractionResult):
 
     metadata_rows = [
         ("Bank Name", meta.bank_name),
+        ("Institution Provenance", meta.institution_provenance or "NOT_PRESENT"),
         ("Portfolio Number (Extracted from PDF)", meta.portfolio_number_extracted or "NOT_PRINTED_IN_SOURCE_DOCUMENT"),
         ("Portfolio Number (Filename Fallback)", meta.portfolio_number_fallback or "N/A"),
         ("Portfolio Identifier Source", meta.portfolio_identifier_source or "EXTRACTED_FROM_PDF"),
@@ -122,6 +123,8 @@ def _build_portfolio_overview_sheet(wb, res: StatementExtractionResult):
         ("Original File", meta.filename),
         ("Extraction Status", status_str),
     ]
+    if meta.reporting_period or (res.portfolio_summary_performance and res.portfolio_summary_performance.reporting_period):
+        metadata_rows.append(("Reporting Period", meta.reporting_period or res.portfolio_summary_performance.reporting_period))
     if meta.client_name:
         metadata_rows.append(("Client Name", meta.client_name))
     if meta.client_reference:
@@ -273,15 +276,23 @@ def _build_asset_allocation_sheet(wb, res: StatementExtractionResult):
 
 def _build_currency_breakdown_sheet(wb, res: StatementExtractionResult):
     ws = wb.create_sheet("Currency_Breakdown")
-    # Dynamically detect non-USD currencies present in this specific statement
-    non_usd_currencies = []
+    # Dynamically preserve all statement-detected currencies in table order
+    ordered_currencies: List[str] = []
     for item in res.currency_breakdown:
+        for c in (item.detected_currencies or []):
+            if c not in ("AMT", "AMOUNT") and c not in ordered_currencies:
+                ordered_currencies.append(c)
         for c in item.currencies.keys():
-            if c != "USD" and c not in non_usd_currencies:
-                non_usd_currencies.append(c)
+            if c not in ("AMT", "AMOUNT") and c not in ordered_currencies:
+                ordered_currencies.append(c)
 
-    headers = ["Asset_Class", "Total_000s_USD", "Total_Percentage", "USD_000s", "USD_Percentage"]
-    for c in non_usd_currencies:
+    if not ordered_currencies:
+        ordered_currencies = ["USD"]
+    elif "USD" in ordered_currencies and ordered_currencies[0] != "USD":
+        ordered_currencies = ["USD"] + [c for c in ordered_currencies if c != "USD"]
+
+    headers = ["Asset_Class", "Total_000s_USD", "Total_Percentage"]
+    for c in ordered_currencies:
         headers.extend([f"{c}_000s", f"{c}_Percentage"])
     headers.extend(["Source_Page", "Raw_Text"])
 
@@ -289,15 +300,12 @@ def _build_currency_breakdown_sheet(wb, res: StatementExtractionResult):
     style_header_row(ws, 1, len(headers))
 
     for item in res.currency_breakdown:
-        usd_d = item.currencies.get("USD")
         row = [
             item.asset_class,
             float(item.total_in_thousands) if item.total_in_thousands is not None else None,
             float(item.total_percentage) / 100.0 if item.total_percentage is not None else None,
-            float(usd_d.amount_in_thousands) if usd_d and usd_d.amount_in_thousands is not None else None,
-            float(usd_d.percentage) / 100.0 if usd_d and usd_d.percentage is not None else None,
         ]
-        for c in non_usd_currencies:
+        for c in ordered_currencies:
             cd = item.currencies.get(c)
             row.append(float(cd.amount_in_thousands) if cd and cd.amount_in_thousands is not None else None)
             row.append(float(cd.percentage) / 100.0 if cd and cd.percentage is not None else None)
@@ -307,10 +315,8 @@ def _build_currency_breakdown_sheet(wb, res: StatementExtractionResult):
         r_idx = ws.max_row
         ws.cell(r_idx, 2).number_format = FMT_AMOUNT
         ws.cell(r_idx, 3).number_format = FMT_PERCENT
-        ws.cell(r_idx, 4).number_format = FMT_AMOUNT
-        ws.cell(r_idx, 5).number_format = FMT_PERCENT
-        col_offset = 6
-        for _ in non_usd_currencies:
+        col_offset = 4
+        for _ in ordered_currencies:
             ws.cell(r_idx, col_offset).number_format = FMT_AMOUNT
             ws.cell(r_idx, col_offset + 1).number_format = FMT_PERCENT
             col_offset += 2
@@ -534,19 +540,34 @@ def _build_exchange_rates_sheet(wb, res: StatementExtractionResult):
     safe_append(ws, headers)
     style_header_row(ws, 1, len(headers))
 
-    for rate in res.exchange_rates:
+    if not res.exchange_rates:
         safe_append(ws, [
-            rate.base_currency,
-            rate.target_currency,
-            float(rate.rate),
-            rate.raw_text,
-            rate.source_page
+            "N/A",
+            "N/A",
+            None,
+            "STATUS: NOT_PRESENT (No exchange rates table printed in source document)",
+            None
         ])
         r_idx = ws.max_row
-        ws.cell(r_idx, 3).number_format = '#,##0.00000000'
+        ws.cell(r_idx, 4).font = BOLD_DATA_FONT
         for c_idx in range(1, len(headers) + 1):
+            if c_idx != 4:
+                ws.cell(r_idx, c_idx).font = DATA_FONT
             ws.cell(r_idx, c_idx).border = CELL_BORDER
-            ws.cell(r_idx, c_idx).font = DATA_FONT
+    else:
+        for rate in res.exchange_rates:
+            safe_append(ws, [
+                rate.base_currency,
+                rate.target_currency,
+                float(rate.rate),
+                rate.raw_text,
+                rate.source_page
+            ])
+            r_idx = ws.max_row
+            ws.cell(r_idx, 3).number_format = '#,##0.00000000'
+            for c_idx in range(1, len(headers) + 1):
+                ws.cell(r_idx, c_idx).border = CELL_BORDER
+                ws.cell(r_idx, c_idx).font = DATA_FONT
 
     ws.freeze_panes = "A2"
     autofit_columns(ws)

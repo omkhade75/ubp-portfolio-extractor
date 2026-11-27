@@ -57,14 +57,14 @@ def classify_statement_page(page: pymupdf.Page, page_num: int, total_pages: int,
         return "DISCLAIMER_GENERAL"
 
     # Accounts and Loans page
-    if "CURRENT ACCOUNTS" in text or "LOANS" in text:
-        if "ASSET ALLOCATION" not in text:
+    if any(k in text for k in ["CURRENT ACCOUNTS", "LOANS", "LOAN FACILITIES", "CREDIT FACILITIES", "BORROWINGS"]):
+        if "ASSET ALLOCATION" not in text and "BREAKDOWN OF NET ASSETS" not in text:
             return "ACCOUNTS_AND_LOANS"
 
     # Holdings page: dynamically detected by table column headers or asset category listings
     if "CURRENT PORTFOLIO" in text or "UNITS/NOMINAL" in text or "UNITS / NOMINAL" in text:
         return "HOLDINGS"
-    if ("SECURITY NUMBER" in text or "ISIN" in text) and ("MARKET PRICE" in text or "MARKET VALUE" in text):
+    if ("SECURITY NUMBER" in text or "SECURITY NO" in text or "ISIN" in text) and ("MARKET PRICE" in text or "MARKET VALUE" in text):
         if "ASSET ALLOCATION" not in text and "BREAKDOWN OF NET ASSETS" not in text and "CURRENCY BREAKDOWN" not in text:
             return "HOLDINGS"
     if any(h in text for h in ["BONDS/NOTES", "EQUITIES, EQUITY", "ALTERNATIVE INVESTMENTS", "STRUCTURED PRODUCTS", "PRIVATE EQUITY"]):
