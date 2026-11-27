@@ -131,8 +131,12 @@ def is_category_header(
             if not m_start:
                 continue
 
-            # Must not contain an identifier
-            if any(is_isin_or_secur_no(w) for w in line_text.split()):
+            # Must not contain an identifier (check non-amount tokens)
+            non_amount_words = [
+                w for w in line_text.split()
+                if not (parse_financial_number(w).is_valid and parse_financial_number(w).value is not None)
+            ]
+            if any(is_isin_or_secur_no(w) for w in non_amount_words):
                 continue
 
             remainder = upper[m_start.end():].strip()
@@ -187,7 +191,11 @@ def detect_holdings_table_map(lines: List[VisualLine], page_width: float) -> Tab
     Detects the holdings table header region and reconstructs individual column
     boundaries using header word geometry and semantic synonyms.
     """
-    header_keywords = {"UNITS", "NOMINAL", "SECURITY", "NAME", "SECUR", "ISIN", "YIELD", "COST", "PRICE", "VALUE"}
+    header_keywords = {
+        "UNITS", "NOMINAL", "POSITION", "INSTRUMENT", "SECURITY", "NAME",
+        "DESCRIPTION", "SECUR", "ISIN", "REFERENCE", "YIELD", "DISTRIBUTION",
+        "COST", "PRICE", "CLOSING", "VALUE", "VALUATION", "EQUIVALENT", "DENOM"
+    }
     start_idx = -1
     for idx, l in enumerate(lines):
         if l.y > 180.0:
@@ -211,7 +219,7 @@ def detect_holdings_table_map(lines: List[VisualLine], page_width: float) -> Tab
             break
         # Include continuation header lines (e.g. 'NOMINAL RATING /AV.PU.PRI COST PRICE ...' or 'ESG: PREVIOUS CURRENT')
         nl_up = nl.text.upper()
-        if any(k in nl_up for k in ["NOMINAL", "RATING", "COST", "PRICE", "INTEREST", "USD", "ASSETS", "ESG", "PREVIOUS", "CURRENT", "DURATION"]):
+        if any(k in nl_up for k in ["NOMINAL", "RATING", "COST", "PRICE", "INTEREST", "USD", "ASSETS", "ESG", "PREVIOUS", "CURRENT", "DURATION", "CODE", "YIELD", "AMOUNT", "EQUIVALENT", "PORTFOLIO", "CCY"]):
             header_lines.append(nl)
         else:
             break
@@ -233,14 +241,11 @@ def _extract_identifier_from_words(
     if not id_words:
         return None, None
 
-    # If the line is an ESG line (e.g. 'ESG 078 / 078'), tokens are ESG scores, NOT security identifiers
-    if re.search(r"\bESG\b", line_text, re.IGNORECASE):
-        return None, None
-
     # First pass: exact or normalized single token match
     for w in id_words:
         tok = w.text.strip()
-        if tok.isdigit() and len(tok) <= 3:
+        clean = tok.upper()
+        if (tok.isdigit() and len(tok) <= 3) or clean in DISALLOWED_ID_WORDS or _is_credit_rating(clean) or clean.startswith("ESG"):
             continue
         res = normalize_security_identifier(tok, confidence=w.confidence)
         if res.status in ("PASS", "NORMALIZED"):
@@ -258,6 +263,9 @@ def _extract_identifier_from_words(
         for grp in adjacent_groups:
             if len(grp) >= 2:
                 joined = "".join(w.text.strip() for w in grp)
+                clean_j = joined.upper()
+                if clean_j in DISALLOWED_ID_WORDS or _is_credit_rating(clean_j) or clean_j.startswith("ESG"):
+                    continue
                 avg_conf = sum(w.confidence for w in grp) / len(grp)
                 res = normalize_security_identifier(joined, confidence=avg_conf)
                 if res.status in ("PASS", "NORMALIZED"):
@@ -273,6 +281,8 @@ def _extract_identifier_from_words(
             and clean_tok not in DISALLOWED_ID_WORDS
             and not is_valid_iso_currency(clean_tok)
             and not clean_tok.isalpha()
+            and not _is_credit_rating(clean_tok)
+            and not clean_tok.startswith("ESG")
             and (any(c.isdigit() for c in clean_tok) or ("-" in clean_tok and len(clean_tok) >= 4))
             and not any(k in clean_tok for k in ["SAMPLE", "VALID", "DEMO"])
         ):
@@ -282,6 +292,72 @@ def _extract_identifier_from_words(
     return None, None
 
 
+def has_financial_anchor(l: VisualLine, col_map: TableColumnMap) -> bool:
+    """Returns True if the line contains core financial quantities of a holding (ID or units + values)."""
+    assigned, _ = assign_words_to_columns(l.words, col_map)
+    id_cand, _ = _extract_identifier_from_words(assigned.get("SECURITY_ID", []), line_text=l.text)
+    if id_cand:
+        return True
+    has_units = any(
+        parse_financial_number(w.text).is_valid and parse_financial_number(w.text).value is not None
+        for w in assigned.get("UNITS", [])
+    )
+    val_words = assigned.get("REPORTING_VALUE", []) + assigned.get("MARKET_VALUE", [])
+    has_vals = any(
+        not is_valid_iso_currency(w.text)
+        and parse_financial_number(w.text).is_valid
+        and parse_financial_number(w.text).value is not None
+        for w in val_words
+    )
+    return bool(has_units and has_vals)
+
+
+def is_description_only_line(l: VisualLine, col_map: TableColumnMap) -> bool:
+    """Returns True if the line is purely an introductory description row preceding a financial anchor."""
+    assigned, _ = assign_words_to_columns(l.words, col_map)
+    name_words = assigned.get("SECURITY_NAME", [])
+    if not name_words:
+        return False
+    # If the line contains financial figures in values/cost/price/units/percentage columns (e.g. accrued interest continuation lines), it is not description-only
+    for k in ("MARKET_VALUE", "REPORTING_VALUE", "PERCENTAGE", "AVERAGE_COST", "MARKET_PRICE", "UNITS", "SECURITY_ID"):
+        for w in assigned.get(k, []):
+            wt = w.text.strip()
+            if is_valid_iso_currency(wt) or wt in {"-", "—", "/"}:
+                continue
+            fn = parse_financial_number(wt)
+            if fn.is_valid and fn.value is not None:
+                return False
+    if has_financial_anchor(l, col_map):
+        return False
+    text = " ".join(w.text for w in name_words).strip()
+    return any(c.isalpha() for c in text) and len(text) >= 3
+
+
+def is_case_b_pair(desc_l: VisualLine, fin_l: VisualLine, col_map: TableColumnMap) -> bool:
+    """
+    Returns True if desc_l and fin_l form a Case B vertically separated holding:
+    desc_l contains the security name description, and fin_l contains the financial anchor
+    WITHOUT its own full security name.
+    """
+    if not is_description_only_line(desc_l, col_map):
+        return False
+    if not has_financial_anchor(fin_l, col_map):
+        return False
+    assigned, _ = assign_words_to_columns(fin_l.words, col_map)
+    name_words = assigned.get("SECURITY_NAME", [])
+    genuine_name_words = []
+    for w in name_words:
+        wt = w.text.strip().upper()
+        if wt in {"ESG", "/", "|", "-", "—"} or re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", wt):
+            continue
+        if re.match(r"^[A-D]{1,3}[\+\-]?(?:/[A-D]{1,3}[\+\-]?)?$", wt) or wt in {"AAA", "AA", "A", "BBB", "BB", "B", "CCC", "CC", "C", "D", "NR"}:
+            continue
+        genuine_name_words.append(wt)
+    if len(genuine_name_words) >= 2 or (genuine_name_words and len(genuine_name_words[0]) >= 6):
+        return False
+    return True
+
+
 def is_primary_holding_line(l: VisualLine, col_map: TableColumnMap) -> bool:
     """
     Determines structurally whether a table row is a primary financial holding line.
@@ -289,13 +365,10 @@ def is_primary_holding_line(l: VisualLine, col_map: TableColumnMap) -> bool:
     or empty content from becoming artificial holdings.
     """
     lu = l.text.upper()
-    # 1. ESG continuation / rating lines are NEVER primary holdings
-    if re.search(r"\bESG\b", lu):
-        return False
-    # 2. Date-only line (e.g. market price date '30.09.25' or '31.10.2025')
+    # 1. Date-only line (e.g. market price date '30.09.25' or '31.10.2025')
     if re.match(r"^\s*\d{2}\.\d{2}\.\d{2,4}\s*$", l.text.strip()):
         return False
-    # 3. Credit rating only line
+    # 2. Credit rating only line
     if _is_credit_rating(l.text.strip()):
         return False
 
@@ -316,6 +389,10 @@ def is_primary_holding_line(l: VisualLine, col_map: TableColumnMap) -> bool:
             return False
         if len(l.words) <= 2 and all(len(w.text.strip()) <= 4 for w in l.words):
             return False
+
+    # Standalone ESG line without financial substance is never a primary holding
+    if re.search(r"\bESG\b", lu) and not has_financial_anchor(l, col_map):
+        return False
 
     # 4. Primary row structural substance check:
     # A valid financial holding must possess real financial content:
@@ -460,7 +537,45 @@ def parse_holdings_pages(
                 idx += 1
                 continue
 
-            if _is_primary_line(line):
+            # Case B: Vertically separated row with description on line 1 and financial anchor on line 2
+            if (
+                idx + 1 < len(content_lines)
+                and is_case_b_pair(line, content_lines[idx + 1], col_map)
+                and (content_lines[idx + 1].y - line.y <= 24.0)
+            ):
+                holding_lines = [line, content_lines[idx + 1]]
+                next_idx = idx + 2
+                while next_idx < len(content_lines):
+                    cand = content_lines[next_idx]
+                    if is_category_header(
+                        cand.text.strip(),
+                        dynamic_categories,
+                        line_x0=cand.words[0].x0 if cand.words else None,
+                        col_map=col_map
+                    ):
+                        break
+                    if _is_primary_line(cand) or (
+                        next_idx + 1 < len(content_lines)
+                        and is_case_b_pair(cand, content_lines[next_idx + 1], col_map)
+                    ):
+                        break
+                    holding_lines.append(cand)
+                    next_idx += 1
+
+                item = _build_holding_item(
+                    holding_id=f"HLD-{holding_id_counter:03d}",
+                    asset_category=current_category,
+                    lines=holding_lines,
+                    page_num=page_num,
+                    col_map=col_map
+                )
+                if item:
+                    holdings.append(item)
+                    holding_id_counter += 1
+                idx = next_idx
+
+            elif _is_primary_line(line):
+                # Case A: Standard row with financial anchor on line 1
                 holding_lines = [line]
                 next_idx = idx + 1
                 while next_idx < len(content_lines):
@@ -472,7 +587,10 @@ def parse_holdings_pages(
                         col_map=col_map
                     ):
                         break
-                    if _is_primary_line(next_l):
+                    if _is_primary_line(next_l) or (
+                        next_idx + 1 < len(content_lines)
+                        and is_case_b_pair(next_l, content_lines[next_idx + 1], col_map)
+                    ):
                         break
                     holding_lines.append(next_l)
                     next_idx += 1
@@ -507,8 +625,8 @@ def _build_holding_item(
     Constructs a structured HoldingItem using strict single-token ownership
     driven by the detected TableColumnMap boundaries.
     """
-    prim_line = lines[0]
-    assigned, unassigned = assign_words_to_columns(prim_line.words, col_map)
+    fin_line = next((l for l in lines if has_financial_anchor(l, col_map)), lines[0])
+    assigned, unassigned = assign_words_to_columns(fin_line.words, col_map)
 
     # 1. Units / Nominal & optional leading denomination currency (e.g. 'HKD 702,000')
     units_words = assigned.get("UNITS", [])
@@ -525,32 +643,85 @@ def _build_holding_item(
 
     # 2. Security Identifier: strictly from SECURITY_ID column
     id_words = assigned.get("SECURITY_ID", [])
-    isin_secur_no, id_res = _extract_identifier_from_words(id_words, line_text=prim_line.text)
+    isin_secur_no, id_res = _extract_identifier_from_words(id_words, line_text=fin_line.text)
 
-    # 3. Security Name: strictly from SECURITY_NAME column (never contains SECURITY_ID words)
-    watermark_noise = {"SAMPLE", "VALID", "NOT", "DEMO"}
+    # Pre-scan ESG ratings & market price dates across all lines
+    previous_esg_rating = None
+    current_esg_rating = None
+    market_price_date = None
+
+    esg_prev_bounds = col_map.extra_bounds.get("ESG_PREVIOUS")
+    esg_curr_bounds = col_map.extra_bounds.get("ESG_CURRENT")
+
+    for l in lines:
+        cl_text = l.text.strip()
+        cl_upper = cl_text.upper()
+        m_esg_inline = re.search(
+            r"\bESG[:\s]+([A-Za-z0-9\+\-]+(?:\s*\([^\)]*\))?)\s*(?:/|\|)\s*([A-Za-z0-9\+\-]+(?:\s*\([^\)]*\))?)\b",
+            cl_text,
+            re.IGNORECASE
+        )
+        if m_esg_inline:
+            previous_esg_rating = m_esg_inline.group(1).strip()
+            current_esg_rating = m_esg_inline.group(2).strip()
+        elif "ESG" in cl_upper and "/" in cl_text:
+            parts = [p.strip() for p in re.sub(r"\bESG[:\s]*", "", cl_text, flags=re.IGNORECASE).split("/") if p.strip()]
+            if len(parts) == 2 and not any(len(p) > 10 for p in parts):
+                previous_esg_rating = parts[0]
+                current_esg_rating = parts[1]
+        elif esg_prev_bounds and esg_curr_bounds and bool(l.words) and all(
+            esg_prev_bounds[0] - 15.0 <= w.x0 and w.x1 <= esg_curr_bounds[1] + 15.0
+            for w in l.words
+        ) and "ESG" not in cl_upper and len(l.words) <= 4:
+            prev_cand = [w.text.strip() for w in l.words if w.x0 <= esg_prev_bounds[1] + 5.0]
+            curr_cand = [w.text.strip() for w in l.words if w.x0 >= esg_curr_bounds[0] - 5.0]
+            if prev_cand:
+                previous_esg_rating = " ".join(prev_cand)
+            if curr_cand:
+                current_esg_rating = " ".join(curr_cand)
+
+        for w in l.words:
+            if re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", w.text.strip()) and market_price_date is None:
+                market_price_date = w.text.strip()
+
+    # 3. Security Name: gathered across all lines strictly inside SECURITY_NAME column
+    watermark_noise = {"SAMPLE", "VALID", "NOT", "DEMO", "ESG"}
     name_parts: List[str] = []
-    prim_name_words = [
-        w for w in assigned.get("SECURITY_NAME", [])
-        if w.text.upper() not in watermark_noise
-    ]
+
+    for l in lines:
+        l_assigned, _ = assign_words_to_columns(l.words, col_map)
+        l_name_words = []
+        for w in l_assigned.get("SECURITY_NAME", []):
+            wt = w.text.strip()
+            wu = wt.upper()
+            if wu in watermark_noise or wt in {"/", "|"} or re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", wt):
+                continue
+            if previous_esg_rating and current_esg_rating and ("ESG" in l.text.upper()):
+                if wu == "ESG" or wu == previous_esg_rating.upper() or wu == current_esg_rating.upper():
+                    continue
+            l_name_words.append(w)
+        if l_name_words:
+            l_name_words.sort(key=lambda w: w.x0)
+            name_parts.append(" ".join(w.text for w in l_name_words).strip())
+
     # If any word in id_words lies cleanly to the left of the matched identifier token (e.g. 'Class', 'A', '04'),
     # attach it back to the security name description rather than losing a right-hand description token across the midpoint split.
     if id_res and id_res.raw_identifier:
         matched_raw = id_res.raw_identifier.upper()
         matched_id_words = [w for w in id_words if w.text.strip().upper() == matched_raw or matched_raw in w.text.strip().upper()]
         id_x0 = min(w.x0 for w in matched_id_words) if matched_id_words else None
+        extra_name_words = []
         for w in id_words:
             wu = w.text.strip().upper()
             if wu == matched_raw or wu in watermark_noise:
                 continue
             if id_x0 is not None and w.x1 <= id_x0 - 8.0 and len(w.text.strip()) <= 12:
-                prim_name_words.append(w)
-            elif w.x1 <= prim_line.words[-1].x1 and not any(c.isdigit() for c in w.text) and len(w.text) <= 5:
-                prim_name_words.append(w)
-    prim_name_words.sort(key=lambda w: w.x0)
-    if prim_name_words:
-        name_parts.append(" ".join(w.text for w in prim_name_words).strip())
+                extra_name_words.append(w)
+            elif w.x1 <= fin_line.words[-1].x1 and not any(c.isdigit() for c in w.text) and len(w.text) <= 5:
+                extra_name_words.append(w)
+        if extra_name_words:
+            extra_name_words.sort(key=lambda w: w.x0)
+            name_parts.append(" ".join(w.text for w in extra_name_words).strip())
 
     # 4. Yield / Rating on primary line
     yield_val = None
@@ -583,12 +754,12 @@ def _build_holding_item(
     market_price = None
     market_price_state = "SOURCE_BLANK"
     price_marker = None
-    market_price_date = None
     price_col_currency = None
     for w in assigned.get("MARKET_PRICE", []):
         raw_p = re.sub(r"^([\d\.'’,\-]+[*t\+#^])['’\".,]+$", r"\1", w.text.strip())
         if re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", raw_p):
-            market_price_date = raw_p
+            if market_price_date is None:
+                market_price_date = raw_p
             continue
         if is_valid_iso_currency(raw_p):
             price_col_currency = raw_p.upper()
@@ -653,77 +824,23 @@ def _build_holding_item(
             percentage_state = fn.state
             break
 
-    # 11. Process Continuation Lines cleanly (wrapped names, ESG ratings, credit ratings, valuation dates, accrued interest)
-    previous_esg_rating = None
-    current_esg_rating = None
+    # 11. Process Continuation Lines for Accrued Interest or Credit Rating
     accrued_interest_local = None
     accrued_interest_usd = None
     accrued_interest_currency = None
 
-    esg_prev_bounds = col_map.extra_bounds.get("ESG_PREVIOUS")
-    esg_curr_bounds = col_map.extra_bounds.get("ESG_CURRENT")
-
-    for cl in lines[1:]:
-        cl_text = cl.text.strip()
-        cl_upper = cl_text.upper()
-        if any(f in cl_upper for f in ["ORIGINAL DENOMINATION", "BLANK FIELDS ARE", "SYNTHETIC TEST ONLY"]):
+    for cl in lines:
+        if cl is fin_line:
             continue
-
-        # Pattern A: Inline ESG continuation line (e.g. 'ESG AA / A', 'ESG 078 / 078', 'ESG BBB+ / A')
-        m_esg_inline = re.search(
-            r"\bESG[:\s]+([A-Za-z0-9\+\-]+(?:\s*\([^\)]*\))?)\s*(?:/|\|)\s*([A-Za-z0-9\+\-]+(?:\s*\([^\)]*\))?)\b",
-            cl_text,
-            re.IGNORECASE
-        )
-        if m_esg_inline:
-            previous_esg_rating = m_esg_inline.group(1).strip()
-            current_esg_rating = m_esg_inline.group(2).strip()
-            continue
-        elif "ESG" in cl_upper and "/" in cl_text:
-            # Standalone rating line containing ESG and a slash
-            parts = [p.strip() for p in re.sub(r"\bESG[:\s]*", "", cl_text, flags=re.IGNORECASE).split("/") if p.strip()]
-            if len(parts) == 2:
-                previous_esg_rating = parts[0]
-                current_esg_rating = parts[1]
-                continue
-        elif esg_prev_bounds and esg_curr_bounds and bool(cl.words) and all(
-            esg_prev_bounds[0] - 15.0 <= w.x0 and w.x1 <= esg_curr_bounds[1] + 15.0
-            for w in cl.words
-        ) and "ESG" not in cl_upper and len(cl.words) <= 4:
-            # Pattern B: UBP columnar ESG line aligned under ESG: PREVIOUS | CURRENT
-            prev_cand = [w.text.strip() for w in cl.words if w.x0 <= esg_prev_bounds[1] + 5.0]
-            curr_cand = [w.text.strip() for w in cl.words if w.x0 >= esg_curr_bounds[0] - 5.0]
-            if prev_cand:
-                previous_esg_rating = " ".join(prev_cand)
-            if curr_cand:
-                current_esg_rating = " ".join(curr_cand)
-            continue
-        else:
-            cl_assigned, cl_unassigned = assign_words_to_columns(cl.words, col_map)
-            if cl_unassigned:
-                unassigned.extend(cl_unassigned)
-
-        # Continuation wrapped description strictly inside SECURITY_NAME column
-        cname_words = [
-            w for w in cl_assigned.get("SECURITY_NAME", [])
-            if w.text.upper() not in watermark_noise
-        ]
-        if cname_words:
-            c_text = " ".join(w.text for w in cname_words).strip()
-            if c_text:
-                name_parts.append(c_text)
+        cl_assigned, cl_unassigned = assign_words_to_columns(cl.words, col_map)
+        if cl_unassigned:
+            unassigned.extend(cl_unassigned)
 
         # Credit rating on continuation line inside YIELD_RATING column (e.g. 'AA', 'A')
         for w in cl_assigned.get("YIELD_RATING", []):
             raw_t = w.text.strip()
             if _is_credit_rating(raw_t) and rating_val is None:
                 rating_val = raw_t.upper()
-
-        # Market price date on continuation line inside MARKET_PRICE column
-        for w in cl_assigned.get("MARKET_PRICE", []):
-            raw_t = w.text.strip()
-            if re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", raw_t) and market_price_date is None:
-                market_price_date = raw_t
 
         # Accrued interest inside MARKET_VALUE / REPORTING_VALUE columns on continuation line
         for w in cl_assigned.get("MARKET_VALUE", []):

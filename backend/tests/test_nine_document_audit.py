@@ -22,6 +22,7 @@ def _synthetic_path(filename: str) -> str:
         (_synthetic_path("Synthetic_Portfolio_Test_02.pdf"), "SYN-5202", Decimal("1420000.00"), 13, 7),
         (_synthetic_path("Synthetic_Portfolio_Test_03.pdf"), "SYN-6303", Decimal("1815000.00"), 12, 6),
         (_synthetic_path("Synthetic_Portfolio_Test_04.pdf"), "SYN-7404", Decimal("2120000.00"), 14, 6),
+        (_synthetic_path("Synthetic_Portfolio_Test_05.pdf"), "SYN-8505", Decimal("1500000.00"), 12, 6),
     ],
 )
 def test_nine_document_full_reconciliation(
@@ -86,3 +87,84 @@ def test_synthetic_04_structured_products_and_zero_column_alignment():
     m02 = next(r for r in res.monthly_performance if r.period == "02.2025")
     assert m02.period_deposits_withdrawals == Decimal("0")
     assert m02.change_in_total_assets == Decimal("5000")
+
+
+def test_synthetic_05_alternative_terminology_and_multi_line_holdings():
+    p05 = _synthetic_path("Synthetic_Portfolio_Test_05.pdf")
+    if not os.path.exists(p05):
+        pytest.skip("Synthetic_Portfolio_Test_05.pdf not present")
+
+    res = extract_ubp_statement(p05)
+
+    # 1. Metadata & Overview
+    assert res.metadata.portfolio_number == "SYN-8505"
+    assert res.portfolio_summary_performance is not None
+    assert res.portfolio_summary_performance.ending_assets == Decimal("1500000.00")
+    assert res.portfolio_summary_performance.performance_twr_pct == Decimal("3.10")
+
+    # Cash flows
+    cf = res.portfolio_summary_performance
+    assert cf.initial_assets == Decimal("1455000.00")
+    assert cf.total_incoming_cash == Decimal("60000.00")
+    assert cf.total_outgoing_cash == Decimal("-20000.00")
+    assert cf.total_incoming_securities == Decimal("20000.00")
+    assert cf.total_outgoing_securities == Decimal("-15000.00")
+    assert cf.total_inc_out_cash_sec == Decimal("45000.00")
+    assert cf.change_in_total_assets == Decimal("45000.00")
+
+    # 2. Holdings table with alternative headers and multi-line rows
+    assert len(res.holdings) == 12
+    # Verify exact ISINs / identifiers
+    expected_ids = [
+        "XS8505000017", "XS8505000025", "CH-VAL-8505003",
+        "XS8505000041", "US-TEST-8505-A", "XS8505000058",
+        "PB-TEST-8505-PE", "CH-VAL-8505007", "XS8505000082",
+        "XS8505000090", "XS8505000108", "XS8505000116"
+    ]
+    extracted_ids = [h.isin_secur_no for h in res.holdings]
+    for expected_id in expected_ids:
+        assert any(expected_id in (eid or "") for eid in extracted_ids), f"ID {expected_id} missing from extracted holdings: {extracted_ids}"
+
+    # Verify sample holding field mappings (Case B: description line 1, financial values line 2)
+    h_nw = next(h for h in res.holdings if "XS8505000058" in (h.isin_secur_no or ""))
+    assert "NORTHWIND GROWTH" in h_nw.security_name.upper()
+    assert h_nw.units_nominal == Decimal("1000")
+    assert h_nw.yield_val == Decimal("7.20")
+    assert h_nw.net_avg_cost == Decimal("90.00")
+    assert h_nw.market_price == Decimal("100.00")
+    assert h_nw.value_in_usd == Decimal("110000.00")
+    assert h_nw.percentage_of_total_assets == Decimal("7.33")
+
+    h_mr = next(h for h in res.holdings if "XS8505000017" in (h.isin_secur_no or ""))
+    assert "MAPLE RIDGE" in h_mr.security_name.upper()
+    assert h_mr.units_nominal == Decimal("1800")
+    assert h_mr.yield_val == Decimal("3.55")
+    assert h_mr.net_avg_cost == Decimal("99.10")
+    assert h_mr.market_price == Decimal("100.00")
+    assert h_mr.value_in_usd == Decimal("180000.00")
+    assert h_mr.percentage_of_total_assets == Decimal("12.00")
+
+    # 3. Current Accounts
+    assert len(res.current_accounts) == 4
+    ca_dict = {a.currency: a for a in res.current_accounts}
+    assert "USD" in ca_dict and ca_dict["USD"].amount == Decimal("100000.00")
+    assert "EUR" in ca_dict and ca_dict["EUR"].amount == Decimal("30000.00")
+    assert "CHF" in ca_dict and ca_dict["CHF"].amount == Decimal("20000.00")
+    assert "HKD" in ca_dict and ca_dict["HKD"].amount == Decimal("39000.00")
+    assert ca_dict["USD"].market_value_usd == Decimal("100000.00")
+    assert ca_dict["EUR"].market_value_usd == Decimal("33000.00")
+    assert ca_dict["CHF"].market_value_usd == Decimal("22000.00")
+    assert ca_dict["HKD"].market_value_usd == Decimal("5000.00")
+    assert "8505-USD" in (ca_dict["USD"].account_number or ca_dict["USD"].account_name)
+
+    # 4. Loans
+    assert len(res.loans) == 2
+    l_usd = next(l for l in res.loans if l.currency == "USD")
+    l_chf = next(l for l in res.loans if l.currency == "CHF")
+    assert l_usd.amount == Decimal("-25000.00")
+    assert l_usd.usd_equivalent == Decimal("-25000.00")
+    assert "LN-TEST-8505-A" in (l_usd.loan_reference or l_usd.description or "")
+    assert l_chf.amount == Decimal("-13636.36")
+    assert l_chf.usd_equivalent == Decimal("-15000.00")
+    assert "LN-TEST-8505-B" in (l_chf.loan_reference or l_chf.description or "")
+

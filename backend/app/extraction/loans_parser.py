@@ -177,19 +177,30 @@ def parse_loans_page(
                         curr = wt
                         break
 
+            desc_words = []
             for w in assigned.get("PRINCIPAL", []):
                 wt = re.sub(r"[^A-Z]", "", w.text.upper())
                 if is_valid_iso_currency(wt):
                     continue
                 fn = parse_financial_number(w.text)
                 if fn.is_valid and fn.value is not None:
-                    amt_val = fn.value
-                    break
+                    if amt_val is None:
+                        amt_val = fn.value
+                elif any(c.isalpha() for c in w.text):
+                    desc_words.append(w)
 
-            desc_words = [
+            raw_desc_words = [
                 w for w in assigned.get("LOAN_REFERENCE", [])
                 if not (is_valid_iso_currency(re.sub(r"[^A-Z]", "", w.text.upper())) and w.x0 < pw * 0.15)
             ]
+            for w in raw_desc_words:
+                if amt_val is None and not desc_words:
+                    fn = parse_financial_number(w.text)
+                    if fn.is_valid and fn.value is not None and not any(c.isalpha() for c in w.text):
+                        amt_val = fn.value
+                        continue
+                desc_words.append(w)
+            desc_words.sort(key=lambda w: w.x0)
             desc = " ".join(w.text for w in desc_words).strip()
 
             # Check maturity within MATURITY column first, then fallback across LOAN_REFERENCE (UBP sometimes puts maturity date under LOAN_REFERENCE text or MATURITY DATE)

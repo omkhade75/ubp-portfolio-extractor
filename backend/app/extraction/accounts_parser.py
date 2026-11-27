@@ -172,19 +172,30 @@ def parse_current_accounts_page(
                         curr = wt
                         break
 
+            desc_words = []
             for w in assigned.get("BALANCE", []):
                 wt = re.sub(r"[^A-Z]", "", w.text.upper())
                 if is_valid_iso_currency(wt):
                     continue
                 fn = parse_financial_number(w.text)
                 if fn.is_valid and fn.value is not None:
-                    amt_val = fn.value
-                    break
+                    if amt_val is None:
+                        amt_val = fn.value
+                elif any(c.isalpha() for c in w.text):
+                    desc_words.append(w)
 
-            desc_words = [
+            raw_desc_words = [
                 w for w in assigned.get("ACCOUNT_DESCRIPTION", [])
                 if not (is_valid_iso_currency(re.sub(r"[^A-Z]", "", w.text.upper())) and w.x0 < pw * 0.14)
             ]
+            for w in raw_desc_words:
+                if amt_val is None and not desc_words:
+                    fn = parse_financial_number(w.text)
+                    if fn.is_valid and fn.value is not None and not any(c.isalpha() for c in w.text):
+                        amt_val = fn.value
+                        continue
+                desc_words.append(w)
+            desc_words.sort(key=lambda w: w.x0)
             desc = " ".join(w.text for w in desc_words).strip()
 
             for w in assigned.get("MARKET_VALUE", []):

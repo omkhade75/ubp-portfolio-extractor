@@ -218,7 +218,7 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
                 raw_vals["portfolio_esg_source_page"] = str(page_num)
                 raw_vals["portfolio_esg_provenance"] = "EXTRACTED"
 
-    mid_x = page.rect.width * 0.45
+    mid_x = page.rect.width * 0.49
     for l in lines:
         right_words = [w for w in l.words if w.x0 >= mid_x]
         if not right_words:
@@ -235,49 +235,49 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
                 raw_vals["reporting_period"] = rep_period
 
         if "INITIAL ASSETS" in tu:
-            val_str = t.split("INITIAL ASSETS")[-1].strip().lstrip(":").strip()
+            val_str = re.split(r"INITIAL\s+ASSETS", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 init_assets = fn.value
                 raw_vals["initial_assets"] = val_str
 
-        if "TOTAL INCOMING SECURITIES" in tu:
-            val_str = t.split("TOTAL INCOMING SECURITIES")[-1].strip().lstrip(":").strip()
+        if "INCOMING SECURITIES" in tu:
+            val_str = re.split(r"(?:TOTAL\s+)?INCOMING\s+SECURITIES", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 inc_sec = fn.value
                 raw_vals["total_incoming_securities"] = val_str
 
-        if "TOTAL OUTGOING SECURITIES" in tu:
-            val_str = t.split("TOTAL OUTGOING SECURITIES")[-1].strip().lstrip(":").strip()
+        if "OUTGOING SECURITIES" in tu:
+            val_str = re.split(r"(?:TOTAL\s+)?OUTGOING\s+SECURITIES", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 out_sec = fn.value
                 raw_vals["total_outgoing_securities"] = val_str
 
-        if "TOTAL INCOMING CASH" in tu:
-            val_str = t.split("TOTAL INCOMING CASH")[-1].strip().lstrip(":").strip()
+        if "INCOMING CASH" in tu:
+            val_str = re.split(r"(?:TOTAL\s+)?INCOMING\s+CASH", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 inc_cash = fn.value
                 raw_vals["total_incoming_cash"] = val_str
 
-        if "TOTAL OUTGOING CASH" in tu:
-            val_str = t.split("TOTAL OUTGOING CASH")[-1].strip().lstrip(":").strip()
+        if "OUTGOING CASH" in tu:
+            val_str = re.split(r"(?:TOTAL\s+)?OUTGOING\s+CASH", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 out_cash = fn.value
                 raw_vals["total_outgoing_cash"] = val_str
 
-        if "TOTAL OF INC/OUT CASH & SEC" in tu or "TOTAL OF INC/OUT" in tu:
-            val_str = re.split(r"TOTAL OF INC/OUT(?: CASH & SEC)?", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
+        if "TOTAL OF INC/OUT CASH & SEC" in tu or "TOTAL OF INC/OUT" in tu or "INCOMING/OUTGOING FLOWS" in tu:
+            val_str = re.split(r"TOTAL\s+(?:OF\s+INC/OUT(?:\s+CASH\s*&\s*SEC)?|INCOMING/OUTGOING\s+FLOWS)", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 tot_inc_out = fn.value
                 raw_vals["total_inc_out_cash_sec"] = val_str
 
         if "CHANGE IN TOTAL ASSETS" in tu:
-            val_str = t.split("CHANGE IN TOTAL ASSETS")[-1].strip().lstrip(":").strip()
+            val_str = re.split(r"CHANGE\s+IN\s+TOTAL\s+ASSETS", t, flags=re.IGNORECASE)[-1].strip().lstrip(":").strip()
             fn = parse_financial_number(val_str)
             if fn.is_valid and fn.value is not None:
                 chg_assets = fn.value
@@ -309,8 +309,9 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
                 except ValueError:
                     pass
 
-        if "PERFORMANCE TWR" in tu:
-            m_twr = re.search(r"([0-9\.\-]+)%", t)
+        if "PERFORMANCE TWR" in tu or "TWR" in tu:
+            after_twr = re.split(r"PERFORMANCE\s+TWR|TWR", t, flags=re.IGNORECASE)[-1]
+            m_twr = re.search(r"([0-9\.\-]+)%", after_twr)
             if m_twr:
                 val_str = m_twr.group(0)
                 fn = parse_financial_number(val_str)
