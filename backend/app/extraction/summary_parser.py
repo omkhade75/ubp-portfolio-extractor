@@ -83,17 +83,22 @@ def parse_asset_allocation_page(page: pymupdf.Page, page_num: int) -> List[Asset
 
 def parse_portfolio_esg_generic(raw_text: str) -> Tuple[Optional[str], Optional[str]]:
     """
-    Dynamically extracts Previous and Current Portfolio ESG ratings from source line text.
+    Dynamically extracts Previous and Current Portfolio ESG ratings from source text.
     Handles any UBP / synthetic statement layout generically:
-      - Ratings with qualifiers: 'AA (LEADER) AA (LEADER)', 'AA (AVERAGE) / A (AVERAGE)', 'AA (LEADER) M (LEADER)'
-      - Simple rating codes: 'AA AA', 'AA / A', '078 085', 'B CCC'
-      - Single ratings: 'AA (LEADER)', 'AA'
+      - Delimited with slash/pipe: 'BBB+ / A (AVERAGE)', 'AA (LEADER) / AA (LEADER)', 'AA / A', '078 / 078'
+      - Whitespace-separated qualified: 'AA (LEADER) AA (LEADER)', 'AA (AVERAGE) A (AVERAGE)'
+      - Whitespace-separated simple: 'AA AA', '078 085', 'BBB+ A'
+      - Single qualified or simple: 'AA (LEADER)', 'A (AVERAGE)', 'AA'
       - Flexible headers: PORTFOLIO ESG RATING (...), PORTFOLIO ESG (PREVIOUS / CURRENT), etc.
     """
     m = re.search(r"PORTFOLIO\s+ESG(?:\s+RATING)?(?:\s*\([^\)]*\))?\s*:?\s*(.*)", raw_text, re.IGNORECASE)
     if not m:
-        return None, None
-    rem = m.group(1).strip()
+        if "ESG" not in raw_text.upper():
+            return None, None
+        rem = raw_text.strip()
+    else:
+        rem = m.group(1).strip()
+
     if not rem:
         return None, None
 
@@ -102,15 +107,14 @@ def parse_portfolio_esg_generic(raw_text: str) -> Tuple[Optional[str], Optional[
     if not rem:
         return None, None
 
-    # Check for two qualified ratings separated by slash/pipe or whitespace:
-    # e.g. 'AA (AVERAGE) / A (AVERAGE)' or 'AA (LEADER) AA (LEADER)'
-    m_qual_sep = re.match(
-        r"^([A-Za-z0-9+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))\s*(?:/|\|)\s*([A-Za-z0-9+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))$",
-        rem,
-    )
-    if m_qual_sep:
-        return m_qual_sep.group(1).strip(), m_qual_sep.group(2).strip()
+    # Pattern 1: Delimited by '/' or '|' outside parentheses
+    # e.g. 'BBB+ / A (AVERAGE)', 'AA (LEADER) / A', 'AA / A', '078 / 078'
+    if "/" in rem or "|" in rem:
+        parts = re.split(r"\s*(?:/|\|)\s*(?![^\(]*\))", rem)
+        if len(parts) == 2 and parts[0].strip() and parts[1].strip():
+            return parts[0].strip(), parts[1].strip()
 
+    # Pattern 2: Two qualified ratings with whitespace: e.g. 'AA (LEADER) AA (LEADER)'
     m_qual = re.match(
         r"^([A-Za-z0-9\/+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))\s+([A-Za-z0-9\/+\-]+(?:\s*\([A-Za-z0-9\s\/+\-]+\)))$",
         rem,
@@ -118,33 +122,29 @@ def parse_portfolio_esg_generic(raw_text: str) -> Tuple[Optional[str], Optional[
     if m_qual:
         return m_qual.group(1).strip(), m_qual.group(2).strip()
 
-    # Check for two simple tokens separated by slash/pipe or space: 'AA / A', 'AA AA', '078 085'
-    m_simple_sep = re.match(r"^([A-Za-z0-9+\-]+)\s*(?:/|\|)\s*([A-Za-z0-9+\-]+)$", rem)
-    if m_simple_sep:
-        return m_simple_sep.group(1).strip(), m_simple_sep.group(2).strip()
-
-    m_simple = re.match(r"^([A-Za-z0-9\/+\-]+)\s+([A-Za-z0-9\/+\-]+)$", rem)
+    # Pattern 3: Two simple tokens with whitespace: 'AA AA', '078 085', 'BBB+ A'
+    m_simple = re.match(r"^([A-Za-z0-9+\-]+)\s+([A-Za-z0-9+\-]+)$", rem)
     if m_simple:
         return m_simple.group(1).strip(), m_simple.group(2).strip()
 
-    # Single qualified rating: 'AA (LEADER)'
+    # Pattern 4: Single qualified rating: 'A (AVERAGE)', 'AA (LEADER)'
     m_single_qual = re.match(r"^([A-Za-z0-9\/+\-]+\s*\([A-Za-z0-9\s\/+\-]+\))$", rem)
     if m_single_qual:
         return None, m_single_qual.group(1).strip()
 
-    # Single simple token: 'AA'
+    # Pattern 5: Single simple token: 'AA', 'BBB+'
     m_single = re.match(r"^([A-Za-z0-9\/+\-]+)$", rem)
     if m_single:
         return None, m_single.group(1).strip()
 
-    # General token splitting (strip isolated slash separators)
+    # Pattern 6: General token splitting (strip isolated slash separators)
     tokens = [tok for tok in rem.split() if tok not in ("/", "|")]
     if len(tokens) >= 4 and "(" in tokens[1] and "(" in tokens[3]:
         return f"{tokens[0]} {tokens[1]}", f"{tokens[2]} {tokens[3]}"
     elif len(tokens) == 2:
         return tokens[0], tokens[1]
 
-    return None, rem
+    return None, None
 
 def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Optional[PortfolioSummaryPerformance]:
     """
@@ -200,6 +200,11 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
                 esg_cand = l.text
 
             p_prev, p_curr = parse_portfolio_esg_generic(esg_cand)
+            if not p_prev and not p_curr and (idx + 1) < len(lines):
+                # Header might be on current line and rating values on next line
+                next_cand = lines[idx + 1].text.strip()
+                p_prev, p_curr = parse_portfolio_esg_generic(next_cand)
+
             if p_prev or p_curr:
                 port_prev_esg = p_prev
                 port_curr_esg = p_curr
@@ -211,6 +216,7 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
                     raw_vals["portfolio_esg_current"] = port_curr_esg
                     raw_vals["portfolio_current_esg_rating"] = port_curr_esg
                 raw_vals["portfolio_esg_source_page"] = str(page_num)
+                raw_vals["portfolio_esg_provenance"] = "EXTRACTED"
 
     mid_x = page.rect.width * 0.45
     for l in lines:
@@ -339,6 +345,7 @@ def parse_portfolio_summary_performance(page: pymupdf.Page, page_num: int) -> Op
             portfolio_esg_previous=port_prev_esg,
             portfolio_esg_current=port_curr_esg,
             portfolio_esg_source_page=port_esg_source_page,
+            portfolio_esg_provenance="EXTRACTED" if (port_prev_esg or port_curr_esg) else "NOT_PRESENT",
             portfolio_previous_esg_rating=port_prev_esg,
             portfolio_current_esg_rating=port_curr_esg,
             source_page=page_num,

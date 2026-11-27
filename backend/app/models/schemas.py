@@ -42,6 +42,7 @@ class PortfolioSummaryPerformance(BaseModel):
     portfolio_esg_previous: Optional[str] = None
     portfolio_esg_current: Optional[str] = None
     portfolio_esg_source_page: Optional[int] = None
+    portfolio_esg_provenance: Optional[str] = "NOT_PRESENT"
     portfolio_previous_esg_rating: Optional[str] = None
     portfolio_current_esg_rating: Optional[str] = None
     source_page: int = 1
@@ -80,6 +81,10 @@ class HoldingItem(BaseModel):
     current_esg_rating: Optional[str] = None
     esg_rating_previous: Optional[str] = None
     esg_rating_current: Optional[str] = None
+    raw_identifier: Optional[str] = None
+    identifier_status: str = "PASS"
+    identifier_provenance: Optional[str] = None
+    identifier_confidence: Optional[float] = None
     header_confidence: str = "HIGH"
     unassigned_tokens: List[str] = Field(default_factory=list)
     source_page: int
@@ -208,6 +213,7 @@ class StatementMetadata(BaseModel):
     portfolio_esg_previous: Optional[str] = None
     portfolio_esg_current: Optional[str] = None
     portfolio_esg_source_page: Optional[int] = None
+    portfolio_esg_provenance: Optional[str] = "NOT_PRESENT"
 
 class StatementExtractionResult(BaseModel):
     metadata: StatementMetadata

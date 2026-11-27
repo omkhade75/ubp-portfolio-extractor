@@ -144,12 +144,14 @@ def extract_ubp_statement(
                     metadata.portfolio_esg_current = portfolio_summary_perf.portfolio_current_esg_rating
                 if portfolio_summary_perf.portfolio_esg_source_page:
                     metadata.portfolio_esg_source_page = portfolio_summary_perf.portfolio_esg_source_page
+                if portfolio_summary_perf.portfolio_esg_provenance:
+                    metadata.portfolio_esg_provenance = portfolio_summary_perf.portfolio_esg_provenance
 
         if not metadata.portfolio_esg_previous and not metadata.portfolio_esg_current:
             _, ov_lines = extract_visual_words_and_lines(doc[pno])
             mid_x_left = doc[pno].rect.width * 0.50
             for ov_l in ov_lines:
-                if "PORTFOLIO ESG RATING" in ov_l.text.upper() or "ESG RATING" in ov_l.text.upper():
+                if "PORTFOLIO ESG" in ov_l.text.upper() or "ESG RATING" in ov_l.text.upper():
                     left_words = [w for w in ov_l.words if w.x0 < mid_x_left]
                     left_text = " ".join(w.text for w in left_words).strip()
                     p_p, p_c = parse_portfolio_esg_generic(left_text if "PORTFOLIO ESG" in left_text.upper() else ov_l.text)
@@ -159,6 +161,7 @@ def extract_ubp_statement(
                         metadata.portfolio_previous_esg_rating = p_p
                         metadata.portfolio_current_esg_rating = p_c
                         metadata.portfolio_esg_source_page = pno + 1
+                        metadata.portfolio_esg_provenance = "EXTRACTED"
                         break
 
     # Extract Currency Breakdown

@@ -135,12 +135,14 @@ def _build_portfolio_overview_sheet(wb, res: StatementExtractionResult):
     port_esg_prev = meta.portfolio_esg_previous or meta.portfolio_previous_esg_rating
     port_esg_curr = meta.portfolio_esg_current or meta.portfolio_current_esg_rating
     port_esg_page = meta.portfolio_esg_source_page or (perf.source_page if perf and (port_esg_prev or port_esg_curr) else None)
+    port_esg_prov = meta.portfolio_esg_provenance or (perf.portfolio_esg_provenance if perf else ("EXTRACTED" if (port_esg_prev or port_esg_curr) else "NOT_PRESENT"))
 
     if port_esg_prev or port_esg_curr:
         metadata_rows.append(("Portfolio ESG Rating (Previous)", port_esg_prev or ""))
         metadata_rows.append(("Portfolio ESG Rating (Current)", port_esg_curr or ""))
         if port_esg_page:
             metadata_rows.append(("Portfolio ESG Source Page", port_esg_page))
+        metadata_rows.append(("Portfolio ESG Provenance", port_esg_prov or "EXTRACTED"))
 
     for idx, (lbl, val) in enumerate(metadata_rows, start=3):
         ws.cell(row=idx, column=1, value=lbl).font = BOLD_DATA_FONT
@@ -216,20 +218,20 @@ def _build_portfolio_overview_sheet(wb, res: StatementExtractionResult):
     ws.cell(row=esg_start_row, column=1, value="PORTFOLIO ESG RATING (PREVIOUS - CURRENT)").font = HEADER_FONT
     ws.row_dimensions[esg_start_row].height = 24
 
-    esg_headers = ["Field_Name", "Extracted_Rating", "Source_Page"]
+    esg_headers = ["Field_Name", "Extracted_Rating", "Source_Page", "Provenance"]
     for c_idx, h_text in enumerate(esg_headers, start=1):
         cell = ws.cell(row=esg_start_row + 1, column=c_idx, value=h_text)
         cell.font = HEADER_FONT
         cell.fill = HEADER_FILL
-        cell.alignment = ALIGN_CENTER if c_idx == 3 else ALIGN_LEFT
+        cell.alignment = ALIGN_CENTER if c_idx in (3, 4) else ALIGN_LEFT
         cell.border = CELL_BORDER
 
     esg_items = [
-        ("Portfolio_ESG_Previous", port_esg_prev if port_esg_prev else None, port_esg_page if port_esg_prev else None),
-        ("Portfolio_ESG_Current", port_esg_curr if port_esg_curr else None, port_esg_page if port_esg_curr else None),
+        ("Portfolio_ESG_Previous", port_esg_prev if port_esg_prev else None, port_esg_page if port_esg_prev else None, port_esg_prov if port_esg_prev else "NOT_PRESENT"),
+        ("Portfolio_ESG_Current", port_esg_curr if port_esg_curr else None, port_esg_page if port_esg_curr else None, port_esg_prov if port_esg_curr else "NOT_PRESENT"),
     ]
 
-    for e_idx, (lbl, val, spage) in enumerate(esg_items, start=esg_start_row + 2):
+    for e_idx, (lbl, val, spage, prov) in enumerate(esg_items, start=esg_start_row + 2):
         c1 = ws.cell(row=e_idx, column=1, value=lbl)
         c1.font = BOLD_DATA_FONT
         c1.border = CELL_BORDER
@@ -243,6 +245,11 @@ def _build_portfolio_overview_sheet(wb, res: StatementExtractionResult):
         c3.font = DATA_FONT
         c3.border = CELL_BORDER
         c3.alignment = ALIGN_CENTER
+
+        c4 = ws.cell(row=e_idx, column=4, value=prov)
+        c4.font = DATA_FONT
+        c4.border = CELL_BORDER
+        c4.alignment = ALIGN_CENTER
 
     ws.freeze_panes = "A3"
     autofit_columns(ws)

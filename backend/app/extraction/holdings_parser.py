@@ -5,6 +5,7 @@ import pymupdf
 
 from app.models.schemas import HoldingItem
 from app.processing.number_parser import parse_financial_number
+from app.extraction.identifier_engine import normalize_security_identifier, IdentifierResult
 from app.extraction.word_extractor import extract_visual_words_and_lines, VisualLine, ExtractedWord
 from app.extraction.table_header_engine import (
     HOLDINGS_SYNONYMS,
@@ -219,19 +220,31 @@ def detect_holdings_table_map(lines: List[VisualLine], page_width: float) -> Tab
     return tmap
 
 
-def _extract_identifier_from_words(id_words: List[ExtractedWord]) -> Tuple[Optional[str], Optional[str]]:
+def _extract_identifier_from_words(
+    id_words: List[ExtractedWord],
+    line_text: str = ""
+) -> Tuple[Optional[str], Optional[IdentifierResult]]:
     """
     Extracts clean security identifier from tokens strictly inside SECURITY_ID column.
     Supports space-split OCR tokens (e.g. 'XSSYNOOOI' + '090') while never returning ordinary prose words.
+    Integrates with normalize_security_identifier for deterministic format validation
+    and OCR character confusion handling.
     """
     if not id_words:
         return None, None
 
-    # First pass: exact single token match
+    # If the line is an ESG line (e.g. 'ESG 078 / 078'), tokens are ESG scores, NOT security identifiers
+    if re.search(r"\bESG\b", line_text, re.IGNORECASE):
+        return None, None
+
+    # First pass: exact or normalized single token match
     for w in id_words:
         tok = w.text.strip()
-        if is_isin_or_secur_no(tok):
-            return tok, None
+        if tok.isdigit() and len(tok) <= 3:
+            continue
+        res = normalize_security_identifier(tok, confidence=w.confidence)
+        if res.status in ("PASS", "NORMALIZED"):
+            return res.normalized_identifier, res
 
     # Second pass: only join immediately adjacent fragments (OCR intra-token split, gap < 8pt)
     # Never join two horizontal columns such as ESG scores ('078' ... '078') separated by wide spacing.
@@ -245,12 +258,16 @@ def _extract_identifier_from_words(id_words: List[ExtractedWord]) -> Tuple[Optio
         for grp in adjacent_groups:
             if len(grp) >= 2:
                 joined = "".join(w.text.strip() for w in grp)
-                if is_isin_or_secur_no(joined):
-                    return joined, None
+                avg_conf = sum(w.confidence for w in grp) / len(grp)
+                res = normalize_security_identifier(joined, confidence=avg_conf)
+                if res.status in ("PASS", "NORMALIZED"):
+                    return res.normalized_identifier, res
 
     # Third pass: unfamiliar but structurally valid alphanumeric/hyphenated identifier inside ID column
     for w in id_words:
         clean_tok = w.text.strip().upper()
+        if clean_tok.isdigit() and len(clean_tok) <= 3:
+            continue
         if (
             clean_tok
             and clean_tok not in DISALLOWED_ID_WORDS
@@ -259,9 +276,78 @@ def _extract_identifier_from_words(id_words: List[ExtractedWord]) -> Tuple[Optio
             and (any(c.isdigit() for c in clean_tok) or ("-" in clean_tok and len(clean_tok) >= 4))
             and not any(k in clean_tok for k in ["SAMPLE", "VALID", "DEMO"])
         ):
-            return f"{w.text.strip()} (REVIEW_REQUIRED)", None
+            res = normalize_security_identifier(w.text.strip(), confidence=w.confidence)
+            return res.normalized_identifier, res
 
     return None, None
+
+
+def is_primary_holding_line(l: VisualLine, col_map: TableColumnMap) -> bool:
+    """
+    Determines structurally whether a table row is a primary financial holding line.
+    Prevents standalone ESG lines, credit ratings, valuation dates, watermarks,
+    or empty content from becoming artificial holdings.
+    """
+    lu = l.text.upper()
+    # 1. ESG continuation / rating lines are NEVER primary holdings
+    if re.search(r"\bESG\b", lu):
+        return False
+    # 2. Date-only line (e.g. market price date '30.09.25' or '31.10.2025')
+    if re.match(r"^\s*\d{2}\.\d{2}\.\d{2,4}\s*$", l.text.strip()):
+        return False
+    # 3. Credit rating only line
+    if _is_credit_rating(l.text.strip()):
+        return False
+
+    assigned, _ = assign_words_to_columns(l.words, col_map)
+    esg_prev_b = col_map.extra_bounds.get("ESG_PREVIOUS")
+    esg_curr_b = col_map.extra_bounds.get("ESG_CURRENT")
+    # Standalone ESG continuation line (e.g. '078 078' or 'AA AA') is NEVER a new holding
+    if (
+        not assigned.get("UNITS")
+        and not assigned.get("SECURITY_NAME")
+        and not assigned.get("MARKET_VALUE")
+        and not assigned.get("REPORTING_VALUE")
+    ):
+        if esg_prev_b and esg_curr_b and l.words and all(
+            esg_prev_b[0] - 15.0 <= w.x0 and w.x1 <= esg_curr_b[1] + 15.0
+            for w in l.words
+        ):
+            return False
+        if len(l.words) <= 2 and all(len(w.text.strip()) <= 4 for w in l.words):
+            return False
+
+    # 4. Primary row structural substance check:
+    # A valid financial holding must possess real financial content:
+    # - Security name description (at least 2 letters, not disallowed noise)
+    # - OR Units (valid financial number)
+    # - OR Financial value / market price evidence
+    name_words = [
+        w.text.strip() for w in assigned.get("SECURITY_NAME", [])
+        if len(w.text.strip()) >= 2 and w.text.upper() not in DISALLOWED_ID_WORDS
+    ]
+    has_name = bool(name_words)
+    has_units = any(
+        parse_financial_number(w.text).is_valid and parse_financial_number(w.text).value is not None
+        for w in assigned.get("UNITS", [])
+    )
+    val_words = assigned.get("REPORTING_VALUE", []) + assigned.get("MARKET_VALUE", [])
+    has_vals = any(
+        not is_valid_iso_currency(w.text)
+        and parse_financial_number(w.text).is_valid
+        and parse_financial_number(w.text).value is not None
+        for w in val_words
+    )
+
+    # An empty line or line with NO name, NO units, and NO values cannot become a holding
+    if not has_name and not has_units and not has_vals:
+        return False
+
+    id_cand, _ = _extract_identifier_from_words(assigned.get("SECURITY_ID", []), line_text=l.text)
+    if id_cand is not None:
+        return True
+
+    return bool(has_units and has_vals)
 
 
 def parse_holdings_pages(
@@ -313,38 +399,7 @@ def parse_holdings_pages(
             content_lines.append(l)
 
         def _is_primary_line(l: VisualLine) -> bool:
-            assigned, _ = assign_words_to_columns(l.words, col_map)
-            esg_prev_b = col_map.extra_bounds.get("ESG_PREVIOUS")
-            esg_curr_b = col_map.extra_bounds.get("ESG_CURRENT")
-            # Standalone ESG continuation line (e.g. '078 078' or 'AA AA') is NEVER a new holding
-            if (
-                not assigned.get("UNITS")
-                and not assigned.get("SECURITY_NAME")
-                and not assigned.get("MARKET_VALUE")
-                and not assigned.get("REPORTING_VALUE")
-            ):
-                if esg_prev_b and esg_curr_b and l.words and all(
-                    esg_prev_b[0] - 15.0 <= w.x0 and w.x1 <= esg_curr_b[1] + 15.0
-                    for w in l.words
-                ):
-                    return False
-                if len(l.words) <= 2 and all(len(w.text.strip()) <= 4 for w in l.words):
-                    return False
-            id_cand, _ = _extract_identifier_from_words(assigned.get("SECURITY_ID", []))
-            if id_cand is not None:
-                return True
-            unit_nums = [
-                w for w in assigned.get("UNITS", [])
-                if parse_financial_number(w.text).is_valid and parse_financial_number(w.text).value is not None
-            ]
-            val_words = assigned.get("REPORTING_VALUE", []) + assigned.get("MARKET_VALUE", [])
-            val_nums = [
-                w for w in val_words
-                if not is_valid_iso_currency(w.text)
-                and parse_financial_number(w.text).is_valid
-                and parse_financial_number(w.text).value is not None
-            ]
-            return bool(unit_nums and val_nums)
+            return is_primary_holding_line(l, col_map)
 
         idx = 0
         while idx < len(content_lines):
@@ -434,7 +489,7 @@ def _build_holding_item(
 
     # 2. Security Identifier: strictly from SECURITY_ID column
     id_words = assigned.get("SECURITY_ID", [])
-    isin_secur_no, _ = _extract_identifier_from_words(id_words)
+    isin_secur_no, id_res = _extract_identifier_from_words(id_words, line_text=prim_line.text)
 
     # 3. Security Name: strictly from SECURITY_NAME column (never contains SECURITY_ID words)
     watermark_noise = {"SAMPLE", "VALID", "NOT", "DEMO"}
@@ -563,13 +618,23 @@ def _build_holding_item(
         if any(f in cl_upper for f in ["ORIGINAL DENOMINATION", "BLANK FIELDS ARE", "SYNTHETIC TEST ONLY"]):
             continue
 
-        # Pattern A: Inline ESG continuation line (e.g. 'ESG AA / A' or 'ESG: AA / A')
-        m_esg_inline = re.search(r"\bESG[:\s]+([A-Za-z0-9\+\-]+)\s*/\s*([A-Za-z0-9\+\-]+)\b", cl_text, re.IGNORECASE)
+        # Pattern A: Inline ESG continuation line (e.g. 'ESG AA / A', 'ESG 078 / 078', 'ESG BBB+ / A')
+        m_esg_inline = re.search(
+            r"\bESG[:\s]+([A-Za-z0-9\+\-]+(?:\s*\([^\)]*\))?)\s*(?:/|\|)\s*([A-Za-z0-9\+\-]+(?:\s*\([^\)]*\))?)\b",
+            cl_text,
+            re.IGNORECASE
+        )
         if m_esg_inline:
             previous_esg_rating = m_esg_inline.group(1).strip()
             current_esg_rating = m_esg_inline.group(2).strip()
-            # Exclude ESG tokens when checking remaining words on this line
-            cl_assigned, _ = assign_words_to_columns(cl.words, col_map)
+            continue
+        elif "ESG" in cl_upper and "/" in cl_text:
+            # Standalone rating line containing ESG and a slash
+            parts = [p.strip() for p in re.sub(r"\bESG[:\s]*", "", cl_text, flags=re.IGNORECASE).split("/") if p.strip()]
+            if len(parts) == 2:
+                previous_esg_rating = parts[0]
+                current_esg_rating = parts[1]
+                continue
         elif esg_prev_bounds and esg_curr_bounds and bool(cl.words) and all(
             esg_prev_bounds[0] - 15.0 <= w.x0 and w.x1 <= esg_curr_bounds[1] + 15.0
             for w in cl.words
@@ -677,6 +742,10 @@ def _build_holding_item(
         current_esg_rating=current_esg_rating,
         esg_rating_previous=previous_esg_rating,
         esg_rating_current=current_esg_rating,
+        raw_identifier=id_res.raw_identifier if id_res else None,
+        identifier_status=id_res.status if id_res else ("NOT_PRESENT" if isin_secur_no is None else "PASS"),
+        identifier_provenance=id_res.provenance if id_res else None,
+        identifier_confidence=id_res.confidence if id_res else None,
         header_confidence=col_map.confidence,
         unassigned_tokens=[w.text for w in unassigned if w.text.strip()],
         source_page=page_num,
