@@ -58,6 +58,10 @@ def _clean_ocr_text_token(token: str) -> str:
     m = re.match(r"^([0-9'’]+(?:\.[0-9]+)?)\.+$", token)
     if m:
         token = m.group(1)
+    # Normalize OCR letter confusion 'o'/'O' -> '0' strictly within delimited numeric tokens
+    # e.g. 180'000.oo -> 180'000.00, 90'000.oo -> 90'000.00
+    if re.match(r"^[0-9][0-9'’,\-oO]*[.,'’][0-9oO]+[*t\+#]?$", token):
+        token = re.sub(r"[oO]", "0", token)
     return token
 
 def _find_tesseract_binary() -> Optional[str]:
@@ -164,8 +168,8 @@ def extract_page_with_ocr(
 
     page_type, _ = detect_page_type(page)
 
-    # 1. Render page at 300 DPI
-    zoom = 300.0 / 72.0
+    # 1. Render page at 400 DPI so fine punctuation (apostrophes, decimals, markers) remains sharp for OCR
+    zoom = 400.0 / 72.0
     mat = pymupdf.Matrix(zoom, zoom)
     pix = page.get_pixmap(matrix=mat, alpha=False)
 
@@ -174,9 +178,10 @@ def extract_page_with_ocr(
 
     try:
         pix.save(tmp_img)
-        # Apply Pillow image enhancement if needed
+        # Apply Pillow grayscale normalization + gentle contrast enhancement
         with Image.open(tmp_img) as pil_img:
-            enhancer = ImageEnhance.Contrast(pil_img)
+            gray_img = pil_img.convert("L")
+            enhancer = ImageEnhance.Contrast(gray_img)
             enhanced = enhancer.enhance(1.2).copy()
         enhanced.save(tmp_img)
 
@@ -243,6 +248,25 @@ def extract_page_with_ocr(
                 elif w_text.lower() in ("ooo", "oo") and prev_w.text.endswith("'"):
                     extracted_words.pop()
                     merged_text = prev_w.text + ("000" if len(w_text) == 3 else "00")
+                    extracted_words.append(ExtractedWord(
+                        text=merged_text,
+                        x0=prev_w.x0,
+                        y0=min(prev_w.y0, round(y0, 2)),
+                        x1=round(x1, 2),
+                        y1=max(prev_w.y1, round(y1, 2)),
+                        raw_x0=prev_w.raw_x0,
+                        raw_y0=min(prev_w.raw_y0, round(y0, 2)),
+                        raw_x1=round(x1, 2),
+                        raw_y1=max(prev_w.raw_y1, round(y1, 2)),
+                        block_no=prev_w.block_no,
+                        line_no=l_idx,
+                        word_no=prev_w.word_no,
+                        confidence=min(prev_w.confidence, conf)
+                    ))
+                    continue
+                elif re.match(r"^\.\d{2,4}$", w_text) and re.match(r"^\d{2}\.\d{2}$", prev_w.text):
+                    extracted_words.pop()
+                    merged_text = prev_w.text + w_text
                     extracted_words.append(ExtractedWord(
                         text=merged_text,
                         x0=prev_w.x0,

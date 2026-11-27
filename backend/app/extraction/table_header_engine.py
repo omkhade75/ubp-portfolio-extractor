@@ -183,7 +183,8 @@ def match_semantic_field(
 def _compute_column_boundaries(
     ordered: List[HeaderColumn],
     page_width: float,
-    right_aligned_keys: Optional[set] = None
+    right_aligned_keys: Optional[set] = None,
+    section_type: str = "HOLDINGS",
 ) -> None:
     """
     Computes non-overlapping [x_min, x_max) intervals for each ordered HeaderColumn.
@@ -199,8 +200,12 @@ def _compute_column_boundaries(
             col.x_min = 0.0
         else:
             prev = ordered[i - 1]
+            if section_type == "PERFORMANCE":
+                # Performance columns have values aligned inside [col.hx0, next_col.hx0);
+                # shifting x_min too far left risks capturing right-aligned single digits (e.g. '0') from the prior column.
+                col.x_min = max(prev.hx1 + 2.0, col.hx0 - 3.0)
             # Column starts slightly left of its header x0, but strictly after previous header's x1 (or safe split)
-            if col.semantic_key == "SECURITY_NAME" and prev.semantic_key == "UNITS":
+            elif col.semantic_key == "SECURITY_NAME" and prev.semantic_key == "UNITS":
                 # Ensure description words (which start immediately after units column) belong to SECURITY_NAME
                 col.x_min = prev.hx1 + 4.0
             elif col.semantic_key == "SECURITY_ID":
@@ -323,7 +328,7 @@ def build_table_column_map(
         ))
 
     ordered.sort(key=lambda col: col.hx0)
-    _compute_column_boundaries(ordered, page_width)
+    _compute_column_boundaries(ordered, page_width, section_type=section_type)
 
     tmap.ordered_columns = ordered
     tmap.columns = {col.semantic_key: col for col in ordered}

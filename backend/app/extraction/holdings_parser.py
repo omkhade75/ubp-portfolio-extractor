@@ -398,6 +398,42 @@ def parse_holdings_pages(
                 continue
             content_lines.append(l)
 
+        # If a narrow trailing '%' header was dropped (e.g. by OCR at the right page margin) while body rows clearly
+        # contain a rightmost percentage column to the right of REPORTING_VALUE / MARKET_VALUE, infer PERCENTAGE bounds geometrically.
+        if (
+            "PERCENTAGE" not in col_map.columns
+            and col_map.ordered_columns
+            and col_map.ordered_columns[-1].semantic_key in ("REPORTING_VALUE", "MARKET_VALUE")
+        ):
+            last_col = col_map.ordered_columns[-1]
+            pct_candidates: List[ExtractedWord] = []
+            for cl in content_lines:
+                line_pct_toks = []
+                for w in cl.words:
+                    if w.x0 >= last_col.hx1 + 12.0:
+                        wt = w.text.strip()
+                        if is_valid_iso_currency(wt) or re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", wt):
+                            continue
+                        fn = parse_financial_number(wt)
+                        if fn.is_valid and fn.value is not None and Decimal("-100") <= fn.value <= Decimal("100"):
+                            line_pct_toks.append(w)
+                if len(line_pct_toks) == 1:
+                    pct_candidates.append(line_pct_toks[0])
+            if len(pct_candidates) >= 2:
+                pct_col = HeaderColumn(
+                    "(%)",
+                    "PERCENTAGE",
+                    round(min(w.x0 for w in pct_candidates), 2),
+                    round(max(w.x1 for w in pct_candidates), 2),
+                )
+                col_map.ordered_columns.append(pct_col)
+                col_map.columns["PERCENTAGE"] = pct_col
+                _compute_column_boundaries(col_map.ordered_columns, page_width, section_type="HOLDINGS")
+                page_header_maps[-1]["columns"] = [
+                    {"key": c.semantic_key, "header": c.raw_label, "x_min": round(c.x_min, 1), "x_max": round(c.x_max, 1)}
+                    for c in col_map.ordered_columns
+                ]
+
         def _is_primary_line(l: VisualLine) -> bool:
             return is_primary_holding_line(l, col_map)
 
@@ -498,15 +534,20 @@ def _build_holding_item(
         w for w in assigned.get("SECURITY_NAME", [])
         if w.text.upper() not in watermark_noise
     ]
-    # If any word in id_words was to the left of the matched identifier and not part of the identifier (e.g. share class 'A'),
-    # attach it to the security name description
+    # If any word in id_words lies cleanly to the left of the matched identifier token (e.g. 'Class', 'A', '04'),
+    # attach it back to the security name description rather than losing a right-hand description token across the midpoint split.
     if id_res and id_res.raw_identifier:
         matched_raw = id_res.raw_identifier.upper()
+        matched_id_words = [w for w in id_words if w.text.strip().upper() == matched_raw or matched_raw in w.text.strip().upper()]
+        id_x0 = min(w.x0 for w in matched_id_words) if matched_id_words else None
         for w in id_words:
-            if w.text.strip().upper() != matched_raw and w.x1 <= prim_line.words[-1].x1:
-                # If word is before the identifier and looks like a name suffix (e.g. 'A', 'B', 'I', 'II', 'Class')
-                if not any(c.isdigit() for c in w.text) and len(w.text) <= 5:
-                    prim_name_words.append(w)
+            wu = w.text.strip().upper()
+            if wu == matched_raw or wu in watermark_noise:
+                continue
+            if id_x0 is not None and w.x1 <= id_x0 - 8.0 and len(w.text.strip()) <= 12:
+                prim_name_words.append(w)
+            elif w.x1 <= prim_line.words[-1].x1 and not any(c.isdigit() for c in w.text) and len(w.text) <= 5:
+                prim_name_words.append(w)
     prim_name_words.sort(key=lambda w: w.x0)
     if prim_name_words:
         name_parts.append(" ".join(w.text for w in prim_name_words).strip())
@@ -545,7 +586,7 @@ def _build_holding_item(
     market_price_date = None
     price_col_currency = None
     for w in assigned.get("MARKET_PRICE", []):
-        raw_p = w.text.strip()
+        raw_p = re.sub(r"^([\d\.'’,\-]+[*t\+#^])['’\".,]+$", r"\1", w.text.strip())
         if re.match(r"^\d{2}\.\d{2}\.\d{2,4}$", raw_p):
             market_price_date = raw_p
             continue

@@ -31,10 +31,30 @@ def _map_words_to_performance_columns(
 ) -> Tuple[Any, Any, Any, Any, Any, Any, Any]:
     """
     Deterministically maps words in a monthly or annual performance row to the
-    standard 7 column positions using dynamically reconstructed header boundaries
-    with fallback to coordinate anchors if header detection was incomplete.
+    standard 7 column positions using complete 7-token alignment check first,
+    then dynamically reconstructed header boundaries, with coordinate fallback.
     """
     fn_perf = fn_cum = fn_assets = fn_dep = fn_chg = fn_ni = fn_rni = None
+
+    # Exact 7-token row positional invariance (all 7 numeric columns populated cleanly left-to-right)
+    if len(row_words) == 7:
+        t0 = parse_financial_number(row_words[0].text)
+        t1 = parse_financial_number(row_words[1].text)
+        t6 = parse_financial_number(row_words[6].text)
+        if (
+            (t0.is_percentage or "%" in row_words[0].text)
+            and (t1.is_percentage or "%" in row_words[1].text)
+            and (t6.is_percentage or "%" in row_words[6].text)
+        ):
+            return (
+                t0,
+                t1,
+                parse_financial_number(row_words[2].text),
+                parse_financial_number(row_words[3].text),
+                parse_financial_number(row_words[4].text),
+                parse_financial_number(row_words[5].text),
+                t6,
+            )
 
     if col_map and len(col_map.ordered_columns) >= 5:
         assigned, _ = assign_words_to_columns(row_words, col_map)
@@ -54,26 +74,6 @@ def _map_words_to_performance_columns(
         fn_ni = _first_num("NET_INCOME")
         fn_rni = _first_num("RETURN_ON_NI_PCT")
         return fn_perf, fn_cum, fn_assets, fn_dep, fn_chg, fn_ni, fn_rni
-
-    # Exact 7-token row positional fallback
-    if len(row_words) == 7:
-        t0 = parse_financial_number(row_words[0].text)
-        t1 = parse_financial_number(row_words[1].text)
-        t6 = parse_financial_number(row_words[6].text)
-        if (
-            (t0.is_percentage or "%" in row_words[0].text)
-            and (t1.is_percentage or "%" in row_words[1].text)
-            and (t6.is_percentage or "%" in row_words[6].text)
-        ):
-            return (
-                t0,
-                t1,
-                parse_financial_number(row_words[2].text),
-                parse_financial_number(row_words[3].text),
-                parse_financial_number(row_words[4].text),
-                parse_financial_number(row_words[5].text),
-                t6,
-            )
 
     for w in row_words:
         fn = parse_financial_number(w.text)
@@ -117,7 +117,10 @@ def _map_total_row(
             fn = parse_financial_number(w.text)
             if fn.is_valid and fn.value is not None and chg_val is None:
                 chg_val = fn.value
+        rni_col = col_map.columns.get("RETURN_ON_NI_PCT")
         for w in assigned.get("NET_INCOME", []):
+            if rni_col and w.x1 > rni_col.hx0:
+                continue
             fn = parse_financial_number(w.text)
             if fn.is_valid and fn.value is not None and ni_val is None:
                 ni_val = fn.value
@@ -172,6 +175,12 @@ def parse_monthly_performance_page(
             col_map = build_table_column_map(header_lines, PERFORMANCE_SYNONYMS, "PERFORMANCE", pw)
             continue
 
+        num_line_cnt = sum(
+            1 for w in l.words
+            if parse_financial_number(w.text).is_valid and parse_financial_number(w.text).value is not None
+        )
+        is_explicit_total_summary = ("TOTAL" in tu and "INITIAL" not in tu and num_line_cnt >= 3)
+
         # Chart area or footnotes
         if (
             "CUMULATIVE PERFORMANCE" in tu
@@ -181,7 +190,7 @@ def parse_monthly_performance_page(
             or "HISTORICAL PERFORMANCE" in tu
             or t.startswith("(*)")
             or (has_total_row and (l.y > page.rect.height * 0.45 or re.match(r"^[\-\d\.\,\']+\s*%$", t)))
-            or l.y > page.rect.height * 0.72
+            or (l.y > page.rect.height * 0.72 and not (is_explicit_total_summary and l.y <= page.rect.height * 0.80))
         ):
             table_ended = True
             chart_lines.append(t)
