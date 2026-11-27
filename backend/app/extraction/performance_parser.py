@@ -359,11 +359,16 @@ def parse_annual_performance_page(
             w for w in words
             if parse_financial_number(w.text).is_valid and parse_financial_number(w.text).value is not None
         ]
-        if (is_tot and len(num_words) >= 2) or (
-            len(num_words) >= 2
-            and not re.search(r"\d{2}\.\d{4}", t)
-            and not re.search(r"\d{2}\.\d{2}\.\d{4}", t)
-            and not re.match(r"^\d{4}$", first_w)
+        if (
+            (is_tot and len(num_words) >= 2 and "REPORTING CURRENCY" not in tu and not tu.startswith("PERIOD:"))
+            or (
+                len(num_words) >= 2
+                and not re.search(r"\d{2}\.\d{4}", t)
+                and not re.search(r"\d{2}\.\d{2}\.\d{4}", t)
+                and not re.match(r"^\d{4}$", first_w)
+                and "REPORTING CURRENCY" not in tu
+                and not tu.startswith("PERIOD:")
+            )
         ):
             has_total_row = True
             dep_val, chg_val, ni_val = _map_total_row(num_words, col_map)

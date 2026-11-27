@@ -528,29 +528,37 @@ def parse_net_assets_summary_page(page: pymupdf.Page, page_num: int) -> Tuple[Op
     full_text_lines = [l.text.strip() for l in lines if l.text.strip()]
 
     # Locate section heading coordinates dynamically using word clusters
-    sum_anchor: Optional[Tuple[float, float]] = None
-    exch_anchor: Optional[Tuple[float, float]] = None
+    sum_anchor: Optional[Tuple[float, float, float, float]] = None
+    exch_anchor: Optional[Tuple[float, float, float, float]] = None
     for l in lines:
         tu = l.text.upper()
-        if sum_anchor is None and "SUMMARY OF NET ASSETS" in tu:
-            for idx in range(len(l.words)):
-                if l.words[idx].text.upper() == "SUMMARY":
-                    sum_anchor = (l.words[idx].x0, l.y0)
-                    break
-            if sum_anchor is None:
-                sum_anchor = (l.words[0].x0, l.y0)
-        if exch_anchor is None and "EXCHANGE RATES USED" in tu:
-            for idx in range(len(l.words)):
-                if l.words[idx].text.upper() == "EXCHANGE":
-                    exch_anchor = (l.words[idx].x0, l.y0)
-                    break
-            if exch_anchor is None:
-                exch_anchor = (l.words[0].x0, l.y0)
+        # Look for section header lines (excluding page titles like 'SUMMARY OF NET ASSETS AND EXCHANGE RATES')
+        if "SUMMARY OF NET ASSETS" in tu and "AND" not in tu and sum_anchor is None:
+            sum_words = [word for word in l.words if word.text.upper() in ("SUMMARY", "OF", "NET", "ASSETS")]
+            if sum_words:
+                sum_anchor = (sum_words[0].x0, l.y0, sum_words[-1].x1, l.y1)
+        if "EXCHANGE RATES" in tu and "AND" not in tu and exch_anchor is None:
+            exch_words = [word for word in l.words if word.text.upper() in ("EXCHANGE", "RATES", "USED")]
+            if exch_words:
+                exch_anchor = (exch_words[0].x0, l.y0, exch_words[-1].x1, l.y1)
+
+    # Fallback if both headers were combined on a single line or include 'AND'
+    if sum_anchor is None or exch_anchor is None:
+        for l in lines:
+            tu = l.text.upper()
+            if "SUMMARY OF NET ASSETS" in tu and sum_anchor is None:
+                sum_words = [word for word in l.words if word.text.upper() in ("SUMMARY", "OF", "NET", "ASSETS")]
+                if sum_words:
+                    sum_anchor = (sum_words[0].x0, l.y0, sum_words[-1].x1, l.y1)
+            if "EXCHANGE RATES" in tu and exch_anchor is None:
+                exch_words = [word for word in l.words if word.text.upper() in ("EXCHANGE", "RATES", "USED")]
+                if exch_words:
+                    exch_anchor = (exch_words[0].x0, l.y0, exch_words[-1].x1, l.y1)
 
     is_side_by_side = (
         sum_anchor is not None
         and exch_anchor is not None
-        and abs(sum_anchor[1] - exch_anchor[1]) < 45.0
+        and abs(sum_anchor[1] - exch_anchor[1]) < 30.0
         and abs(exch_anchor[0] - sum_anchor[0]) > page.rect.width * 0.25
     )
 
@@ -566,15 +574,15 @@ def parse_net_assets_summary_page(page: pymupdf.Page, page_num: int) -> Tuple[Op
         assert sum_anchor is not None and exch_anchor is not None
         if exch_anchor[0] > sum_anchor[0]:
             split_x = exch_anchor[0] - 15.0
-            sum_words = [w for w in words if w.x0 < split_x and sum_anchor[1] + 5.0 < w.y0 < footer_y]
-            exch_words = [w for w in words if w.x0 >= split_x and exch_anchor[1] + 5.0 < w.y0 < footer_y]
+            sum_words = [w for w in words if w.x0 < split_x and sum_anchor[3] + 2.0 < w.y0 < footer_y]
+            exch_words = [w for w in words if w.x0 >= split_x and exch_anchor[3] + 2.0 < w.y0 < footer_y]
         else:
             split_x = sum_anchor[0] - 15.0
-            sum_words = [w for w in words if w.x0 >= split_x and sum_anchor[1] + 5.0 < w.y0 < footer_y]
-            exch_words = [w for w in words if w.x0 < split_x and exch_anchor[1] + 5.0 < w.y0 < footer_y]
+            sum_words = [w for w in words if w.x0 >= split_x and sum_anchor[3] + 2.0 < w.y0 < footer_y]
+            exch_words = [w for w in words if w.x0 < split_x and exch_anchor[3] + 2.0 < w.y0 < footer_y]
     else:
-        sum_y_start = (sum_anchor[1] + 5.0) if sum_anchor else 0.0
-        exch_y_start = (exch_anchor[1] + 5.0) if exch_anchor else footer_y
+        sum_y_start = (sum_anchor[3] + 2.0) if sum_anchor else 0.0
+        exch_y_start = (exch_anchor[3] + 2.0) if exch_anchor else footer_y
         if sum_anchor and exch_anchor:
             if exch_anchor[1] > sum_anchor[1]:
                 sum_words = [w for w in words if sum_y_start < w.y0 < exch_anchor[1] - 2.0 and w.y0 < footer_y]

@@ -200,10 +200,18 @@ def _compute_column_boundaries(
         else:
             prev = ordered[i - 1]
             # Column starts slightly left of its header x0, but strictly after previous header's x1 (or safe split)
-            if col.semantic_key == "SECURITY_ID":
-                col.x_min = max(prev.hx1 + 8.0, col.hx0 - 18.0)
-            elif col.semantic_key == "SECURITY_NAME":
-                col.x_min = max(prev.hx1 + 4.0, col.hx0 - 6.0)
+            if col.semantic_key == "SECURITY_NAME" and prev.semantic_key == "UNITS":
+                # Ensure description words (which start immediately after units column) belong to SECURITY_NAME
+                col.x_min = prev.hx1 + 4.0
+            elif col.semantic_key == "SECURITY_ID":
+                # Generically split wide gap between description and identifier so IDs are not swallowed by description
+                col.x_min = min(max(prev.hx1 + 4.0, col.hx0 - 45.0), (prev.hx1 + col.hx0) / 2.0)
+            elif col.semantic_key == "YIELD_RATING":
+                # Generically split between identifier column and yield column
+                col.x_min = min(max(prev.hx1 + 4.0, col.hx0 - 35.0), (prev.hx1 + col.hx0) / 2.0)
+            elif col.semantic_key == "AVERAGE_COST":
+                # Generically split between yield and cost columns
+                col.x_min = min(max(prev.hx1 + 4.0, col.hx0 - 25.0), (prev.hx1 + col.hx0) / 2.0)
             elif col.semantic_key == "PERCENTAGE":
                 # Keep tight separation between Reporting Value right edge and % Assets
                 col.x_min = max(prev.hx1 + 8.0, col.hx0 - 16.0)

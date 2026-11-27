@@ -498,6 +498,16 @@ def _build_holding_item(
         w for w in assigned.get("SECURITY_NAME", [])
         if w.text.upper() not in watermark_noise
     ]
+    # If any word in id_words was to the left of the matched identifier and not part of the identifier (e.g. share class 'A'),
+    # attach it to the security name description
+    if id_res and id_res.raw_identifier:
+        matched_raw = id_res.raw_identifier.upper()
+        for w in id_words:
+            if w.text.strip().upper() != matched_raw and w.x1 <= prim_line.words[-1].x1:
+                # If word is before the identifier and looks like a name suffix (e.g. 'A', 'B', 'I', 'II', 'Class')
+                if not any(c.isdigit() for c in w.text) and len(w.text) <= 5:
+                    prim_name_words.append(w)
+    prim_name_words.sort(key=lambda w: w.x0)
     if prim_name_words:
         name_parts.append(" ".join(w.text for w in prim_name_words).strip())
 

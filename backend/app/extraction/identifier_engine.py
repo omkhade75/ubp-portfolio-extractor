@@ -58,40 +58,10 @@ def normalize_security_identifier(
         )
 
     # -------------------------------------------------------------
-    # 1. Standard ISO 6166 ISIN or 12-char Alphanumeric Code
-    # -------------------------------------------------------------
-    # e.g. LU2001707251, XS2981244168, US0378331005, XSSYN0001081
-    if re.match(r"^[A-Z]{2}[A-Z0-9]{9}[0-9]$", base):
-        # Check if internal numeric block has OCR letter substitution
-        # e.g. XSSYN + OOOI + 090 where OOOI is 0001
-        m_xssyn = re.match(r"^(XSSYN)([A-Z0-9]{7})$", base)
-        if m_xssyn:
-            sfx = m_xssyn.group(2)
-            if any(c in sfx for c in "OILSBZ"):
-                sfx_norm = sfx.translate(str.maketrans("OILSBZ", "011582"))
-                if sfx_norm.isdigit() and len(sfx_norm) == 7:
-                    norm = f"{m_xssyn.group(1)}{sfx_norm}"
-                    return IdentifierResult(
-                        raw_identifier=raw_clean,
-                        normalized_identifier=norm,
-                        status="NORMALIZED",
-                        provenance="OCR_CHAR_CORRECTION: Suffix letters [O,I,L,S,B,Z] converted to digits",
-                        confidence=confidence,
-                        detected_format="SYNTHETIC_ISIN"
-                    )
-        return IdentifierResult(
-            raw_identifier=raw_clean,
-            normalized_identifier=base,
-            status="PASS",
-            provenance="EXACT_MATCH",
-            confidence=confidence,
-            detected_format="ISO_6166_ISIN"
-        )
-
-    # -------------------------------------------------------------
-    # 2. Extraneous 'O' inserted between alpha prefix and numeric body
+    # 1. Extraneous 'O' inserted between alpha prefix and numeric body
     # -------------------------------------------------------------
     # Tesseract OCR boundary artifact: e.g. 'XSSYNO0001081' (13 chars) -> 'XSSYN0001081' (12 chars)
+    # Must run BEFORE general length check so extraneous artifact character is removed.
     m_extra_o = re.match(r"^([A-Z]{2,5})[oO]([0-9]{7})$", base)
     if m_extra_o:
         norm = f"{m_extra_o.group(1)}{m_extra_o.group(2)}"
@@ -105,14 +75,15 @@ def normalize_security_identifier(
         )
 
     # -------------------------------------------------------------
-    # 3. 12-char Alphanumeric where numeric payload has OCR letter confusions
+    # 2. 12-to-14 char Alphanumeric where numeric payload has OCR letter confusions
     # -------------------------------------------------------------
-    # e.g. 'XSSYNOOOI090' (12 chars: XSSYN + OOOI090)
-    m_alpha_num = re.match(r"^([A-Z]{2,5})([A-Z0-9]{7,8})$", base)
-    if m_alpha_num:
+    # e.g. 'XSSYNOOOI090' (12 chars: XSSYN + OOOI090) or 'XSSYNO001090' -> converts O,I,L,S,B,Z to 0,1,1,5,8,2
+    # Must run BEFORE standard exact match so OCR-corrupted codes are normalized.
+    m_alpha_num = re.match(r"^([A-Z]{2,5})([A-Z0-9]{7,9})$", base)
+    if m_alpha_num and any(c in m_alpha_num.group(2) for c in "OILSBZ"):
         prefix, sfx = m_alpha_num.group(1), m_alpha_num.group(2)
         sfx_norm = sfx.translate(str.maketrans("OILSBZ", "011582"))
-        if sfx_norm.isdigit() and len(sfx_norm) == 7:
+        if sfx_norm.isdigit() and len(sfx_norm) in (7, 8, 9):
             norm = f"{prefix}{sfx_norm}"
             return IdentifierResult(
                 raw_identifier=raw_clean,
@@ -122,6 +93,20 @@ def normalize_security_identifier(
                 confidence=confidence,
                 detected_format="SYNTHETIC_ISIN"
             )
+
+    # -------------------------------------------------------------
+    # 3. Standard ISO 6166 ISIN or 12-to-14 char Alphanumeric Security Code
+    # -------------------------------------------------------------
+    # e.g. LU2001707251, XS2981244168, US0378331005, XSSYN0001081, XSSYN74040011, XSTEST63030055, IE00SYN6303001
+    if re.match(r"^[A-Z]{2}[A-Z0-9]{9,12}[0-9]$", base):
+        return IdentifierResult(
+            raw_identifier=raw_clean,
+            normalized_identifier=base,
+            status="PASS",
+            provenance="EXACT_MATCH",
+            confidence=confidence,
+            detected_format="ISO_6166_ISIN"
+        )
 
     # -------------------------------------------------------------
     # 4. Hyphenated Security / CUSIP / Valoren Codes
@@ -143,7 +128,7 @@ def normalize_security_identifier(
                 detected_format="HYPHENATED_SECURITY_CODE"
             )
 
-    if re.match(r"^[A-Z0-9]{2,6}(-[A-Z0-9]{2,8})+$", base) and any(c.isdigit() for c in base):
+    if re.match(r"^[A-Z0-9]{2,6}(-[A-Z0-9]{1,8})+$", base) and any(c.isdigit() for c in base):
         return IdentifierResult(
             raw_identifier=raw_clean,
             normalized_identifier=base,
